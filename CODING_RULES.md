@@ -5,7 +5,7 @@
 This file defines practical coding rules for code generated or modified by an AI coding agent.
 It is intended to complement `AGENTS.md`: `AGENTS.md` governs agent behavior, while this file governs code quality.
 
-This document is a compact, operational synthesis of the provided source PDF. It is not an exhaustive summary and must not be used as a substitute for the source material.
+This document is a compact, operational rule set. It is not exhaustive; combine it with repository-specific instructions, tests, and conventions.
 
 ## Scope
 
@@ -19,6 +19,17 @@ Produce code that other developers can understand, verify, modify, and safely ex
 
 Working code is not enough. After making code work, clean it until its intent, structure, and behavior are clear.
 
+## Operational Definitions
+
+Use these definitions when applying qualitative words in this file:
+
+- `clear` or `readable`: a reviewer can identify intent from names, structure, tests, and local context without relying on hidden assumptions or explanatory comments.
+- `small`: a function, class, module, or change has one responsibility or one reason to change; split only when the current work exposes separate responsibilities.
+- `safe`: the change preserves existing public behavior or is covered by tests, static checks, or an explicit verification step.
+- `relevant`: the change is necessary for the requested outcome, for cleanup caused by the change, or for verification.
+- `when practical`, `when possible`, `where possible`, or `when appropriate`: apply the rule unless it conflicts with repository conventions, requested behavior, or a verified technical constraint; state the reason when skipping it.
+- `clear enough`: the relevant review checklist items have an explicit pass, test result, verification step, or stated exception.
+
 ## General Rules
 
 - Prefer clarity over cleverness.
@@ -27,7 +38,7 @@ Working code is not enough. After making code work, clean it until its intent, s
 - Keep code small, well named, organized, and ordered.
 - Make behavior easy to verify with tests.
 - Treat structural degradation as a real defect, not as cosmetic debt.
-- Improve touched code when it is safe and directly related to the requested change.
+- Improve only code you already need to touch for the requested change, and only when the improvement is safe and relevant.
 - Do not rewrite unrelated code merely because it could be cleaner.
 - Do not optimize for performance before readability unless performance is an explicit, measured requirement.
 

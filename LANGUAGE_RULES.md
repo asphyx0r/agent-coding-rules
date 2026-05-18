@@ -13,9 +13,13 @@ Use this file together with `AGENTS.md` and `CODING_RULES.md`:
 
 Apply only the section that matches the language of the files being created, edited, reviewed, or refactored.
 
+If the target language has no section in this file, apply only `CODING_RULES.md` plus repository conventions; do not invent language-specific rules.
+
 If a repository has stronger local conventions, follow the repository conventions first.
 
 If a language-specific rule conflicts with a general rule from `CODING_RULES.md`, the language-specific rule takes precedence.
+
+Use the operational definitions in `CODING_RULES.md` for qualitative phrases such as `small`, `when practical`, `when possible`, and `when appropriate`.
 
 ## Go
 
