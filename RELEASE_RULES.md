@@ -15,6 +15,36 @@ Apply these rules before creating any Git tag.
 - Use the `MAJOR.MINOR.PATCH` version format unless a valid SemVer pre-release
   or build metadata identifier is explicitly required.
 
+## Bump Rules
+
+- Given a version number `MAJOR.MINOR.PATCH`, increment `MAJOR` when making
+  incompatible API changes.
+- Given a version number `MAJOR.MINOR.PATCH`, increment `MINOR` when adding
+  functionality in a backward-compatible manner.
+- Given a version number `MAJOR.MINOR.PATCH`, increment `PATCH` when making
+  backward-compatible bug fixes.
+- Use pre-release labels and build metadata only as valid SemVer extensions to
+  the `MAJOR.MINOR.PATCH` format, and only when they are explicitly required.
+- Before creating any tag, validate the selected version number with this exact
+  regular expression. Validate the version number without the leading lowercase
+  `v` tag prefix:
+
+  ```regex
+  ^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
+  ```
+
+- Do not create the tag if the selected version number fails the regular
+  expression validation.
+- When a tag will be pushed to a remote repository, inspect the remote tags
+  before selecting the version and before pushing the tag.
+- Do not push the tag if the same tag already exists in the remote repository.
+- If remote SemVer tags exist, include them when identifying the highest
+  existing SemVer version for the requested bump type.
+- Stop and ask before pushing if the selected local version is lower than the
+  highest matching remote SemVer version, equal to an existing remote version,
+  or otherwise conflicts with the version that should result from the requested
+  bump type.
+
 ## Tag Rules
 
 Before creating a tag:
