@@ -12,5 +12,6 @@ Practical behavior and code-quality rules for AI coding agents.
 
 ## Sources
 
-- Karpathy Claude Code Guidelines (https://github.com/multica-ai/andrej-karpathy-skills)
-- Robert Martin Clean Code: A Handbook of Agile Software Craftsmanship (978-0132350884)
+- Karpathy-Inspired Claude Code Guidelines (https://github.com/multica-ai/andrej-karpathy-skills)
+- Robert C. Martin, Clean Code: A Handbook of Agile Software Craftsmanship (978-0132350884)
+- Semantic Versioning 2.0.0 (https://semver.org/)
