@@ -146,27 +146,76 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 
 ## Bash
 
-### Safety
+### Naming
 
-- Use `local` inside functions for function-local variables.
-- Quote variable expansions unless word splitting or glob expansion is explicitly intended.
-- Use `set -euo pipefail` only when the script behavior has been checked for those modes.
-- Check required arguments at the start of the script.
+- Use lowercase variable names for local script variables, such as `file_path` and `retry_count`.
+- Reserve uppercase variable names for environment variables, constants, and exported configuration.
+- Use `local` for function-scoped variables to avoid leaking temporary state into the global scope.
+- Name Bash functions after the command action or question they implement, such as `build_archive` or `is_valid_tag`.
 
-### Idioms
+### Formatting
 
-- Use `[[ ... ]]` for conditional expressions in Bash scripts.
-- Use `"$@"` when forwarding all arguments.
-- Prefer `$(...)` over backticks for command substitution.
+- Start Bash scripts with an explicit Bash shebang. Use the project standard when one exists; otherwise prefer `#!/usr/bin/env bash` for user-space portability or `#!/bin/bash` for controlled system environments.
+- Do not use Bash-only syntax under `#!/bin/sh`; arrays, `[[ ... ]]`, `local`, and `${BASH_SOURCE[@]}` require a Bash shebang.
+- Match the existing Bash style when editing existing scripts, and do not reformat unrelated code.
+- For new Bash files without a project style, use readable shell indentation, short lines, and consistent command layout.
+- For user-facing Bash scripts, keep usage or help text in one reusable block when that avoids duplicated output for `-h`, `--help`, and invalid options.
+- Add a function header comment only when a Bash function's purpose, globals, arguments, output, or return behavior is not obvious from the code.
 
 ### Errors
 
 - Check command failures explicitly when continuing after an error is valid.
+- Do not rely on strict mode alone; handle expected failures with explicit control flow such as `if ! command; then ... fi`, a documented fallback, or a justified `|| true`.
+- Send diagnostics, warnings, and errors to STDERR; reserve STDOUT for normal script output.
+- For recurring operational Bash scripts, route diagnostics through a small logging function when that improves consistency or troubleshooting; keep one-off scripts simple.
+- For Bash diagnostics or logging, use `printf` or a logging helper instead of bare `echo` when message formatting, timestamps, or STDERR routing matter.
+- Preserve command substitution status when it matters by separating `local` declaration from assignment, for example `local value` followed by `value="$(command)"`.
+- Fail early with clear error messages when required arguments, files, directories, commands, or environment variables are missing or invalid.
 
-### Naming
+### Safety
 
-- Use lowercase variables for local script variables: `file_path`, `retry_count`.
-- Reserve uppercase variable names for environment variables, constants and exported configuration.
+- Use Bash only when Bash is the declared target; treat Bash and POSIX shell as distinct languages.
+- Respect the target Bash version; avoid Bash 4+ features such as `readarray`, `mapfile`, or associative arrays unless the target runtime supports them.
+- Keep Bash scripts limited to small utilities, glue code, wrappers, automation, and command orchestration; recommend a higher-level language when logic, data processing, or long-term maintenance becomes complex.
+- For new non-trivial Bash scripts, use `set -euo pipefail` after checking that the script behaves correctly under those modes. When editing existing scripts, preserve existing strict-mode behavior unless the change requires it and representative checks pass.
+- Document any omitted or intentionally disabled strict-mode option.
+- Quote variable expansions by default, preferably as `"${var}"`, unless word splitting or glob expansion is deliberately required and justified.
+- Validate shell-facing inputs before they affect commands, paths, or destructive operations, including parsed options, positional arguments, environment variables, filenames, command output, and data read from standard input.
+- When a Bash script needs runtime configuration, read configurable values from parsed options, environment variables, or config files with explicit defaults and validation; do not add configurability that the task or script contract does not require.
+- Make rerunnable Bash jobs idempotent when they are intended for cron, CI retries, deployment, or maintenance; avoid adding state tracking only for speculative reuse.
+- Use file locking for Bash scripts that must not run concurrently, and release locks through the script cleanup path.
+- Use arrays for dynamic command argument lists, then expand them with `"${array[@]}"`; do not store multiple command arguments in a single string.
+- Do not generate `eval` unless the user explicitly requests it and every evaluated input is strictly controlled; prefer arrays, case statements, direct invocation, or explicit parsing.
+- Never parse `ls` output to process files; use globs, `find`, Bash tests, or null-delimited processing.
+- Do not iterate over command output with `for var in $(...)` unless the output is explicitly controlled and whitespace-safe; prefer `while IFS= read -r`, `readarray` when supported by the target Bash version, or null-delimited `find -print0` processing.
+- Use `trap` for cleanup when scripts create temporary files, locks, or reversible state changes.
+- Create temporary files and directories with `mktemp`; do not use predictable names based on process IDs, timestamps, or hardcoded paths.
+- Prefer explicit path prefixes such as `./*` for globs in the current directory, especially before passing filenames to destructive commands.
+- Configure glob behavior intentionally when it affects correctness, such as enabling `nullglob` for empty matches or documenting any use of `set -f`.
+- Do not generate SUID or SGID shell scripts; recommend `sudo` or a safer privileged wrapper when elevated privileges are required.
+- Enable debug tracing only behind an explicit opt-in flag or environment variable; never enable `set -x` unconditionally in production scripts.
+
+### Tests
+
+- Run `bash -n` before accepting generated Bash code.
+- Run ShellCheck when available, and fix or explicitly justify every warning that remains.
+- Test failure paths as well as successful execution paths when changing Bash behavior.
+- Verify scripts that use strict mode, traps, globs, temporary files, or argument forwarding with representative inputs before presenting them as final.
+
+### Idioms
+
+- Use `[[ ... ]]` for Bash conditionals; use `[ ... ]` only when POSIX shell compatibility is required.
+- Use `[[ -z "${var:-}" ]]` and `[[ -n "${var:-}" ]]` when the variable may be unset; use `"${var}"` only when the variable is guaranteed to be set.
+- Use arithmetic contexts such as `(( count > 0 ))` for numeric comparisons and arithmetic expressions.
+- Use `"$@"` when forwarding positional arguments; justify any use of `$*`.
+- Prefer `$(...)` over backticks for command substitution.
+- Use a `main` function for scripts that contain helper functions or meaningful control flow, and end non-library scripts with `main "$@"`.
+- Prefer functions over aliases inside scripts.
+- Prefer `printf` over `echo` for predictable output.
+
+### Other
+
+- User-facing Bash scripts that accept options should support `-h` or `--help`, print usage information, and reject unknown options with a clear error.
 
 ## Python
 
