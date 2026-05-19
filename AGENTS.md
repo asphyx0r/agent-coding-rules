@@ -2,17 +2,26 @@
 
 Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
-Before creating, editing, reviewing, or refactoring code:
+## Instruction Scope
 
-1. Follow this `AGENTS.md` for agent behavior.
-2. Read and follow `CODING_RULES.md` for language-agnostic code quality rules.
-3. Read and follow `LANGUAGE_RULES.md`, applying only the sections for the target language of the files being edited.
+- Always follow this `AGENTS.md` for agent behavior.
+- Before creating, editing, reviewing, or refactoring code, read and follow
+  `CODING_RULES.md` for language-agnostic code quality rules.
+- When creating, editing, reviewing, or refactoring code, also read and follow
+  `LANGUAGE_RULES.md`, applying only the sections for the target language of
+  the files being edited.
+- Before creating any commit, read and follow `COMMIT_RULES.md`.
+- Before creating any Git tag, read and follow `RELEASE_RULES.md`.
+- `README.md` is human-facing repository documentation, not an agent
+  instruction file.
 
 When rules conflict, apply them in this order:
 1. Project-specific instructions.
-2. Language-specific rules from `LANGUAGE_RULES.md`.
-3. General code-quality rules from `CODING_RULES.md`.
-4. General behavioral rules from this `AGENTS.md`.
+2. Commit and release rules from `COMMIT_RULES.md` and `RELEASE_RULES.md`
+   when creating commits or Git tags.
+3. Language-specific rules from `LANGUAGE_RULES.md`.
+4. General code-quality rules from `CODING_RULES.md`.
+5. General behavioral rules from this `AGENTS.md`.
 
 **Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
@@ -21,10 +30,14 @@ When rules conflict, apply them in this order:
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
 Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
+- State relevant assumptions explicitly.
+- If uncertainty affects scope, behavior, safety, data, public APIs, or user
+  intent, stop and ask for clarification.
+- If multiple interpretations have materially different outcomes, present them
+  before implementing.
+- If an ambiguity is minor and does not block progress, choose the simplest
+  reasonable option and state the assumption.
 - If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
 
 ## 2. Simplicity First
 
