@@ -23,34 +23,73 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 
 ## Go
 
-### Formatting
-
-- Use `gofmt` formatting.
-
 ### Naming
 
-- Use `camelCase` for local variables and unexported identifiers.
-- Use `PascalCase` for exported identifiers.
-- Keep short names acceptable in small scopes: `i`, `r`, `w`, `ctx`.
-- Prefer Go idioms over verbose names.
-- Keep package names short, lowercase, and singular.
-- Do not use underscores in package names.
+- Use `mixedCaps` for unexported identifiers and `MixedCaps` for exported identifiers.
+- Do not use `snake_case` for Go identifiers unless an external format or protocol requires it.
+- Keep short names acceptable in very small scopes, especially conventional names such as `i`, `r`, `w`, and `ctx`.
+- Keep package names short, lowercase, single-word, and descriptive.
+- Do not use underscores, mixed caps, vague names, or redundant package prefixes in package names.
+- Prefer singular package names when the package represents one cohesive concept.
+- Avoid repeating package, receiver, parameter, or return type names in function and method names; use the call site as the readability test.
+- Do not prefix ordinary getter methods with `Get`; prefer `Owner()` over `GetOwner()` and reserve `SetOwner()` for setters that mutate state.
+- Name one-method interfaces after behavior using the conventional `-er` form when it matches established Go usage, such as `Reader`, `Writer`, or `Formatter`.
+
+### Formatting
+
+- Format Go code with `gofmt` or `go fmt` before presenting or committing it.
+- Do not manually align code, comments, struct fields, imports, or whitespace against `gofmt`; let the standard formatter decide.
+- Use Go modules as the default project unit, with one root module by default unless a clear architectural reason justifies multiple modules.
+- Use `package main` only for executable commands; library code must use domain-specific package names.
+- Organize Go packages by cohesive responsibility rather than by technical layer alone.
+- Avoid catch-all packages such as `util`, `common`, or `helper` unless the package name is narrowly qualified and meaningful.
 
 ### Errors
 
-- Return errors explicitly instead of hiding failures.
-- Return `error` values; do not panic for normal failures.
-- Wrap errors with useful context when propagating them.
-- Do not ignore returned errors unless the reason is explicit and intentional.
+- Return errors explicitly and handle them immediately instead of hiding failures.
+- Return `error` values for expected failures; do not use `panic` for ordinary control flow or normal error cases.
+- Prefer linear guard clauses and let the successful path continue down the page.
+- Avoid unnecessary `else` blocks after `return`, `break`, `continue`, or `goto`.
+- Do not ignore returned errors unless the reason is explicit, intentional, and local to the call site.
+- Wrap errors with `%w` only when callers should be able to inspect the underlying error with `errors.Is` or `errors.As`.
+- When the underlying error should not become part of the public contract, return contextual errors without exposing implementation details.
+- Use `errors.Is` and `errors.As` for wrapped error inspection; do not compare wrapped errors directly.
+- Use `panic` and `recover` sparingly; recover only inside deferred functions and only at deliberate failure-containment boundaries.
 
-### Idioms
+### Safety
 
-- Keep interfaces small and define them near the consumer when practical.
+- Pass `context.Context` explicitly as the first parameter when a function needs deadlines, cancellation, or request-scoped values.
+- Do not store contexts inside structs, do not pass `nil` contexts, and use `context.TODO()` only when the correct context is genuinely unknown.
+- Always call the cancellation function returned by `context.WithCancel`, `context.WithDeadline`, or `context.WithTimeout`; use `defer cancel()` when appropriate.
+- Use `defer` immediately after successful resource acquisition when cleanup must happen regardless of the return path.
+- Remember that `defer` is function-scoped, not block-scoped.
+- Prefer channels when they make ownership and sequencing clearer; prefer mutexes when they are simpler for protecting shared state.
+- Prevent goroutine leaks by defining a clear cancellation or completion path through context cancellation, channel closure, or another explicit signal.
+- Be careful with loop variables captured by closures or goroutines, especially when targeting Go versions before 1.22.
+- For Go 1.22 and later, do not apply pre-1.22 loop-variable workarounds blindly; check the project `go.mod` before applying version-dependent rules.
 
 ### Tests
 
-- Use table-driven tests when they improve clarity.
-- Name tests like `TestFunctionName_Scenario`.
+- Write Go tests in files ending with `_test.go` using `TestXxx` functions.
+- Use descriptive test names such as `TestFunctionName_Scenario` when the scenario improves failure diagnosis.
+- Use `go test` as the default verification command for package behavior.
+- Use table-driven tests for multiple input/output cases when they keep the test logic clearer.
+- Use subtests with `t.Run` when cases need names, filtering, parallelism, or isolated setup.
+- Keep tests deterministic unless nondeterminism is the behavior under test.
+- Avoid hidden test dependencies on wall-clock timing, map iteration order, global mutable state, external services, or uncontrolled goroutine scheduling.
+- Use `go vet` as a static-analysis safety check, not as proof of correctness.
+- Run `go test -race` when tests exercise concurrent paths or when a change affects concurrency-sensitive code.
+- After a Go code change, run the smallest meaningful verification set first, usually formatting only touched files or packages, `go test` for affected packages, `go vet` when useful, and `go test -race` when justified by the codebase and task.
+
+### Idioms
+
+- Prefer Go idioms over verbose names or non-Go naming conventions.
+- Prefer concrete types until tests, package boundaries, or alternate implementations justify an interface.
+- Keep interfaces small, behavior-focused, and defined near the consumer when practical.
+- Keep comments useful and close to the code they explain.
+- Document exported public API identifiers with Go doc comments, following repository lint rules.
+- Use package comments as complete sentences and avoid duplicate package comments across multiple files.
+- Prefer comments that explain intent, constraints, invariants, or non-obvious decisions; do not restate obvious code.
 
 ## PHP
 
