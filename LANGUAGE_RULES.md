@@ -263,3 +263,84 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Prefer three-argument `open`.
 - Avoid symbolic references unless required by a well-contained metaprogramming pattern.
 - Keep regular expressions readable with names, whitespace, or comments when they become complex.
+
+## PowerShell
+
+### Naming
+
+- Use approved PowerShell verbs from `Get-Verb` in `Verb-Noun` names for public commands, functions, and advanced functions.
+- Prefer specific singular nouns over generic nouns such as `Item`, `Object`, or `Data` unless the generic noun accurately describes the resource.
+- Use PascalCase for public functions, parameters, modules, classes, enums, attributes, public fields, and public properties.
+- Use lowercase for PowerShell keywords and operators.
+- Use full command names instead of aliases in maintained scripts.
+- Use full parameter names instead of positional shorthand in maintained scripts.
+- Prefer established parameter names such as `Path`, `LiteralPath`, `Name`, `InputObject`, `Credential`, `Force`, and `PassThru` when they match the command behavior.
+- Use `Path` when wildcard expansion is intended and `LiteralPath` when the input must be interpreted exactly.
+
+### Formatting
+
+- Start maintained scripts and advanced functions with `[CmdletBinding()]` unless there is a clear reason not to.
+- Structure advanced functions in execution order: `param`, `begin`, `process`, then `end`.
+- Use four spaces per indentation level unless the existing project style requires otherwise.
+- Keep lines under 115 characters when practical.
+- Prefer splatting, arrays, hashtables, and natural continuation over backtick line continuation.
+- Do not leave trailing whitespace.
+- Do not use semicolons as routine line terminators.
+- Keep formatting-only changes separate from functional changes.
+
+### Errors
+
+- Use `-ErrorAction Stop` for cmdlet calls inside `try` blocks when the failure must be caught.
+- Set `$ErrorActionPreference = 'Stop'` only within a clear scope and restore the previous value afterward.
+- Put the whole transactional operation inside `try` instead of using Boolean flags to infer success.
+- Do not use `$?` as structured error handling.
+- Capture the current error record immediately at the start of each `catch` block.
+- Prefer explicit exceptions, captured error records, and actionable diagnostics over ambiguous status output.
+
+### Safety
+
+- Never hard-code credentials, tokens, passwords, or other secrets in scripts, repositories, logs, or command history.
+- Accept credentials through a `[System.Management.Automation.PSCredential]` parameter when a reusable command needs credentials.
+- Use `SecureString` only for sensitive values and avoid plaintext conversion except at the final required API boundary.
+- Treat execution policies as operational controls, not security boundaries.
+- Prefer signed scripts in controlled environments when organizational policy requires controlled script execution.
+- Validate external input before using it in commands, paths, filters, or script blocks.
+- Prefer paths based on `$PSScriptRoot`, `Join-Path`, or resolved absolute paths over unsafe relative paths.
+
+### Tests
+
+- Validate generated or modified PowerShell with PowerShell-aware tooling when available.
+- Run or recommend `PSScriptAnalyzer`, formatting checks, and minimal execution tests when the environment allows it.
+- Test pipeline input, validation attributes, error paths, and state-changing commands when they are affected by a change.
+- Do not claim a PowerShell rule is functionally required when it is only stylistic or taste-based.
+
+### Idioms
+
+- Use `process {}` when accepting pipeline input.
+- Output objects to the pipeline from reusable tools instead of formatted text.
+- Do not use `return` as the normal output mechanism for reusable functions.
+- Add `[OutputType()]` to reusable public functions when they return objects.
+- Do not use `Write-Host` for reusable script output unless the command is intentionally display-only or host-interactive.
+- Use `Write-Verbose`, `Write-Debug`, and `Write-Warning` for optional detail, diagnostics, and warnings.
+- Keep each public command output stream coherent; do not interleave unrelated strings, status text, and objects.
+- Support `-PassThru` for state-changing commands when returning the changed object should be optional.
+- Use `SupportsShouldProcess` for public commands that change state when `-WhatIf` or `-Confirm` support is expected.
+- Use strongly typed parameters when the accepted value has a clear type.
+- Use `[switch]` for optional true/false command flags.
+- Prefer parameter validation attributes over manual validation inside the function body.
+- Provide comment-based help for public scripts and functions.
+- Keep parameter documentation close to the `param` block when practical.
+- Put reusable behavior in modules or function libraries instead of duplicating it across controller scripts.
+
+### Other
+
+- Generate the simplest PowerShell implementation that satisfies the request.
+- Do not add module structure, logging frameworks, configuration systems, remoting support, or extra abstractions unless required by the user request or project context.
+- Treat framework-specific guidance for PowerShell Universal, MSP/RMM tools, enterprise hardening, or hosting platforms as contextual unless the project explicitly uses those environments.
+- Preserve the existing project style when editing existing PowerShell code.
+- Do not reformat unrelated legacy code while making a functional change.
+- Keep comments accurate and useful; update them whenever behavior changes.
+- Explain intent, constraints, workarounds, or decisions instead of obvious syntax.
+- Measure performance before optimizing PowerShell code.
+- Prefer readability unless performance has been proven to matter.
+- Stream large inputs instead of loading everything into memory when incremental processing is feasible.
