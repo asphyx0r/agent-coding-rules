@@ -2,12 +2,44 @@
 
 ## Purpose
 
-This file defines commit message rules for commits created by an AI coding
-agent.
+This file defines repository readiness, privacy, and commit message rules for
+commits created by an AI coding agent.
 
 ## Scope
 
 Apply these rules before creating any commit.
+
+## Repository Readiness and Integrity
+
+- Do not create the commit until the repository readiness checks in this
+  section have passed or any skipped check has been reported to the user with
+  the reason it was skipped.
+- Inspect the local repository state immediately before creating the commit
+  with `git status --short --branch` or an equivalent Git status command.
+- Do not create the commit while Git reports unresolved merges, unmerged paths,
+  rebases, cherry-picks, bisects, or any other in-progress operation that could
+  make the commit ambiguous.
+- Inspect the staged diff before creating the commit and confirm that every
+  staged change belongs in the requested commit.
+- Inspect unstaged and untracked files before creating the commit. Do not stage,
+  discard, or modify them unless the user requested it or the files are direct
+  consequences of the current task.
+- Do not create an empty commit unless the user explicitly requests an empty
+  commit.
+- Run `git diff --cached --check` before creating the commit to detect
+  whitespace errors in the staged changes.
+- Run `git fsck --full` before creating the commit to verify local repository
+  object integrity.
+- Do not create the commit if any repository integrity check fails.
+- Run the smallest relevant project checks that are available for the changed
+  files, such as formatters, linters, type checks, or tests.
+- Do not create the commit if a relevant project check fails, unless the user
+  explicitly approves committing despite the reported failure.
+- Do not claim that remote commit statuses, CI checks, branch protection, or
+  hosted review checks are valid unless they were actually inspected.
+- If remote or hosted commit status checks are required but cannot be inspected
+  from the current environment, report that limitation to the user before
+  creating the commit.
 
 ## Privacy Guard
 
