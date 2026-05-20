@@ -397,24 +397,84 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 
 ## Perl
 
-### Safety
-
-- Use `strict` and `warnings` unless the file is constrained by legacy compatibility.
-- Use `my` for lexical variables.
-
 ### Naming
 
 - Use `snake_case` for local variables and subroutines unless the project uses another convention.
+- Use mnemonic identifiers that reveal role and intent.
+- Avoid single-letter names except for established Perl conventions such as `$a` and `$b` in sort blocks or very small local scopes.
+- Prefer underscore-separated lexical variable names such as `$file_path` or `$retry_count` for longer local identifiers.
+- Use normal Perl module names that start with a capital letter unless the module is intentionally pragma-like or the project already uses another convention.
+- Use a leading underscore for private package variables or subroutines when it helps distinguish package internals from public API.
+
+### Formatting
+
+- Enforce one coherent Perl layout style for the project.
+- Use `perltidy` when it is available and configured by the repository; do not reformat unrelated Perl files.
+- Prefer four-space indentation, spaces instead of tabs, one statement per line, whitespace around binary operators, and trailing commas in multiline lists.
+- Group related statements into readable paragraphs and separate unrelated code chunks with blank lines.
+- Prefer the clearest Perl construct over the shortest construct.
+- Avoid clever one-liners in maintained code when an expanded form is easier to read, test, debug, or maintain.
+- Parenthesize expressions when precedence, argument binding, or context could be ambiguous to a maintainer.
+- Use block `if` statements for non-trivial decisions; reserve postfix `if` for short, obvious, low-risk statements.
+- Keep conditions simple, prefer positive phrasing when practical, and make control-flow variations visible.
+- Use loop labels only when they clarify multi-level `last`, `next`, or `redo` control flow.
 
 ### Errors
 
-- Check return values from file, process, and system operations.
+- Check the return value of file, directory, process, and system operations.
+- Handle failures from `open`, `opendir`, `chdir`, `mkdir`, `system`, `exec`, and similar operations explicitly.
+- Include the failed operation, relevant argument, and system error in diagnostics when practical.
+- Use lexical filehandles and explicit modes, such as `open(my $fh, '<', $path)`.
+- Avoid bareword filehandles and ambiguous two-argument `open`.
+- Use list-form `system` or `exec` when invoking external commands and shell interpolation is not required.
+- Use `system` instead of backticks when the command output is not needed.
+- Do not use backticks in void context.
+
+### Safety
+
+- Enable strictness and warnings in every maintained Perl source file with `use strict;` and `use warnings;`, unless legacy compatibility explicitly prevents it.
+- Use `use v5.36;` or newer as a strictness substitute only when the project explicitly supports that minimum Perl version.
+- Do not use `-w` or `$^W` as substitutes for lexical warnings because they can affect code outside the current file.
+- Limit every `no strict` or `no warnings` relaxation to the smallest possible scope and document why it is required.
+- Use `my` for lexical variables by default.
+- Avoid symbolic references unless a well-contained metaprogramming pattern requires them.
+- Prefer native Perl built-ins and modules over shelling out for ordinary file, text, or process operations.
+- Treat external input as untrusted before using it in file paths, shell commands, database queries, HTML output, or security-sensitive contexts.
+- Validate, normalize, and constrain untrusted input at the boundary where it enters the program.
+- Use DBI placeholders for parameterized database queries.
+- Do not interpolate untrusted values into SQL.
+- Use allowlists for dynamic SQL identifiers when identifiers cannot be parameterized.
+- Use taint-aware patterns for legacy CGI or exposed scripts when the deployment model benefits from taint mode and explicit untainting.
+
+### Tests
+
+- Provide tests for generated or modified Perl behavior.
+- Prefer `Test::More` for comparing expected and actual values because it gives useful diagnostics.
+- Declare an expected test plan when the number of tests is known.
+- Use dynamic test planning only when the test count genuinely depends on runtime data.
+- Use `Perl::Critic` and `Test::Perl::Critic` as configurable quality gates when the project uses them.
+- Treat Perl::Critic policies as project rules, not universal truth; configure them to match the repository style before enforcing them.
 
 ### Idioms
 
 - Prefer three-argument `open`.
-- Avoid symbolic references unless required by a well-contained metaprogramming pattern.
-- Keep regular expressions readable with names, whitespace, or comments when they become complex.
+- Do not use `grep` or `map` in void context; use `foreach` when the goal is iteration with side effects.
+- Keep regular expressions readable with `/x` or `/xx`, whitespace, and comments when patterns become non-trivial.
+- Split very complex matching logic into smaller named checks when that improves maintainability.
+- Choose regular-expression delimiters that reduce escaping.
+- Do not use `/.../` when another delimiter makes slash-heavy or backslash-heavy patterns clearer.
+- Keep compact Perl idioms only when they remain easier to verify than the expanded form.
+
+### Other
+
+- Document public Perl modules, scripts, and interfaces with POD.
+- Include purpose, synopsis or usage, public subroutines or methods, diagnostics, configuration, dependencies, known limitations, author or contact, and license in POD when applicable.
+- Write documentation for common usage before edge cases.
+- Keep POD markup, terminology, structure, and tone consistent across the project.
+- Prefer named command-line options over fragile positional arguments when a script accepts multiple inputs, outputs, or modes.
+- Provide both short and long option forms for user-facing scripts when it improves usability.
+- Support standard CLI conventions where relevant, including `-` for standard input or output and `--` as the end of options.
+
 
 ## PowerShell
 
