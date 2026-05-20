@@ -38,3 +38,11 @@ Apply these rules before creating any commit.
 - Separate the subject from the body with a blank line.
 - Wrap all commit body lines at 72 characters or fewer.
 - In the body, briefly describe which files or areas changed and why.
+- Write the commit body as wrapped paragraphs, not as one `git commit -m`
+  argument per wrapped line. Wrapped lines in the same paragraph must be
+  consecutive, with no blank line between them. Use blank lines only between
+  the subject and body, or between intentional body paragraphs.
+- Do not build a multi-line commit body by passing each body line as a
+  separate `git commit -m` argument, because Git treats each `-m` as a
+  separate paragraph. Use a commit message file, an editor/template, or one
+  body argument containing embedded newlines.
