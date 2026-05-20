@@ -316,27 +316,84 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 
 ### Naming
 
-- Use `snake_case` for variables, functions, and methods.
-- Use `PascalCase` for classes.
+- Use `snake_case` for variables, functions, methods, modules, and packages.
+- Keep module and package names short, lowercase, and descriptive.
+- Use `PascalCase` / `CapWords` for classes and exceptions.
+- Add the `Error` suffix to exception classes when the exception represents an error.
 - Use `UPPER_SNAKE_CASE` for constants.
+- Define shared constants at module level when they represent fixed configuration or domain values.
+- Avoid visually ambiguous single-character names such as `l`, `O`, and `I`.
+- Use `self` for instance methods and `cls` for class methods.
+- Use a trailing underscore when a name conflicts with a Python keyword, such as `class_`.
 
 ### Formatting
 
-- Follow PEP 8 unless the repository has a different established convention.
+- Follow the repository's established Python style before applying generic Python style rules.
+- Follow PEP 8 when the repository has no stronger local convention.
+- Use 4 spaces per indentation level and never mix tabs and spaces for Python indentation.
+- Keep line length consistent with the project; if no project rule exists, default to 79 characters for code and 72 characters for long comments or docstrings.
+- Prefer implicit line continuation inside parentheses, brackets, and braces.
+- Avoid backslash continuations unless compatibility constraints require them.
+- Place imports at the top of the file after module comments and docstrings.
+- Group imports in this order: standard library, third-party packages, then local application imports.
+- Separate import groups with one blank line.
+- Use one import per line for modules.
+- Prefer absolute imports for clarity and safer resolution.
+- Avoid wildcard imports.
 
 ### Errors
 
 - Prefer explicit exceptions over silent failure or ambiguous return values.
+- Use exception types that make the failure mode clear to callers.
+- Keep expected failure handling explicit at the call site or at a deliberate boundary.
+- Do not suppress Python exceptions without a local, documented reason.
+- Do not expose debug tracebacks or internal exception details to end users in production behavior.
 
 ### Safety
 
 - Avoid mutable default arguments.
-- Use context managers for files, locks, and managed resources.
+- Use `None` as the default sentinel when a default value must be created per call.
+- Use context managers for files, locks, network connections, transactions, and other managed resources when the object supports them.
+- Validate and sanitize untrusted input before it reaches file paths, shell commands, database queries, deserialization, or sensitive business logic.
+- Use prepared statements or parameterized queries for database access.
+- Never build SQL queries by concatenating untrusted input.
+- Never hardcode secrets such as passwords, API keys, tokens, private URLs, or credentials.
+- Keep development and production behavior separate; debug output, verbose errors, and permissive settings must not leak into production runtime.
+- Prefer the Python standard library before adding a third-party dependency.
+- Justify every new Python dependency and keep dependency changes minimal.
+- Use the project's isolated Python environment when installing or running dependencies, such as `venv`, Poetry, uv, Conda, Docker, or the repository's documented workflow.
+- Check package names carefully before installation to reduce typo-squatting and dependency-confusion risk.
+- Respect the Python versions and dependency constraints declared by the project.
+- Do not upgrade Python or dependencies blindly when the project declares supported runtime targets.
+
+### Tests
+
+- Use the project's existing Python test framework and test layout before introducing any new testing convention.
+- When available and configured, run the relevant Python formatter, linter, type checker, tests, and coverage checks.
+- Use project-approved tools such as `pytest`, `unittest`, `ruff`, `black`, `mypy`, or `pyright` only when they are already part of the project or explicitly requested.
+- If checks cannot be run, state exactly which Python checks were skipped and why.
 
 ### Idioms
 
-- Prefer f-strings for string interpolation when supported.
+- Prefer f-strings for string interpolation when supported by the project's Python version.
 - Add type hints when they improve clarity or match project conventions.
+- Compare singletons with identity operators, such as `is None` and `is not None`.
+- Do not use `== None` or `!= None`.
+- Do not rely on truthiness when `None` has a distinct meaning from valid false values such as `0`, `""`, or `[]`.
+- Avoid implementation-specific assumptions when portable Python code is expected.
+- Use `__all__` when a module deliberately exposes a public API.
+- Do not rely on indirectly imported names as public API unless the re-export is explicitly documented.
+
+### Other
+
+- Use docstrings for modules, public classes, and public functions when they are part of the public API or when project conventions require them.
+- Keep docstrings concise, accurate, and aligned with the implemented behavior.
+- Treat undocumented interfaces as internal unless project documentation says otherwise.
+- Use a single leading underscore for non-public names.
+- Do not expose internal names as part of a public API by accident.
+- Import public names from the module that actually defines them unless a documented re-export exists.
+- Do not generalize framework-specific advice to all Python code.
+- Apply framework, library, or runtime-version rules only when the project context confirms they are relevant.
 
 ## Perl
 
