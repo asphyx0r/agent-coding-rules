@@ -86,10 +86,8 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Prefer Go idioms over verbose names or non-Go naming conventions.
 - Prefer concrete types until tests, package boundaries, or alternate implementations justify an interface.
 - Keep interfaces small, behavior-focused, and defined near the consumer when practical.
-- Keep comments useful and close to the code they explain.
 - Document exported public API identifiers with Go doc comments, following repository lint rules.
 - Use package comments as complete sentences and avoid duplicate package comments across multiple files.
-- Prefer comments that explain intent, constraints, invariants, or non-obvious decisions; do not restate obvious code.
 
 ## PHP
 
@@ -104,7 +102,7 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 
 - Follow PSR-12 unless the repository defines another PHP coding standard.
 - Enforce PHP formatting with tooling such as PHP_CodeSniffer or PHP-CS-Fixer when available.
-- Do not introduce formatting-only changes unless the task explicitly asks for them or the touched PHP code must be formatted to pass project checks.
+- Apply PHP formatters only to touched PHP files unless a project PHP check requires a broader format pass.
 
 ### Runtime and Types
 
@@ -169,19 +167,77 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Use `UPPER_SNAKE_CASE` for constants.
 - Keep package names lowercase.
 
+### Formatting
+
+- Encode Java source files in UTF-8 and do not introduce non-standard whitespace characters.
+- Prefer one top-level Java type per source file, and make the `.java` file name match the case-sensitive public top-level type when one exists.
+- Keep Java source files structurally ordered: license or copyright block, package declaration, imports, then the top-level type declaration.
+- Do not use wildcard imports.
+- Use explicit imports only, and keep static imports separated from non-static imports.
+- Keep overloaded methods and constructors contiguous.
+- Always use braces for `if`, `else`, `for`, `do`, and `while`, even for single-statement bodies.
+- Use one executable statement per line.
+- Keep line length under 100 characters unless the project style guide allows an explicit exception.
+- Prefer clear line wrapping over dense one-line code or fragile horizontal alignment.
+- Use blank lines to separate logical groups, not to create visual noise.
+
 ### Errors
 
 - Keep checked and unchecked exception usage consistent with the project.
+- Never ignore caught exceptions silently.
+- Handle caught exceptions by logging, rethrowing, returning a meaningful fallback, or documenting why ignoring the exception is safe.
+- Catch the most specific exception type that the code can handle meaningfully.
 - Do not catch broad exceptions unless the handling is intentional and specific.
+- Use `try-with-resources` for resources that implement `AutoCloseable`.
+- Do not log and rethrow the same exception unless the catch block adds meaningful context.
 
 ### Safety
 
 - Prefer immutable fields with `final` when practical.
+- Favor immutable objects when state should not change after construction.
+- Use constructor initialization and avoid setters where immutable behavior is intended.
+- Keep fields private by default, and expose behavior through methods when appropriate.
+- Do not expose instance or class fields publicly without a clear structural reason.
 - Avoid returning `null` for collections; return an empty collection when appropriate.
+- Avoid circular dependencies between Java packages or JPMS modules.
+- Express domain-significant Java constants as `static final` constants, enums, or configuration values.
+- Avoid embedded assignments when they reduce readability.
+- Access static members through the class name, not through an instance.
+- Do not override `Object.finalize`.
+- When changing Java dependencies or build files, use the project's dependency audit tooling when available.
 
-### Formatting
+### Tests
 
-- Do not use wildcard imports.
+- Use the project's Java test framework for behavior that must not regress.
+- Prefer unit tests for local Java logic and integration tests for Java component boundaries.
+- Use Java test method names or display names that communicate the behavior under test and the expected outcome.
+- Run the smallest meaningful verification set after a Java change, covering compilation, tests, formatting, imports, exception handling, dependency impact, and behavior preservation.
+- Use Maven, Gradle, or the project's Java dependency tooling when changing dependencies, and run tests before accepting dependency changes.
+
+### Idioms
+
+- Use `switch` expressions or statements when supported by the project's configured Java version and when they make multi-branch selection clearer than repeated `if else` chains.
+- Do not replace simple conditions with `switch` unless it improves readability.
+- Document intentional `switch` fall-through with a local comment at the fall-through point.
+- Prefer collections over arrays when dynamic size, generics, or collection operations are needed.
+- Use arrays when fixed-size, low-level, or interoperability constraints justify them.
+- Use enhanced `for` loops when index management is unnecessary.
+- Use streams when filtering, mapping, or aggregation is clearer than imperative iteration.
+- Do not use streams when they obscure simple control flow.
+- Use lambdas for functional interfaces when they reduce boilerplate and remain readable.
+- Keep lambda bodies short; extract named methods when lambda bodies become complex.
+- Use `@Override` whenever overriding or implementing a method.
+
+### Other
+
+- Write Javadoc for public APIs and behavior that external callers must understand.
+- Begin each Javadoc block with a concise summary fragment.
+- Keep Javadoc block tags meaningful and non-empty.
+- Do not write empty `@param`, `@return`, `@throws`, or `@deprecated` descriptions.
+- Add a Java interface or abstract class only when the current Java code has a concrete, repeated need for it.
+- Do not generalize Spring, Maven, Gradle, Google Cloud, IDE-specific, or framework-specific guidance to all Java code.
+- Apply framework-specific guidance only when the project context uses that framework or tool.
+- When Java guidance conflicts, prefer maintained, official, or project-local standards over archived or vendor-blog guidance.
 
 ## Bash
 
@@ -196,7 +252,7 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 
 - Start Bash scripts with an explicit Bash shebang. Use the project standard when one exists; otherwise prefer `#!/usr/bin/env bash` for user-space portability or `#!/bin/bash` for controlled system environments.
 - Do not use Bash-only syntax under `#!/bin/sh`; arrays, `[[ ... ]]`, `local`, and `${BASH_SOURCE[@]}` require a Bash shebang.
-- Match the existing Bash style when editing existing scripts, and do not reformat unrelated code.
+- Preserve the existing Bash dialect, shebang style, strict-mode usage, and function layout when editing existing scripts.
 - For new Bash files without a project style, use readable shell indentation, short lines, and consistent command layout.
 - For user-facing Bash scripts, keep usage or help text in one reusable block when that avoids duplicated output for `-h`, `--help`, and invalid options.
 - Add a function header comment only when a Bash function's purpose, globals, arguments, output, or return behavior is not obvious from the code.
@@ -238,7 +294,7 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 
 - Run `bash -n` before accepting generated Bash code.
 - Run ShellCheck when available, and fix or explicitly justify every warning that remains.
-- Test failure paths as well as successful execution paths when changing Bash behavior.
+- For Bash scripts, exercise nonzero exit paths and missing argument, missing file, or missing command cases when they are affected by a change.
 - Verify scripts that use strict mode, traps, globs, temporary files, or argument forwarding with representative inputs before presenting them as final.
 
 ### Idioms
@@ -325,7 +381,7 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Prefer splatting, arrays, hashtables, and natural continuation over backtick line continuation.
 - Do not leave trailing whitespace.
 - Do not use semicolons as routine line terminators.
-- Keep formatting-only changes separate from functional changes.
+- Apply PowerShell formatting only to touched PowerShell files unless a project check requires a broader format pass.
 
 ### Errors
 
@@ -373,13 +429,6 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 
 ### Other
 
-- Generate the simplest PowerShell implementation that satisfies the request.
-- Do not add module structure, logging frameworks, configuration systems, remoting support, or extra abstractions unless required by the user request or project context.
+- Add PowerShell module structure, logging frameworks, configuration systems, or remoting support only when required by the task or existing project context.
 - Treat framework-specific guidance for PowerShell Universal, MSP/RMM tools, enterprise hardening, or hosting platforms as contextual unless the project explicitly uses those environments.
-- Preserve the existing project style when editing existing PowerShell code.
-- Do not reformat unrelated legacy code while making a functional change.
-- Keep comments accurate and useful; update them whenever behavior changes.
-- Explain intent, constraints, workarounds, or decisions instead of obvious syntax.
-- Measure performance before optimizing PowerShell code.
-- Prefer readability unless performance has been proven to matter.
 - Stream large inputs instead of loading everything into memory when incremental processing is feasible.
