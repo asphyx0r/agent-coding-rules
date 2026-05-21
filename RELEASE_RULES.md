@@ -9,6 +9,31 @@ agent.
 
 Apply these rules before creating any Git tag.
 
+## Repository Readiness and Integrity
+
+- Do not create the tag until the repository readiness checks in this section
+  have passed or any skipped check has been reported to the user with the
+  reason it was skipped.
+- Inspect the local repository state immediately before creating the tag with
+  `git status --short --branch` or an equivalent Git status command.
+- Do not create the tag while Git reports unresolved merges, unmerged paths,
+  rebases, cherry-picks, bisects, or any other in-progress operation that could
+  make the tag target ambiguous.
+- Do not create the tag while the working tree contains uncommitted changes or
+  untracked files, unless the user explicitly approves creating the tag despite
+  those reported files.
+- Run `git fsck --full` before creating the tag to verify local repository
+  object integrity.
+- Do not create the tag if any repository integrity check fails.
+- Identify the exact commit SHA that the tag will point to before creating the
+  tag.
+- If commit status checks, CI results, branch protection, or hosted review
+  checks are required for the tag target, inspect them before creating the tag.
+- Do not claim that commit status checks, CI results, branch protection, or
+  hosted review checks are valid unless they were actually inspected.
+- If required remote or hosted checks cannot be inspected from the current
+  environment, report that limitation to the user before creating the tag.
+
 ## Version Rules
 
 - Use strict SemVer for version numbers.
@@ -35,15 +60,18 @@ Apply these rules before creating any Git tag.
 
 - Do not create the tag if the selected version number fails the regular
   expression validation.
+
+## Remote Tag Rules
+
 - When a tag will be pushed to a remote repository, inspect the remote tags
-  before selecting the version and before pushing the tag.
+  before selecting the version and again immediately before pushing the tag.
 - Do not push the tag if the same tag already exists in the remote repository.
 - If remote SemVer tags exist, include them when identifying the highest
   existing SemVer version for the requested bump type.
-- Stop and ask before pushing if the selected local version is lower than the
-  highest matching remote SemVer version, equal to an existing remote version,
-  or otherwise conflicts with the version that should result from the requested
-  bump type.
+- Stop and ask before creating or pushing the tag if the selected local version
+  is lower than the highest matching remote SemVer version, equal to an
+  existing remote version, or otherwise conflicts with the version required by
+  the requested bump type.
 
 ## Tag Rules
 
