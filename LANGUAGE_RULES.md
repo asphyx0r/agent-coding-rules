@@ -239,6 +239,80 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Apply framework-specific guidance only when the project context uses that framework or tool.
 - When Java guidance conflicts, prefer maintained, official, or project-local standards over archived or vendor-blog guidance.
 
+## Java Properties Files
+
+### Naming
+
+- Use `.properties` as the standard filename suffix for Java properties resources.
+- Use stable, descriptive, dot-separated property keys that reflect the configuration domain.
+- Avoid vague property keys such as `value`, `flag`, `url1`, or `temp`.
+- Treat localization property keys as durable identifiers and do not rename them casually.
+- Translate property values, not property keys, unless the project has an explicit key-localization mechanism.
+
+### Formatting
+
+- Represent Java `.properties` files as string-based key-value configuration resources.
+- Convert property values to typed values explicitly in application code after loading and validation.
+- Use one consistent assignment style in each generated file, preferably `key=value`.
+- Do not mix `key=value`, `key = value`, `key:value`, and whitespace-separated forms in the same file.
+- Use comments starting with `#` or `!` only to clarify purpose, units, accepted values, default behavior, or operational warnings.
+- Do not use large blocks of commented-out alternatives as the primary configuration mechanism.
+- Document non-obvious or mandatory properties close to the property they describe.
+- Preserve intentional leading, trailing, and embedded whitespace in property values.
+- Choose the file encoding deliberately and document non-default encoding expectations.
+- For classic `java.util.Properties` compatibility, avoid raw characters outside ISO-8859-1 unless the loading code explicitly uses an encoding-aware path.
+- Escape syntax-sensitive characters only when required by the properties format or the selected parser.
+- Pay special attention to `#`, `!`, `=`, `:`, backslashes, leading spaces, tabs, logical newlines, and Unicode escape sequences.
+- Use escaped `\n` for logical newlines inside values unless physical multiline continuation is explicitly intended.
+- Use line continuation only when it improves readability and the target parser supports it.
+- When using continuation lines, ensure the trailing backslash and continuation indentation do not change the expected value.
+- Do not escape single or double quotes unless the consuming framework, message formatter, or localization tool requires it.
+
+### Errors
+
+- Treat missing mandatory properties as configuration errors instead of silently substituting unsafe defaults.
+- Use `getProperty(key, defaultValue)` only when the default value is semantically valid and safe.
+- Do not use Java default property lists to hide incomplete or invalid configuration.
+- Validate and report invalid typed conversions for integers, booleans, durations, URLs, paths, enums, and similar typed values.
+- Do not duplicate property keys unless the selected runtime explicitly documents duplicate-key or repeated-key behavior.
+- For plain `java.util.Properties`, do not rely on duplicate keys as a list mechanism.
+
+### Safety
+
+- Do not store production secrets, credentials, tokens, passwords, private URLs, or API keys in properties files.
+- Represent secrets as placeholders or runtime-injected values and document the expected secure source.
+- Do not generalize Spring Boot behavior to plain Java properties files.
+- Apply Spring Boot-specific rules only when the target project explicitly uses Spring or Spring Boot.
+- Do not use Apache Commons Configuration features unless the target project explicitly uses Apache Commons Configuration.
+- Treat `include`, `includeOptional`, delimiter-based lists, repeated keys as lists, and builder-based saving as parser-specific behavior.
+- When using Apache Commons Configuration lists, configure delimiter handling explicitly instead of assuming comma-separated values are split automatically.
+
+### Tests
+
+- Validate generated or modified properties files for syntax, duplicate keys, encoding, missing mandatory values, and unintentionally unescaped syntax-sensitive characters.
+- Test application-level conversion and validation for every property value that becomes a typed value.
+- Test missing mandatory properties and invalid values on affected configuration paths.
+- Test localization properties for missing keys, placeholder consistency, syntax, encoding, and unescaped characters.
+- When parser-specific behavior is used, test the behavior with the actual parser used by the project.
+
+### Idioms
+
+- Use `getProperty()` for normal reads from `java.util.Properties`; do not use inherited `Hashtable.get()` for ordinary property lookup.
+- Use `setProperty()` for normal writes to `java.util.Properties`; do not use inherited `put()` or `putAll()` for ordinary property updates.
+- Use `store()` or `storeToXML()` when serializing a `Properties` object unless a custom layout must be preserved.
+- Use XML properties only when XML format, XML tooling, or explicit XML encoding behavior is required.
+- Load and save persisted properties from stable, well-known locations.
+- Use Java default property lists only for real fallback layers that are intentionally overridden by application-specific values.
+- Use the placeholder convention expected by the consuming formatter for localized values.
+- Use numbered or ICU-style placeholders only when the consuming parser explicitly supports that convention.
+
+### Other
+
+- For Spring Boot projects, keep shared values in `application.properties` and environment-specific values in profile-specific files such as `application-dev.properties`, `application-test.properties`, and `application-prod.properties`.
+- Keep one language or locale per localization properties file.
+- Keep Spring Boot, Apache Commons Configuration, and localization rules conditional to avoid applying framework-specific behavior to plain Java properties files.
+
+
 ## Bash
 
 ### Naming
