@@ -623,3 +623,123 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Add PowerShell module structure, logging frameworks, configuration systems, or remoting support only when required by the task or existing project context.
 - Treat framework-specific guidance for PowerShell Universal, MSP/RMM tools, enterprise hardening, or hosting platforms as contextual unless the project explicitly uses those environments.
 - Stream large inputs instead of loading everything into memory when incremental processing is feasible.
+
+## Windows Batch
+
+### Naming
+
+- Prefer `.cmd` for new Windows NT-based command scripts unless the project convention requires `.bat`.
+- Keep `.bat` only for compatibility, legacy behavior, or consistency with existing project files.
+- Avoid spaces in Windows Batch script filenames.
+- Avoid script names that collide with built-in commands, common executables, or commands expected to be found through `PATH`.
+- Use `%~nx0` or `%~n0` when a script must print its own name in usage, help, or diagnostic messages.
+- Use local variable names that cannot be confused with system, global, or dynamic environment variables.
+- Do not overwrite system, global, or dynamic variables such as `%TEMP%`, `%TMP%`, `%DATE%`, `%TIME%`, `%RANDOM%`, `%ERRORLEVEL%`, `%CD%`, `%PATHEXT%`, or `%COMSPEC%`.
+- Use clear constant-style variable names for documented exit codes.
+
+### Formatting
+
+- Start user-facing Windows Batch scripts with `@ECHO OFF`.
+- Start non-trivial scripts with `SETLOCAL ENABLEEXTENSIONS` to limit environment side effects and enable command processor extensions.
+- Enable delayed expansion only when runtime variable expansion inside loops or parenthesized blocks is required.
+- Avoid delayed expansion when processing values that may contain exclamation marks unless the script deliberately handles them.
+- Keep functional script code ASCII-only unless the script explicitly configures and documents code page or Unicode handling.
+- Write one command per line by default.
+- Avoid excessive `&` command chaining.
+- Avoid caret line continuations unless they clearly improve readability.
+- Indent parenthesized blocks consistently.
+- Keep conditionals, loops, and subroutines visually separable with simple spacing.
+- Use `REM` for comments that must be safe in all contexts.
+- Use `::` only for simple top-level comments.
+- Do not use `::` comments inside `FOR` loops or parenthesized blocks.
+- Keep user-facing help or usage text concise and reusable when the script accepts options.
+
+### Errors
+
+- Return `0` on success and a non-zero exit code on failure.
+- Treat exit codes as part of the script interface.
+- Document non-zero exit codes near the top of non-trivial scripts.
+- Check critical command failures explicitly.
+- For fail-fast behavior, use `command || EXIT /B <code>` or an equivalent checked branch.
+- Prefer `EXIT /B` inside scripts and subroutines.
+- Do not use plain `EXIT` unless the intention is to close the command processor.
+- When checking general failure, prefer explicit non-zero checks over assumptions that every failure code is greater than or equal to `1`.
+- Use `IF ERRORLEVEL n` with descending thresholds when testing ranges; use `%ERRORLEVEL% NEQ 0` when an exact non-zero check is required.
+- Write diagnostics and errors to STDERR when normal STDOUT may be consumed by another command.
+- Fail clearly when required arguments, files, commands, directories, environment variables, or privileges are missing.
+- Do not redirect errors to `NUL` when those errors affect control flow or troubleshooting.
+
+### Safety
+
+- Use `%~dp0` for paths relative to the script location.
+- Do not use `%CD%` when the intended base path is the script directory.
+- Quote paths, filenames, and variable expansions that may contain spaces or special characters.
+- Use `SET "name=value"` for string assignments, especially when values may contain spaces or special characters.
+- Do not add spaces around `=` in basic `SET` assignments.
+- Avoid storing surrounding quote characters inside variable values unless the value semantically includes quotes.
+- Quote variables at the point of use instead of storing surrounding quotes in the variable value.
+- Validate command-line arguments before processing them.
+- Handle missing arguments explicitly.
+- Handle unexpected extra arguments explicitly when the script has a fixed interface.
+- Handle empty user input explicitly.
+- Validate numeric input before using it in `SET /A` expressions.
+- Treat user input, environment variables, command output, and file paths as untrusted until validated.
+- Sanitize or constrain paths before passing them to destructive commands such as `DEL`, `RD`, `RMDIR`, or `ROBOCOPY /MIR`.
+- Do not store credentials, tokens, passwords, API keys, or other secrets in Windows Batch files.
+- Do not make automation scripts depend on `PAUSE`.
+- Reserve `PAUSE` for manual or demonstration scripts.
+- Document required administrator privileges when a script needs elevation.
+- Do not silently assume elevation.
+- Avoid hidden side effects on the caller environment, current directory, global variables, or external files.
+
+### Tests
+
+- Run Windows Batch scripts from an existing Command Prompt during development so errors and output remain visible.
+- For generated or modified scripts, provide a representative `cmd.exe` verification command when execution is practical.
+- Exercise the supported help or usage option, such as `/?`, `/h`, `-h`, or `--help`, when that path is affected by a change.
+- Exercise missing argument, invalid argument, missing file, and failure-path behavior when those paths are affected by a change.
+- Verify scripts that use delayed expansion, parenthesized blocks, redirection, argument forwarding, destructive file operations, or subroutines with representative inputs.
+- Verify that expected STDOUT, STDERR, log output, and exit codes match the script contract.
+- For automation scripts, test execution without interactive prompts.
+- For scripts that may need troubleshooting, verify that log files are initialized, overwritten, appended, or timestamped according to the intended retention behavior.
+- Do not claim a Windows Batch script is production-ready unless quoting, argument validation, error handling, exit codes, and verification steps have been addressed.
+
+### Idioms
+
+- Use `%1` through `%9` for positional arguments.
+- Use `%0` for the script invocation.
+- Use `%*` when forwarding all original arguments.
+- Use `SHIFT` when processing more than nine arguments.
+- Use `%~1` to remove surrounding quotes from an argument.
+- Use `%~f1`, `%~d1`, `%~p1`, `%~n1`, `%~x1`, or related modifiers when path components must be extracted from an argument.
+- Use `IF NOT DEFINED var` when checking whether a variable is unset.
+- Quote both sides of string comparisons when variables may be empty.
+- Use direct quoted comparisons only when comparing actual string values.
+- Use `IF /I` only when case-insensitive comparison is required.
+- Keep comparisons case-sensitive by default.
+- Use `IF EXIST` and `IF NOT EXIST` for filesystem checks.
+- Use `FOR` for iterating files, directories, values, ranges, and command output.
+- Inside batch files, use `%%I` loop variables, not `%I`.
+- Use `FOR /F` deliberately when parsing command output or file lines, and document delimiter or token choices when they are not obvious.
+- Use delayed expansion with `!VAR!` when variables must update at execution time inside parenthesized blocks.
+- Use `SET /A` only for arithmetic or numeric assignments.
+- Use labels plus `CALL :subroutine` only for reusable subroutines.
+- Place subroutines after the main logic.
+- Ensure the main logic exits before execution can fall through into subroutines.
+- End every subroutine with `EXIT /B <code>`.
+- Treat subroutine return values as status codes.
+- Use STDOUT, files, or caller-provided variables for returned data.
+- Do not use exit codes to return business values or parsed data.
+- Redirect STDOUT and STDERR deliberately with `>`, `>>`, `2>`, and `2>&1`.
+- Use `NUL` only to suppress expected noise.
+- Prefer `ROBOCOPY` over `XCOPY` for robust directory copy operations when the target Windows environment supports it.
+- When checking `ROBOCOPY`, treat documented success and partial-success exit codes separately from real failure codes.
+
+### Other
+
+- Use Windows Batch for simple Windows automation, command orchestration, file operations, scheduled task wrappers, and low-dependency tasks.
+- Prefer PowerShell or another more suitable language for complex logic, typed data handling, object pipelines, REST APIs, or larger maintainability needs.
+- Prefer simple, explicit Batch control flow over clever command processor tricks.
+- Keep labels and `CALL :subroutine` blocks focused on one clear script responsibility.
+- Keep user-facing messages concise, actionable, and consistent.
+- Do not generalize rules from Azure Batch, Python integration, GUI automation, POSIX shell, Bash, WSL, or other non-Command-Prompt ecosystems unless they are directly applicable to Windows Batch scripting.
