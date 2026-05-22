@@ -762,3 +762,87 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Keep labels and `CALL :subroutine` blocks focused on one clear script responsibility.
 - Keep user-facing messages concise, actionable, and consistent.
 - Do not generalize rules from Azure Batch, Python integration, GUI automation, POSIX shell, Bash, WSL, or other non-Command-Prompt ecosystems unless they are directly applicable to Windows Batch scripting.
+
+## PCBoard Programming Language
+
+### Naming
+
+- Use `.PPS` as the default extension for PPL source files.
+- Do not use `.PPE` as a source extension; `.PPE` is the compiled executable format produced by PPLC.
+- Declare variables before use with a documented PPL type: `BOOLEAN`, `DATE`, `INTEGER`, `MONEY`, `STRING`, or `TIME`.
+- Start variable names with a letter, then use only letters, digits, and underscores.
+- Do not use spaces, hyphens, punctuation, accented characters, or Unicode characters in identifiers.
+- Do not rely on letter case to distinguish variables, labels, keywords, or identifiers.
+- Use consistent casing only for readability, because case is significant only inside literal strings.
+- Keep variable names meaningfully unique within their first 32 characters to avoid compiler-recognized name collisions.
+- Name labels by intent and use them only for localized subroutines or exceptional exits.
+
+### Formatting
+
+- Write PPL source as plain ASCII-compatible text suitable for a DOS-era compiler.
+- Avoid Unicode punctuation, smart quotes, non-ASCII operators, invisible characters, and editor-specific formatting.
+- Keep physical lines short and readable even though PPL source lines may allow much longer text.
+- Prefer one clear statement per line over dense one-line code.
+- Use explicit `LET variable = expression` assignments when generating code.
+- Use parentheses in non-trivial arithmetic, string, or boolean expressions to make precedence explicit.
+- Keep generated examples minimal, complete, and compilable.
+- Do not place pseudo-code inside PPL code blocks unless it is clearly marked as pseudo-code.
+- Document the intended PCBoard and PPLC versions when generated code depends on version-sensitive syntax, functions, or behavior.
+
+### Errors
+
+- Treat PPLC compiler errors as blocking; do not deliver or install a PPE when compilation fails.
+- Treat PPLC compiler warnings as defects unless a warning is intentionally accepted and documented.
+- When compiling through automation, check PPLC exit status and diagnostics, and distinguish clean success, warnings, missing inputs, missing files, and fatal failures when the compiler exposes enough information.
+- After file operations such as `FOPEN`, `FCREATE`, `FAPPEND`, `FGET`, or `FPUT`, check `FERR(channel)` when failure could affect correctness.
+- Close every opened file channel explicitly with `FCLOSE` before returning from the routine that opened it.
+- Keep file channel usage within the documented `0` through `7` range.
+- Avoid complex channel reuse; a routine that opens a channel should normally close the same channel before returning.
+- Do not rely on implicit type conversion for correctness-sensitive business logic.
+- Make conversions explicit when mixed expression types could change behavior or readability.
+
+### Safety
+
+- Treat user input, file contents, modem input, display text, and PCBoard environment data as untrusted until validated.
+- Use typed input statements, explicit input lengths, valid character masks, and appropriate flags when collecting user input.
+- Do not accept unrestricted strings when a narrower input format is known.
+- Hide passwords and confidential values with `ECHODOTS` or an equivalent supported input flag.
+- Do not echo secrets in clear text to the remote or local display.
+- Strip PCBoard display or color control sequences, such as `@X` codes, before writing user-facing strings to plain logs when those codes are not meaningful.
+- Use `STRIPATX()` when PCBoard color/control code removal is required.
+- Do not pass user-controlled text into execution paths, PPE launch paths, or display-control contexts that can interpret PCBoard control sequences.
+- Enforce the required PCBoard command security level at installation time through `CMD.LST` or the conference-specific command list.
+- Check runtime authorization before executing privileged actions when authorization affects correctness or security.
+- For long output, use `STARTDISP` with the appropriate mode and periodically check `ABORT()`.
+- When output is aborted, stop printing and call `RESETDISP` before continuing with later display logic.
+
+### Tests
+
+- For any non-trivial PPL change, follow the full lifecycle: write `.PPS`, compile with PPLC, install the generated `.PPE`, then test it in the intended PCBoard context.
+- Do not treat successful compilation alone as sufficient validation.
+- Test the PPE at the exact intended integration point, such as command, script questionnaire, `PCBTEXT` prompt, display file, or menu replacement.
+- Test file-operation success and failure paths when the PPE opens, creates, appends, reads, or writes files.
+- Test user abort behavior for long displays that use `STARTDISP`, `ABORT()`, and `RESETDISP`.
+- Test input validation, length limits, masks, and confidential-input behavior when the PPE accepts user input.
+- Test command security level and runtime authorization behavior when the PPE performs privileged actions.
+- Test generated code against the declared target PCBoard and PPLC versions when compatibility matters.
+
+### Idioms
+
+- Treat PCBoard Programming Language as a PCBoard-specific compiled scripting language, not as generic BASIC, batch, or Pascal.
+- Prefer PCBoard-native PPEs that customize one clear PCBoard integration point.
+- Keep PPEs small, focused, and tied to their intended PCBoard runtime context.
+- Match the PPE design to its installation context instead of mixing command, questionnaire, prompt, display-file, and menu responsibilities.
+- Prefer structured control flow with `IF`/`ELSEIF`/`ELSE`/`ENDIF`, `WHILE`/`ENDWHILE`, and `FOR`/`NEXT`.
+- Reserve `GOTO` for exceptional exits, such as leaving deeply nested logic after a critical error.
+- Use `GOSUB` and `RETURN` for repeated logic, and ensure every `GOSUB` path reaches a matching `RETURN`.
+- Prefer broadly supported PPL primitives for compatibility-oriented code.
+- Avoid version-specific functions unless the target PCBoard and PPLC versions are known to support them.
+
+### Other
+
+- State the operational assumptions for every generated PPL/PPE deliverable.
+- Include the assumed PCBoard version, PPLC version if known, installation point, expected file paths, required security level, file channels used, and ANSI/color-code expectations.
+- Do not introduce modern abstractions, dependency managers, package layouts, unit-test frameworks, or security models that are not supported by the DOS/PCBoard/PPL environment.
+- Explain modern safety concerns separately instead of pretending the original runtime supports modern controls.
+- Use secondary sources only for historical or ecosystem context, not as the basis for unsupported technical rules.

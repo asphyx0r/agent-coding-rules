@@ -15,3 +15,4 @@ Practical behavior and code-quality rules for AI coding agents.
 - Karpathy-Inspired Claude Code Guidelines (https://github.com/multica-ai/andrej-karpathy-skills)
 - Robert C. Martin, Clean Code: A Handbook of Agile Software Craftsmanship (978-0132350884)
 - Semantic Versioning 2.0.0 (https://semver.org/)
+- The PPL Development Kit: The PCBoard Programming Language Reference Manual (1993, Clark Development)
