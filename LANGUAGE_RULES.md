@@ -846,3 +846,149 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Do not introduce modern abstractions, dependency managers, package layouts, unit-test frameworks, or security models that are not supported by the DOS/PCBoard/PPL environment.
 - Explain modern safety concerns separately instead of pretending the original runtime supports modern controls.
 - Use secondary sources only for historical or ecosystem context, not as the basis for unsupported technical rules.
+
+## Tcl Eggdrop Scripting
+
+### Naming
+
+- Apply these rules only to Tcl scripts written for Eggdrop bots; do not apply
+  them blindly to generic Tcl applications, Eggdrop C modules, or unrelated IRC
+  bot frameworks.
+- Use a Tcl namespace for non-trivial Eggdrop scripts to avoid collisions with
+  Eggdrop globals and with other loaded scripts.
+- When a namespace is not practical, prefix script-specific procedures and
+  variables with a short, unique script identifier.
+- Use clear variable and procedure names that reveal Eggdrop intent, such as the
+  bind type, IRC target, configured channel, timer purpose, or permission model.
+- Do not rely on naming conventions alone to distinguish strings, lists, arrays,
+  dictionaries, or integers; make parsing and data conversion explicit where the
+  type affects correctness.
+- Avoid generic global procedure or variable names such as `init`, `config`,
+  `data`, `user`, or `message` in scripts that may be loaded with other scripts.
+
+### Formatting
+
+- Structure maintained Eggdrop Tcl scripts into clear sections: header, user
+  configuration, procedure definitions, bind declarations, and load
+  confirmation.
+- Include the script name, version, purpose, target Eggdrop version, target Tcl
+  version when relevant, and basic usage in the header.
+- Keep user-editable settings in one dedicated configuration section near the
+  top of classic Tcl scripts.
+- For Eggdrop 1.10+ Autoscripts, expose normal user configuration through
+  `manifest.json` instead of requiring manual edits to active Tcl code.
+- Keep operational code separate from configuration; do not duplicate the same
+  configurable value across unrelated code paths.
+- Group `bind` declarations so the script behavior can be audited quickly.
+- For simple scripts, grouping binds near the top is acceptable when it improves
+  readability.
+- For larger or riskier scripts, define procedures before registering binds so
+  load-time errors are less likely to leave partially active behavior.
+- End maintained scripts with a clear `putlog` load message that includes the
+  script name and version.
+
+### Errors
+
+- Ensure every `bind` references an existing procedure.
+- Ensure every bound procedure uses the exact argument list required by the
+  documented Eggdrop bind type.
+- Do not invent Eggdrop commands, Tcl commands, bind types, or module-specific
+  commands that are not available in the declared target runtime.
+- Declare module requirements before using module-specific Eggdrop commands.
+- State the minimum Eggdrop and Tcl versions when using version-sensitive
+  commands, Autoscript packaging, or behavior that may differ across Eggdrop
+  versions.
+- Treat load-time failures as operational defects; do not design scripts that
+  can silently load with missing procedures, broken binds, or incomplete
+  configuration.
+- Do not rely on public channel messages for diagnostics; use Eggdrop logging
+  commands for runtime visibility.
+
+### Safety
+
+- Prefer the most specific bind that solves the requested behavior.
+- Do not use broad message listeners such as `PUBM *` when an exact public
+  command bind is sufficient.
+- Use Eggdrop bind flags to restrict who may trigger commands whenever the
+  access requirement can be expressed with Eggdrop's flag model.
+- Do not replace Eggdrop's global, channel, bot, `|`, or `&` flag-mask behavior
+  with ad hoc privilege checks unless bind flags cannot express the required
+  condition.
+- Treat IRC nicknames, idents, hosts, channel names, public messages, private
+  messages, topic text, and file contents as untrusted input.
+- Do not treat raw IRC text as a Tcl list unless the script intentionally parsed
+  it into a Tcl list.
+- Use Tcl string commands for raw strings and Tcl list commands only for actual
+  Tcl lists.
+- Use `putserv` for direct server commands.
+- Use `puthelp` for normal channel or user messages.
+- Use `putquick` only when faster queued output is justified.
+- Avoid `putnow` unless immediate unqueued output is explicitly required,
+  because bypassing queues can flood the bot off the IRC server.
+- Use `putlog` or `putloglev` for operational diagnostics instead of sending
+  debug output to public channels.
+- Use `.tcl source script/file.tcl` only in controlled development scenarios
+  where `.tcl` is enabled only for trusted users.
+- Do not develop or test new scripts directly on important or busy channels.
+- When a script creates binds, timers, or persistent state, provide a cleanup
+  strategy using `unbind`, `killtimer`, or `killutimer` as appropriate.
+- Store timer identifiers returned by `timer` or `utimer` when the timer may
+  need to be cancelled later.
+- Do not create infinite repeating timers with count `0` unless their lifecycle
+  is explicitly managed.
+
+### Tests
+
+- Test new or modified Eggdrop Tcl scripts on a non-critical bot before
+  deploying them to active channels.
+- Reload classic scripts through the Eggdrop configuration and `.rehash`, or
+  restart the bot when the change requires it.
+- For controlled development only, verify manual reloads with `.tcl source`
+  under restricted access.
+- Before presenting generated Eggdrop Tcl code as final, verify that every bind
+  has a matching procedure and the correct procedure signature.
+- Verify that generated output uses the intended Eggdrop queue: `putserv`,
+  `puthelp`, `putquick`, or `putnow`.
+- Verify that configurable values are defined once and read consistently.
+- Verify that non-trivial scripts use a namespace or a unique script prefix.
+- Verify that repeating timers have a defined cancellation or lifecycle
+  strategy.
+- Verify that the script logs a clear load message with its name and version.
+- For Eggdrop 1.10+ Autoscripts, verify that the package contains the Tcl script
+  and `manifest.json`, and that the script name, manifest name, and directory
+  name are consistent.
+
+### Idioms
+
+- Implement Eggdrop behavior as Tcl procedures triggered by Eggdrop binds.
+- Keep bind-specific logic thin; move non-trivial parsing, validation, and
+  behavior into named procedures.
+- Use `timer` for minute-level scheduling and `utimer` for second-level
+  scheduling.
+- Use `global` only for variables that are intentionally shared in classic Tcl
+  scripts.
+- For Autoscripts and namespace-based scripts, prefer Tcl's `variable` command
+  over unnecessary `global` statements.
+- Keep classic script conventions and Autoscript conventions separate unless
+  the target deployment model explicitly requires both.
+- Prefer Eggdrop-native commands and documented bind behavior over patterns
+  copied from unrelated Tcl or IRC bot frameworks.
+
+### Other
+
+- Prefer official Eggheads or Eggdrop documentation for Eggdrop command and bind
+  behavior.
+- Use Eggdrop.fr wiki or forum guidance only when it is consistent with
+  official Eggdrop documentation.
+- Treat existing script repositories, script catalogs, Stack Overflow, Reddit,
+  Hacker News, and generic hosting knowledgebase pages as examples or secondary
+  context, not as normative sources.
+- Do not generalize a rule from one example Eggdrop script into a universal
+  coding rule.
+- When generating Autoscript packages, include at least the Tcl script and a
+  `manifest.json` file.
+- Keep script, manifest, and directory names consistent for Autoscript packages.
+- Do not require users to edit active code paths for normal configuration.
+- Write comments that explain intent, configuration, assumptions, permission
+  requirements, queue choices, timer lifecycle, or non-obvious Eggdrop behavior.
+- Do not generate comments that merely restate the next Tcl command.
