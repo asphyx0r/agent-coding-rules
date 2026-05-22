@@ -51,9 +51,23 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Prefer linear guard clauses and let the successful path continue down the page.
 - Avoid unnecessary `else` blocks after `return`, `break`, `continue`, or `goto`.
 - Do not ignore returned errors unless the reason is explicit, intentional, and local to the call site.
+- At package boundaries, add caller-level context to foreign errors such as the operation, identifier, path, or dependency involved.
+- Inside the same package, prefer returning the original error when the caller already has enough local context.
+- When adding error context, describe the action being attempted with concise phrases such as `loading config`, `fetching user`, or `reserving stock`.
+- Avoid noisy error prefixes such as `failed to`, `cannot`, or `error while` when a concise action phrase is clearer.
+- Do not repeat details already present in the wrapped error; add higher-level intent instead.
+- Do not make callers, dashboards, or alerts depend on exact error message strings.
+- When code must branch on an error, expose a sentinel error checked with `errors.Is` or a typed error checked with `errors.As`.
 - Wrap errors with `%w` only when callers should be able to inspect the underlying error with `errors.Is` or `errors.As`.
+- Treat `%w` as part of the package API contract because it exposes the wrapped error to callers.
 - When the underlying error should not become part of the public contract, return contextual errors without exposing implementation details.
+- Use `%v` instead of `%w` when the human-readable message is useful but the underlying storage, driver, RPC, third-party, or dependency error must remain private.
+- At system or dependency boundaries, translate implementation-specific errors into package-owned sentinel errors or custom error types.
+- Make callers branch on the package domain error vocabulary, not on accidental details of the current storage, client, or dependency implementation.
 - Use `errors.Is` and `errors.As` for wrapped error inspection; do not compare wrapped errors directly.
+- Log an error or return it, but do not do both in the same layer.
+- Return recoverable errors upward and let the terminal decision layer log an unhandled error once.
+- At outer handlers, check `context.Canceled` and `context.DeadlineExceeded` before treating an error as an application failure.
 - Use `panic` and `recover` sparingly; recover only inside deferred functions and only at deliberate failure-containment boundaries.
 
 ### Safety
@@ -65,6 +79,9 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Remember that `defer` is function-scoped, not block-scoped.
 - Prefer channels when they make ownership and sequencing clearer; prefer mutexes when they are simpler for protecting shared state.
 - Prevent goroutine leaks by defining a clear cancellation or completion path through context cancellation, channel closure, or another explicit signal.
+- Do not start a goroutine that can fail without providing an observable error path.
+- For concurrent work that can fail, use an explicit error collection mechanism such as `errgroup` or a buffered error channel.
+- Log, signal, or deliberately escalate goroutine errors instead of allowing them to disappear silently.
 - Be careful with loop variables captured by closures or goroutines, especially when targeting Go versions before 1.22.
 - For Go 1.22 and later, do not apply pre-1.22 loop-variable workarounds blindly; check the project `go.mod` before applying version-dependent rules.
 
@@ -77,6 +94,8 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Use subtests with `t.Run` when cases need names, filtering, parallelism, or isolated setup.
 - Keep tests deterministic unless nondeterminism is the behavior under test.
 - Avoid hidden test dependencies on wall-clock timing, map iteration order, global mutable state, external services, or uncontrolled goroutine scheduling.
+- Test failure paths that branch on sentinel errors, typed errors, wrapped errors, cancellation, or dependency-boundary translation.
+- Do not assert exact error message strings unless the message text is the explicit behavior under test.
 - Use `go vet` as a static-analysis safety check, not as proof of correctness.
 - Run `go test -race` when tests exercise concurrent paths or when a change affects concurrency-sensitive code.
 - After a Go code change, run the smallest meaningful verification set first, usually formatting only touched files or packages, `go test` for affected packages, `go vet` when useful, and `go test -race` when justified by the codebase and task.
