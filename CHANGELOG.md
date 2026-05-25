@@ -2,6 +2,12 @@
 
 Tagged release history for this project.
 
+## v1.10.1
+
+References | Description | Author(s)
+--- | --- | ---
+9250b7c | Add documentation governance rules | asphyx
+
 ## v1.10.0
 
 References | Description | Author(s)
