@@ -73,6 +73,29 @@ Apply these rules before creating any Git tag.
   existing remote version, or otherwise conflicts with the version required by
   the requested bump type.
 
+## Changelog Rules
+
+- Before creating any Git tag, read and follow the `CHANGELOG.md` rules in
+  `DOCUMENTATION_RULES.md`.
+- When `DOCUMENTATION_RULES.md` requires a root `CHANGELOG.md`, do not create
+  the tag until that file exists.
+- Before creating a tag, verify that `CHANGELOG.md` contains a section for the
+  selected tag using the exact selected tag name.
+- Populate the selected tag section from Git history using the tag target
+  commit as the upper bound and the immediately older tag as the lower bound.
+- If the tag target is a release-preparation commit, use the commit immediately
+  before that release-preparation commit as the effective upper bound for the
+  changelog table.
+- Exclude release-preparation commits from the selected tag's changelog table
+  as defined by `DOCUMENTATION_RULES.md`.
+- Do not combine release-preparation changes with functional, behavioral, API,
+  documentation, rule, or dependency changes when preparing a tag.
+- Do not create the tag if the selected tag's changelog section is missing,
+  malformed, stale, or based on unverified commit data.
+- If the changelog must be changed for the selected tag, make and commit the
+  changelog update before creating the tag unless the user explicitly approves
+  tagging with uncommitted changelog changes.
+
 ## Tag Rules
 
 Before creating a tag:
