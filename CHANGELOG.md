@@ -2,6 +2,12 @@
 
 Tagged release history for this project.
 
+## v1.12.0
+
+References | Description | Author(s)
+--- | --- | ---
+eb196fe | Add T-SQL language rules | asphyx
+
 ## v1.11.0
 
 References | Description | Author(s)
