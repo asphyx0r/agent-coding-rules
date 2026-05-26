@@ -979,6 +979,131 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 - Keep Spring Boot, Apache Commons Configuration, and localization rules conditional to avoid applying framework-specific behavior to plain Java properties files.
 
 
+## TypeScript
+
+### Naming
+
+- Use `camelCase` for variables and functions.
+- Use `PascalCase` for classes, interfaces, type aliases, and enums.
+- Use `UPPER_CASE` for global compile-time constants only when the project
+  already uses that convention.
+- Keep TypeScript names descriptive and avoid encoding type information that the
+  type system already exposes.
+- Keep interfaces small, focused, and limited to one coherent consumer or
+  responsibility.
+- Avoid empty interfaces because they do not define a meaningful contract.
+
+### Formatting
+
+- Match the existing project formatting, module style, semicolon policy, and
+  linting setup before applying a generic TypeScript convention.
+- Use ES module syntax with `import` and `export` for normal module boundaries.
+- Do not use `namespace` for ordinary code organization.
+- Do not use TypeScript `require` import syntax unless legacy interoperability
+  or third-party constraints require it.
+- End statements with explicit semicolons when the project style allows or
+  requires semicolons.
+- Use TypeScript-aware ESLint and Prettier when they are already configured or
+  explicitly introduced for the project.
+- Do not rely on manual formatting or ad hoc review to enforce TypeScript style
+  when automated checks are available.
+
+### Errors
+
+- Type callback return values as `void` when the caller intentionally ignores
+  the returned value.
+- Do not type ignored callback returns as `any`.
+- Do not mark callback parameters optional unless the callback may actually be
+  invoked without those arguments.
+- When using overloads, order signatures from the most specific to the most
+  general.
+- Use overloads only when call shapes or return types genuinely differ.
+- Do not write overloads that only add trailing parameters with the same return
+  type; use optional parameters for that shape.
+- Treat failed narrowing, invalid external data, and unsafe assertions as design
+  errors to fix at the boundary where the value enters the typed code.
+
+### Safety
+
+- Enable strict type checking for new TypeScript projects; at minimum, keep
+  `strict` enabled and do not hide implicit `any` errors.
+- Avoid `any` in maintained code.
+- Use explicit domain types when the value shape is known.
+- Use `unknown` when a value is intentionally not known yet, then narrow it
+  before reading properties, calling methods, or passing it into typed APIs.
+- Use primitive type names such as `string`, `number`, `boolean`, and `symbol`.
+- Do not use boxed primitive types such as `String`, `Number`, `Boolean`,
+  `Symbol`, or `Object` as ordinary value types.
+- Use `object` or a more precise object shape for non-primitive objects.
+- Check optional properties for `undefined`, use optional chaining, or narrow the
+  value before accessing nested members or calling methods.
+- Prefer runtime narrowing with `typeof`, `instanceof`, property checks, or
+  discriminants before using a value as a narrower type.
+- Use `as` assertions only when a clear local invariant exists that TypeScript
+  cannot infer, and document why the assertion is safe when the reason is not
+  obvious.
+- Treat JSON, API responses, user input, environment variables, and persisted
+  data as untrusted until validated or narrowed at runtime.
+- Use `readonly` for properties that must be assigned only during object
+  creation or initialization.
+
+### Tests
+
+- Run the smallest relevant TypeScript verification set after a TypeScript
+  change, including type checking, linting, formatting, and tests when the
+  project provides them.
+- Verify that generated or modified TypeScript compiles under the project's
+  configured strictness level.
+- Add or update tests when TypeScript behavior changes, especially for invalid
+  inputs, boundary values, external-data validation, and narrowing-dependent
+  branches.
+- Test public API contracts when exported function signatures, return shapes,
+  interfaces, type aliases, or generics change.
+- Treat ESLint, Prettier, and `tsc` as quality gates when they are part of the
+  project toolchain.
+
+### Idioms
+
+- Prefer TypeScript inference for clear local implementation details.
+- Add explicit types where they clarify public APIs, document non-obvious
+  intent, or protect contracts from accidental changes.
+- Type exported functions, public methods, callbacks, and reusable library
+  boundaries explicitly at their parameters.
+- Add return types when the return shape is part of the public contract,
+  complex, or likely to be accidentally changed.
+- Model finite string or numeric values with literal unions instead of broad
+  `string` or `number` types.
+- Prefer union types over overloads when only one parameter varies by type.
+- Use type aliases for unions, primitives, tuples, intersections, and
+  composition that interfaces cannot express cleanly.
+- Use interfaces for reusable object shapes and class contracts when extension
+  or structural typing is the clearest expression.
+- Use the simplest type construct that accurately expresses the contract.
+- Avoid mapped types, conditional types, and complex generic abstractions unless
+  they materially improve correctness or remove real duplication.
+- Introduce generics only when a type parameter connects meaningful positions,
+  such as input to output, key to object, or container to contained value.
+- Use generic constraints such as `Key extends keyof Type` when they prevent
+  invalid property access.
+- Avoid return-type-only generics in new APIs.
+- Use standard utility types such as `Partial`, `Required`, `Readonly`, `Pick`,
+  and `Record` only when they make the transformation of an existing type
+  clearer than an explicit type.
+
+### Other
+
+- Document exported APIs, top-level exports, public members, and non-obvious
+  properties or methods with useful JSDoc when intent is not clear from the
+  signature and name.
+- Do not write comments that merely repeat TypeScript identifiers or restate
+  obvious type information.
+- Do not add TypeScript tooling, transpiler configuration, linter configuration,
+  formatter configuration, or framework-specific rules unless the task or
+  existing project context requires them.
+- Prefer official TypeScript documentation, project-local conventions, and
+  maintained style guides over generic examples when TypeScript guidance
+  conflicts.
+
 ## JavaScript
 
 ### Naming
