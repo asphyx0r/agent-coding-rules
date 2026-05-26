@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.18.0
+
+References | Description | Author(s)
+--- | --- | ---
+25bcd1b | Add TypeScript language rules | asphyx
+
 ## v1.17.1
 
 References | Description | Author(s)
