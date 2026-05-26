@@ -21,6 +21,86 @@ If a language-specific rule conflicts with a general rule from `CODING_RULES.md`
 
 Use the operational definitions in `CODING_RULES.md` for qualitative phrases such as `small`, `when practical`, `when possible`, and `when appropriate`.
 
+## SQL
+
+### Naming
+
+- Use descriptive and stable names for tables, columns, CTEs, views, and aliases.
+- Prefer identifiers that describe the business meaning of the data rather than implementation details.
+- Avoid vague names, unexplained abbreviations, Hungarian prefixes such as `tbl_`, and identifiers that collide with reserved SQL keywords.
+- When a query references multiple tables, assign meaningful aliases and qualify selected columns with those aliases.
+- Do not rely on unqualified column names in joins, because they can become ambiguous or break when schemas evolve.
+
+### Formatting
+
+- Write SQL so that another engineer can understand the intent without reconstructing hidden assumptions.
+- Prefer explicit, readable SQL over clever or overly compact SQL.
+- Use one formatting convention consistently across the repository.
+- If no repository convention exists, use uppercase SQL keywords, lowercase `snake_case` identifiers, consistent indentation, and one logical expression per line for complex queries.
+- Do not mix casing, alias styles, indentation styles, or comma conventions inside the same file.
+- Use explicit `JOIN ... ON` clauses instead of implicit joins in the `WHERE` clause.
+- Keep join predicates in `ON` clauses and filtering predicates in `WHERE` clauses, unless a specific outer-join semantic requires otherwise.
+- Do not use `SELECT *` in production SQL that returns a result set; explicitly list the columns required by the caller, report, migration, or validation step.
+- Use `SELECT *` only for exploration, and only with an explicit row limit.
+- Inside `EXISTS`, prefer a constant projection such as `SELECT 1` unless the project or target database has a documented convention.
+- Add comments when they explain business rules, non-obvious filters, data-quality workarounds, performance tradeoffs, or intentional deviations from normal conventions.
+- Do not comment syntax that the SQL already expresses plainly.
+- Keep SQL comments current when query logic changes.
+
+### Errors
+
+- Handle `NULL` explicitly with `IS NULL`, `IS NOT NULL`, and `COALESCE` where appropriate.
+- Do not compare nullable values as if `NULL` were an ordinary value.
+- Keep nullable logic visible instead of hiding it inside unclear expressions.
+- In grouped queries, include every non-aggregated selected column in the `GROUP BY` clause unless the target database provides a documented and intentional functional-dependency rule.
+- Do not rely on permissive database behavior that returns arbitrary non-grouped values.
+- Do not add `DISTINCT` merely to remove unexpected duplicates.
+- Investigate and fix the join condition, grouping level, or source data issue when duplicates are unexpected.
+
+### Safety
+
+- Use query parameters for user-controlled values.
+- Do not construct SQL by concatenating raw user input.
+- Use primary keys, foreign keys, unique constraints, `NOT NULL`, and `CHECK` constraints when they express durable data integrity rules.
+- Do not leave critical integrity rules only in application code when the database can enforce them reliably.
+- Choose SQL data types that match the domain.
+- Avoid floating-point types for exact financial values; use exact numeric types such as `NUMERIC` or `DECIMAL` when precision matters.
+- Wrap related changes in a transaction when they must succeed or fail together.
+- Keep transactions as short as possible.
+- Do not wait for user interaction while a transaction is open.
+
+### Tests
+
+- For slow, expensive, business-critical, or production-impacting SQL, inspect the execution plan instead of guessing.
+- Verify whether performance-sensitive queries scan too much data, use expected indexes, sort unnecessarily, or perform expensive joins.
+- When result order matters to a caller, report, export, pagination workflow, or deterministic test, make that order explicit with `ORDER BY`.
+- Do not add `ORDER BY` when result order is irrelevant.
+- Validate schema changes against the intended primary keys, foreign keys, uniqueness, nullability, check constraints, data types, indexes, and transaction behavior.
+
+### Idioms
+
+- Apply selective filters as early as possible when doing so preserves query semantics, especially before aggregation, joins, CTE reuse, or subquery processing.
+- Do not move filters across outer joins, aggregations, or window calculations unless the result set remains intentionally unchanged.
+- Use `WHERE` for row-level filters and reserve `HAVING` for aggregate filters.
+- Keep predicates index-friendly by avoiding functions, arithmetic, concatenation, or `CASE` expressions around indexed columns in `WHERE` predicates when an equivalent direct predicate is possible.
+- Prefer range predicates and explicit Boolean logic that allow the optimizer to use indexes.
+- Use `=` for exact matches and reserve `LIKE` for pattern matching.
+- Avoid leading wildcards such as `LIKE '%term'` or `LIKE '%term%'` unless the performance cost is acceptable and documented.
+- Use `EXISTS` instead of `COUNT(*)` when the requirement is only to check whether at least one matching row exists.
+- Use `UNION ALL` when duplicates are acceptable or already impossible.
+- Use `UNION` only when deduplication is required and the cost is justified.
+- Use CTEs when they make a query easier to read, test, or reuse.
+- Do not introduce CTEs for trivial single-use logic if they make the query longer without clarifying intent.
+- Add indexes only for known access patterns, filter predicates, joins, ordering needs, or uniqueness constraints.
+- Do not add indexes without considering write cost, storage cost, and workload tradeoffs.
+
+### Other
+
+- Prefer standard SQL when portability matters.
+- Use vendor-specific functions, hints, syntax, or extensions only when they are required, documented, and isolated enough to be changed later.
+- Treat SQL as code and store DDL, DML, migrations, seed scripts, and repeatable maintenance scripts in version control.
+- Do not rely on undocumented manual production changes.
+
 ## Go
 
 ### Naming
