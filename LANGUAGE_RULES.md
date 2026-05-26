@@ -830,6 +830,114 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 - Keep Spring Boot, Apache Commons Configuration, and localization rules conditional to avoid applying framework-specific behavior to plain Java properties files.
 
 
+## JavaScript
+
+### Naming
+
+- Use clear variable, function, class, and module names that describe observable behavior or domain meaning.
+- Avoid reusing one variable for different semantic meanings.
+- Use function names that describe the action performed or the value returned.
+- Avoid boolean flag parameters when they create multiple hidden code paths; split the behavior into separate functions instead.
+- Keep callback and inline function names or parameters clear enough that the caller intent remains visible.
+
+### Formatting
+
+- Match the existing project style before introducing any JavaScript formatting convention.
+- Use the repository formatter when one is already configured.
+- Keep indentation, spacing, string quoting, semicolon policy, and module style consistent within the same repository.
+- Prefer clear code over clever or overly compact expressions.
+- Do not compress multiple operations into one expression when it hides intent.
+- Keep comments focused on why a JavaScript decision exists, not on what the code plainly does.
+- Remove stale comments when changing the behavior they describe.
+- Use JSDoc only when it clarifies public API contracts, complex types, or non-obvious behavior.
+
+### Errors
+
+- Always handle rejected promises.
+- Do not intentionally ignore a promise unless the reason is documented and safe.
+- Use `try` / `catch` around awaited operations when the function can recover, add context, translate the error, or perform required cleanup.
+- Do not swallow errors silently.
+- Throw `Error` objects or project-standard error subclasses, not strings or arbitrary values.
+- Preserve the original error context when wrapping errors.
+- Add actionable context to errors close to the failure source.
+- Do not catch an error unless the function can recover, enrich it, translate it, or perform required cleanup.
+- Do not hide operational failures behind default fallback values unless the fallback is explicitly safe.
+- Keep error messages specific enough to debug without exposing secrets.
+- Validate function preconditions at public boundaries.
+
+### Safety
+
+- Treat all external input as untrusted.
+- Validate input at application boundaries before using it in business logic.
+- Normalize external input types at system boundaries before using them internally.
+- Use explicit parsing for numbers, booleans, dates, and JSON-derived values.
+- Use sink-specific escaping, encoding, validation, or parameterized APIs before sending data to HTML, URLs, SQL, shell commands, logs, or other sensitive sinks.
+- Never build executable code from user-controlled strings.
+- Avoid `eval`, `Function`, and string-based dynamic execution unless there is a documented, reviewed, and unavoidable reason.
+- Validate JSON shape before trusting parsed content.
+- Protect against prototype pollution when merging or deserializing untrusted objects.
+- Avoid mutating function parameters unless mutation is the explicit purpose of the function.
+- Do not expose mutable internal state directly from modules or classes.
+- Do not use objects as dictionaries for untrusted keys without guarding against inherited properties and prototype pollution.
+- Keep browser-only APIs such as `window`, `document`, `localStorage`, and DOM APIs out of Node.js code unless the runtime explicitly provides them.
+- Keep Node.js APIs such as `fs`, `path`, `process`, and server-side modules out of browser code unless a bundler or polyfill strategy is explicitly defined.
+
+### Tests
+
+- Add or update tests when changing JavaScript behavior.
+- For bug fixes, write a test that reproduces the bug before or alongside the fix.
+- Test invalid inputs, boundary cases, and asynchronous failure paths.
+- Keep test fixtures small and explicit.
+- Avoid snapshot tests for logic-heavy code unless the snapshot is stable and easy to review.
+- Do not mock standard JavaScript language behavior; mock external systems and unstable boundaries instead.
+- After a JavaScript change, verify the affected runtime behavior, promise rejection handling, module loading, input coercion, and browser or Node.js boundary assumptions.
+
+### Idioms
+
+- Use `const` by default for bindings that are not reassigned.
+- Use `let` only when reassignment is required.
+- Do not use `var` in new code.
+- Declare variables in the narrowest practical scope.
+- Initialize variables close to their first meaningful use.
+- Avoid implicit globals; every variable must be explicitly declared.
+- Use `===` and `!==` by default.
+- Use `==` or `!=` only when type coercion is intentional, documented, and covered by tests.
+- Do not rely on implicit type conversion for business logic.
+- Do not compare complex objects by reference unless reference identity is the intended behavior.
+- Prefer `async` / `await` for promise-based asynchronous flows when it improves readability.
+- Avoid deeply nested promise chains; flatten the control flow or extract helper functions.
+- Keep concurrent operations explicit with `Promise.all`, `Promise.allSettled`, or sequential `await`, depending on failure semantics.
+- Organize reusable code into modules with explicit imports and exports.
+- Avoid hidden global dependencies between files.
+- Prefer named exports for shared utilities when multiple functions are exported from the same module.
+- Use default exports only when the module clearly exposes one primary concept.
+- Avoid circular dependencies; if they appear, extract shared logic into a lower-level module.
+- Keep module boundaries aligned with responsibilities, not arbitrary file size.
+- Prefer immutable data transformations when they make intent clearer.
+- Use object destructuring only when it improves readability.
+- Prefer `Map` or `Set` when key-value or uniqueness semantics are clearer than plain objects or arrays.
+- Use classes only when state and behavior naturally belong together.
+- Prefer simple functions and plain objects when no object lifecycle is needed.
+- Keep constructors simple; avoid asynchronous work or heavy side effects in constructors.
+- Use private fields or closure-based encapsulation for internal state when supported by the target runtime.
+- Prefer composition over inheritance unless inheritance clearly models the domain.
+- Do not create abstract base classes or inheritance hierarchies speculatively.
+
+### Other
+
+- Always identify the target JavaScript runtime before generating code: browser, Node.js, embedded platform, or mixed runtime.
+- Prefer standard JavaScript features documented by MDN before introducing third-party dependencies.
+- Do not generalize framework-specific practices to JavaScript as a language rule unless the target project explicitly uses that framework.
+- Do not add a dependency for functionality that can be implemented clearly with standard JavaScript in a few lines.
+- Do not add framework, bundler, transpiler, linter, formatter, or test-runner configuration unless explicitly requested or required by the existing project.
+- Start with readable JavaScript, then optimize only when there is a measured bottleneck or a known runtime constraint.
+- Avoid unnecessary work inside loops, render cycles, event handlers, and frequently called callbacks.
+- Cache repeated expensive computations only when the cache lifecycle is clear.
+- Avoid blocking the main thread in browser code with heavy synchronous work.
+- Avoid synchronous file operations in server code paths that must remain responsive.
+- Use lazy loading or dynamic imports only when they solve a real loading or dependency boundary problem.
+- Do not introduce micro-optimizations that make code harder to maintain without measurable benefit.
+
 ## Bash
 
 ### Naming
