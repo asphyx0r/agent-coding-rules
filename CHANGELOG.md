@@ -2,6 +2,12 @@
 
 Tagged release history for this project.
 
+## v1.13.0
+
+References | Description | Author(s)
+--- | --- | ---
+cb2e692 | Add Oracle PL/SQL rules | asphyx
+
 ## v1.12.0
 
 References | Description | Author(s)
