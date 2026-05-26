@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.17.1
+
+References | Description | Author(s)
+--- | --- | ---
+215e8fd | Refine language rule scope | asphyx
+
 ## v1.17.0
 
 References | Description | Author(s)
