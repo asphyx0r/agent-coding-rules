@@ -91,6 +91,80 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - In HTML templating environments, separate HTML, CSS, and JavaScript into maintainable units when the platform supports includes or equivalent composition.
 - Treat HTML templating organization as a project organization concern, not as a universal HTML syntax requirement.
 
+## CSS
+
+### Naming
+
+- Use the project's existing CSS naming convention before introducing a new one.
+- If no project convention exists, use lowercase kebab-case for class names, custom properties, animation names, and other custom identifiers.
+- Use semantic class names that describe the component, role, state, or domain concept instead of visual appearance alone.
+- Avoid styling against generated, random, or framework-internal class names; use stable project-owned classes, attributes, or framework-supported hooks when a selector must outlive a render cycle.
+- Use CSS custom properties for repeated declaration values such as colors, spacing, font sizes, shadows, durations, z-indexes, and component-local measurements when reuse, theming, or safer maintenance is needed. Do not use `var()` in media or container query conditions unless the project's build tooling explicitly supports that pattern.
+
+### Formatting
+
+- Match the existing project formatting, ordering, import structure, and organization before applying any generic CSS convention.
+- Use the project-configured formatter or linter when one exists, and do not introduce new CSS tooling unless the task explicitly allows tooling changes.
+- Organize styles into clear logical sections such as base styles, typography, layout, components, utilities, and overrides when the file size or project style justifies it.
+- Add section comments only when they help navigation; do not comment obvious declarations.
+- Keep related declarations together inside a rule, such as layout, box model, typography, color, and effects.
+- Put custom properties near the top of a declaration block when they are local to that rule.
+- Use shorthand properties only when every constituent value is intentional and the shorthand improves readability.
+- Do not mix shorthand and longhand properties for the same concern when that creates hidden overrides.
+- Preserve a predictable CSS import order when cascade order affects behavior; do not auto-sort CSS imports blindly.
+- Keep CSS code blocks syntactically valid and parseable; do not place pseudo-syntax, informal grammar, or invalid placeholders inside `css` fenced blocks.
+
+### Errors
+
+- Treat invalid CSS syntax, malformed selectors, unmatched braces, empty declaration blocks, and non-functional declarations as defects to fix before finalizing CSS.
+- Treat accidental duplicate declarations, repeated selectors, contradictory rules, and dead CSS as defects when they are introduced or exposed by the current change.
+- Do not use `!important` to escape ordinary specificity or cascade problems; first refactor selector specificity, cascade order, or component structure.
+- Use `!important` only when there is a documented and unavoidable reason, such as overriding a third-party rule that cannot be changed.
+- Do not use arbitrary hard-coded values only because they visually work; replace them with named tokens, relative units, or layout mechanisms when practical.
+- Add a short comment for unusual values when the reason cannot be expressed through naming, tokens, or structure.
+
+### Safety
+
+- Prefer class selectors for styling because they are reusable and keep specificity manageable.
+- Avoid ID selectors for styling unless a specific, documented constraint requires them.
+- Keep selectors as simple as possible while still targeting the intended elements.
+- Avoid deeply nested, overly broad, or unnecessarily qualified selectors when a clear class selector is sufficient.
+- Use standard modern CSS only when it is supported by the project's declared browser baseline.
+- Avoid deprecated, obsolete, non-standard, or unnecessary vendor-prefixed features unless a compatibility fallback is explicitly required.
+- Do not place reusable styling in HTML `style` attributes; use CSS files, scoped CSS, components, or existing utility classes instead.
+- Use inline styles only for dynamic runtime values that cannot be represented cleanly elsewhere, and make that exception explicit.
+- Do not introduce Sass, Less, BEM, SMACSS, utility-first CSS, CSS Modules, or another methodology unless the project already uses it or the user explicitly requests it.
+- When a framework supports scoped component styles, use scoped styles for component-specific CSS and reserve global CSS for true global concerns.
+
+### Tests
+
+- Before finalizing CSS, verify that generated or modified styles follow the existing project convention.
+- Verify that selectors are no more specific than necessary and that no unnecessary `!important` declaration was added.
+- Verify that no dead, duplicated, empty, or contradictory CSS remains in the touched scope.
+- Verify that CSS import order has not been changed in a way that unintentionally affects cascade behavior.
+- Verify responsive behavior for the affected layout ranges when CSS changes media queries, container queries, layout, sizing, or visibility.
+- Run the project's CSS formatter, linter, build, visual regression checks, or browser checks when they are available and relevant to the change.
+- When framework-specific CSS rules are applied, verify that the target framework or styling system is actually in use.
+
+### Idioms
+
+- Use the simplest CSS layout model that fits the requirement.
+- Prefer Flexbox and CSS Grid for modern layout instead of float-based or table-based layout hacks.
+- Write responsive CSS intentionally, using the project's established approach such as mobile-first styling when applicable.
+- Keep media queries and container queries scoped to real layout changes instead of arbitrary visual patching.
+- Plan broad or complex CSS before writing it by identifying base styles, layout styles, component styles, overrides, and reusable patterns.
+- Avoid CSS that repeatedly overrides or cancels earlier declarations.
+- If the project uses Tailwind or another utility-first system, prefer existing utilities before writing ad-hoc CSS.
+- Do not mix utility-first styling and custom CSS in a way that duplicates the same styling responsibility.
+
+### Other
+
+- Prefer project-specific CSS standards first.
+- If the project has no CSS convention, apply the smallest consistent rule set needed to keep stylesheets readable, testable, and maintainable.
+- Prefer official, maintained, and directly applicable CSS documentation over generic blog posts, forums, social media discussions, or video content.
+- Apply framework-specific CSS guidance only when the project context confirms that the framework is in use.
+- When modifying existing CSS, change only the rules required by the requested behavior and avoid unrelated selector, naming, or file-organization refactors.
+
 ## SQL
 
 ### Naming
