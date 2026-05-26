@@ -2,6 +2,12 @@
 
 Tagged release history for this project.
 
+## v1.14.0
+
+References | Description | Author(s)
+--- | --- | ---
+9c58049 | Add MySQL language rules | asphyx
+
 ## v1.13.0
 
 References | Description | Author(s)
