@@ -101,6 +101,110 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Treat SQL as code and store DDL, DML, migrations, seed scripts, and repeatable maintenance scripts in version control.
 - Do not rely on undocumented manual production changes.
 
+## Microsoft SQL Server Transact-SQL
+
+Apply this section to Microsoft SQL Server Transact-SQL code in addition to the generic `SQL` section when the target language or database dialect is T-SQL. When both sections address the same topic, prefer the more specific T-SQL rule.
+
+### Naming
+
+- Before generating T-SQL, identify the exact target platform: SQL Server, Azure SQL Database, Azure SQL Managed Instance, Azure Synapse Analytics, Fabric SQL, or another Microsoft SQL platform.
+- Do not assume that every T-SQL feature is available on every Microsoft SQL platform.
+- State the target SQL Server product, deployment model, and version when syntax, behavior, compatibility level, or feature availability matters.
+- Use schema-qualified object names such as `dbo.customer` whenever possible.
+- Do not rely on the caller's default schema for production database objects.
+- Do not use the `sp_` prefix for user-defined stored procedures.
+- Use stable, descriptive object, procedure, parameter, variable, temporary table, and alias names.
+- Follow the repository convention for identifier casing; if no local convention exists, keep T-SQL keywords uppercase and identifiers consistently cased.
+- Prefix Unicode string literals with `N`, such as `N'value'`, when the literal contains or may contain Unicode text.
+
+### Formatting
+
+- Terminate T-SQL statements with semicolons consistently.
+- Always terminate `MERGE` statements with a semicolon.
+- Write T-SQL so that the target platform, object names, filtering logic, ordering logic, and transaction boundaries are visible to a reviewer.
+- Use explicit column lists in production `SELECT` statements instead of `SELECT *`.
+- Return only the rows and columns required by the caller, report, export, validation, or data-change operation.
+- Use `ORDER BY` whenever result order matters.
+- Do not rely on storage order, clustered index order, insertion order, or execution-plan side effects for result ordering.
+- Do not use ordinal positions such as `ORDER BY 1` or `ORDER BY 2`; use explicit column names or aliases.
+- Use `TOP (...)` with parentheses.
+- Pair `TOP (...)` with `ORDER BY` when deterministic row selection is required.
+- Use `OFFSET` and `FETCH` for page-based retrieval when they are supported by the target platform and version.
+- For stable paging, use a deterministic and preferably unique ordering key.
+- Use named parameters when executing stored procedures, such as `EXEC dbo.MyProcedure @UserId = @user_id;`.
+- Put `SET NOCOUNT ON;` at the start of stored procedures unless the caller intentionally depends on row-count messages.
+- Declare procedure-sensitive `SET` options explicitly at the start of the procedure when the logic depends on them.
+- Explicitly define `NULL` or `NOT NULL` for temporary table columns instead of relying on session defaults.
+- Keep T-SQL hints, session options, transaction settings, and version-specific syntax local to the statement, procedure, or migration that requires them.
+
+### Errors
+
+- Use `TRY...CATCH` for transactional, procedural, or multi-step T-SQL logic that needs controlled error handling.
+- Do not assume `TRY...CATCH` catches compile-level, connection-level, or every possible severity-level failure.
+- In `CATCH` blocks, deliberately return, rethrow, or translate errors when caller visibility is required.
+- Prefer `THROW` over `RAISERROR` in new T-SQL code when rethrowing or raising procedural errors.
+- Use `XACT_STATE()` in `CATCH` blocks before deciding whether to commit or roll back a transaction.
+- Roll back uncommittable transactions instead of attempting to commit them.
+- Use `SET XACT_ABORT ON;` when a runtime error must terminate and roll back the full transaction.
+- Keep transactions as short as possible to reduce locking, blocking, and deadlock risk.
+- Do not wait for user interaction, external approval, or long-running non-database work while a transaction is open.
+- When generated T-SQL can fail because of missing objects, permissions, invalid input, duplicate data, or unexpected cardinality, make the failure path explicit.
+
+### Safety
+
+- Never concatenate unvalidated user input into dynamic SQL.
+- Validate input type, length, format, range, and allowed values before using external input in T-SQL.
+- Parameterize dynamic SQL with `sp_executesql` whenever dynamic SQL is required and values can be parameterized.
+- Review any generated use of `EXEC`, `EXECUTE`, or `sp_executesql` as a SQL injection risk boundary.
+- Use `QUOTENAME()` for dynamic identifiers when identifier generation is unavoidable and the input length is suitable.
+- Use quote-doubling with `REPLACE()` for dynamic string literals when dynamic SQL cannot be avoided.
+- Do not use dynamic SQL for static statements that can be written safely as ordinary parameterized T-SQL.
+- Apply least privilege when generating grants, ownership chains, procedure execution patterns, or access-control examples.
+- Do not generate SQL that broadens permissions beyond the minimum required by the requested behavior.
+- Avoid exposing sensitive columns by default in generated queries, views, stored procedures, exports, and diagnostics.
+- Prefer designs compatible with column-level protection, row-level security, auditing, and least-privilege access when sensitive data is involved.
+- Use query hints, table hints, index hints, locking hints, and `OPTION (...)` only as a last resort for a documented optimizer, locking, or regression problem.
+- Do not add `NOLOCK` or other isolation-affecting hints as a default performance shortcut.
+- Document every required hint with the observed problem, target SQL Server version or platform, expected effect, and regression risk.
+- Use explicit transactions for multi-step data changes that must succeed or fail together.
+- Ask for clarification before generating destructive operations when object names, target environment, filter criteria, transaction scope, or permission impact are ambiguous.
+
+### Tests
+
+- For non-trivial generated T-SQL, state how correctness should be verified: expected row counts, deterministic ordering, affected rows, rollback behavior, permission boundaries, or error paths.
+- For performance-sensitive T-SQL, inspect the execution plan instead of guessing.
+- Verify that predicates can use expected indexes when performance depends on index usage.
+- Verify that generated result sets are deterministic when used for reports, exports, tests, paging, or `TOP (...)` operations.
+- Test stored procedures with named parameters, missing or invalid inputs, `NULL` inputs, and expected error paths when those paths are affected.
+- Test transaction logic for success, failure, rollback, and uncommittable transaction behavior when generated code uses explicit transactions.
+- Test dynamic SQL with safe values, invalid values, boundary lengths, and attempted injection strings when dynamic SQL is generated.
+- Test `MERGE` behavior with matched rows, unmatched source rows, unmatched target rows, duplicates, and batching assumptions when `MERGE` is generated.
+- When version-specific syntax or platform-specific behavior is used, verify it against the declared SQL Server product, version, and compatibility level.
+
+### Idioms
+
+- Prefer the smallest correct T-SQL solution that satisfies the requested behavior.
+- Do not add stored procedures, dynamic SQL, temporary tables, hints, transactions, `MERGE`, or abstractions unless they are required by the task.
+- Avoid wrapping indexed columns in functions, arithmetic, casts, concatenation, or `CASE` expressions inside `WHERE` or `JOIN` predicates when an equivalent sargable predicate is possible.
+- Avoid scalar function calls over large result sets unless the design explicitly requires them and the performance cost is acceptable.
+- Use `UNION ALL` unless duplicate elimination is required.
+- Use `MERGE` only when it is simpler and safer than separate `INSERT`, `UPDATE`, and `DELETE` statements.
+- Prefer explicit `INSERT`, `UPDATE`, or `DELETE` statements for simple source-to-target changes when they are clearer or safer than `MERGE`.
+- Keep `MERGE ON` conditions strictly focused on target-source matching.
+- Do not move target filtering logic into a `MERGE ON` clause to force performance behavior.
+- Do not use `TOP` inside `MERGE` for deterministic batching unless successive batches are explicitly controlled and documented.
+- Do not generalize SQL Server version-specific behavior to all Microsoft SQL platforms.
+- Flag unsafe ambiguity instead of guessing when missing information affects data modification, security, permissions, object names, target SQL platform, transaction scope, or destructive operations.
+
+### Other
+
+- Prefer official Microsoft Learn documentation as the primary source for Microsoft SQL Server Transact-SQL behavior.
+- When T-SQL guidance conflicts, prioritize maintained official Microsoft documentation over blogs, forums, videos, PDFs, examples, or secondary summaries.
+- Treat Microsoft SQL Server Transact-SQL as a SQL dialect with product-specific behavior, not as interchangeable generic SQL.
+- Isolate vendor-specific syntax, hints, platform assumptions, and compatibility-level dependencies so they can be reviewed or changed later.
+- State version or platform constraints explicitly for features that apply only to specific SQL Server versions, Azure SQL variants, Synapse, Fabric SQL, or compatibility levels.
+- Do not claim that generated T-SQL is portable to other SQL databases unless portability was intentionally checked.
+
 ## Go
 
 ### Naming
