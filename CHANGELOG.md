@@ -1,6 +1,12 @@
 # Changelog
 
-Tagged release history for this project.
+All notable changes to this project will be documented in this file.
+
+## v1.15.0
+
+References | Description | Author(s)
+--- | --- | ---
+9557656 | Add JavaScript language rules | asphyx
 
 ## v1.14.0
 
