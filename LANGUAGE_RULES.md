@@ -21,6 +21,76 @@ If a language-specific rule conflicts with a general rule from `CODING_RULES.md`
 
 Use the operational definitions in `CODING_RULES.md` for qualitative phrases such as `small`, `when practical`, `when possible`, and `when appropriate`.
 
+## HTML
+
+### Naming
+
+- Use semantic `class` and `id` names that describe the content, role, or domain concept instead of visual appearance alone.
+- Prefer kebab-case for multi-word `class` and `id` values unless the repository already defines a stricter naming convention.
+- Give links, buttons, form controls, headings, and page titles meaningful text that remains understandable outside its visual context.
+
+### Formatting
+
+- Start every standalone HTML document with `<!doctype html>` to trigger standards or no-quirks rendering mode.
+- Do not use legacy HTML doctypes or XML declarations for normal HTML documents.
+- Add a valid `lang` attribute to the root `<html>` element, using the shortest accurate language value for the page content.
+- Include a meaningful `<title>` element in every standalone HTML document; the title must describe the page purpose, not only the project or application name.
+- Keep metadata, page title, linked resources, and document-level configuration inside `<head>`, and keep visible content inside `<body>`.
+- Use lowercase for doctype declarations, element names, attribute names, and case-insensitive attribute values.
+- Quote attribute values consistently, and never omit quotes when the value contains spaces or could be parsed as multiple attributes.
+- For boolean attributes, write only the attribute name when the value is true.
+- Escape reserved characters such as `&`, `<`, `>`, `"`, and `'` when they would otherwise be parsed as markup or attribute syntax.
+- Keep attribute lists readable and consistent; avoid arbitrary spacing, mixed quotation styles, and mixed casing within the same document or project.
+- Structure text with headings, paragraphs, lists, and other content elements instead of using line breaks or visual styling to simulate document structure.
+- Use heading levels to represent the document outline, not merely to control visual size.
+
+### Errors
+
+- Treat missing required document structure, such as `<!doctype html>`, `<html lang>`, `<head>`, `<title>`, or `<body>` in standalone documents, as a defect to fix before finalizing generated HTML.
+- Treat unlabeled interactive controls, missing form instructions, unclear error messages, and inaccessible validation feedback as defects.
+- When automatically detected input errors can occur, identify the invalid input and describe the error in text.
+- Treat malformed attribute syntax, unescaped reserved characters, invalid nesting, and duplicate IDs as defects to fix before presenting HTML as final.
+
+### Safety
+
+- Prefer native HTML semantics over redundant ARIA; do not add roles that duplicate implicit semantics unless there is a specific compatibility reason.
+- Use native interactive elements such as `<button>`, `<a>`, `<input>`, `<select>`, and `<textarea>` instead of custom clickable `<div>` or `<span>` elements whenever they match the required behavior.
+- Ensure interactive functionality is keyboard-operable unless the function inherently depends on pointer movement.
+- Add useful `alt` text to informative images, and use empty `alt` text only for decorative images that should be ignored by assistive technologies.
+- For data tables, use `<th>` for headers and add `scope` when it is needed to associate headers with rows or columns.
+- Add `<caption>` to data tables when a concise summary helps users understand the table.
+- Provide labels or instructions for form controls that require user input.
+- Use HTML attributes that expose input purpose when collecting user information and when the expected meaning can be programmatically determined.
+- Do not use color as the only way to convey information, indicate an action, request a response, or distinguish an element.
+- Warn users when a link opens a new window, opens a new tab, or points to a non-HTML resource, using visible text or an accessible equivalent.
+- Provide a skip link near the start of `<body>` when pages contain repeated navigation before the main content.
+- Do not convert accessible native HTML into custom markup unless the user explicitly requests a custom component and the accessibility behavior is reimplemented.
+
+### Tests
+
+- Before finalizing generated HTML, verify that every element has a clear structural or semantic purpose.
+- Before finalizing generated HTML, verify that generated interactive controls are keyboard-accessible, labeled, and understandable without visual context.
+- Validate standalone HTML for document structure, malformed markup, duplicate IDs, invalid nesting, and unescaped reserved characters when a validator or equivalent project check is available.
+- Review images, tables, forms, headings, links, buttons, source order, and repeated navigation for accessibility regressions.
+- When modifying existing HTML, verify that the change preserves the project's established formatting and naming conventions unless they conflict with accessibility, validity, or explicit user requirements.
+
+### Idioms
+
+- Use the correct HTML element for the intended meaning before considering generic `<div>` or `<span>` markup.
+- Use semantic layout elements such as `<header>`, `<nav>`, `<main>`, `<article>`, `<aside>`, and `<footer>` when their meaning matches the content.
+- Preserve a logical source order; do not rely on CSS layout to compensate for an HTML order that becomes confusing when read by assistive technologies.
+- Generate the simplest valid HTML that satisfies the requested structure.
+- Do not add speculative components, styling hooks, ARIA roles, scripts, or metadata that the user did not request.
+
+### Other
+
+- Avoid using `data-*` attributes when a standard semantic element or attribute already represents the same information.
+- Use `data-*` only for application-specific metadata that has no suitable native HTML representation.
+- Avoid `<base>` unless the project explicitly requires it; prefer explicit, stable paths for links and resources to reduce maintenance surprises.
+- Add resource `type` metadata when it clarifies non-obvious linked resources, such as alternate feeds or downloadable documents.
+- In HTML templating environments, separate HTML, CSS, and JavaScript into maintainable units when the platform supports includes or equivalent composition.
+- Treat HTML templating organization as a project organization concern, not as a universal HTML syntax requirement.
+
 ## SQL
 
 ### Naming
