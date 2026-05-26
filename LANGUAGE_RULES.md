@@ -101,6 +101,188 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Treat SQL as code and store DDL, DML, migrations, seed scripts, and repeatable maintenance scripts in version control.
 - Do not rely on undocumented manual production changes.
 
+## MySQL
+
+Apply this section to MySQL code in addition to the generic `SQL` section. When
+both sections address the same topic, prefer the more specific MySQL rule.
+
+### Naming
+
+- Use clear, stable, and project-consistent names for MySQL databases, tables,
+  columns, indexes, constraints, routines, triggers, and aliases.
+- Define an explicit primary key for every table, using a stable natural key only
+  when it is obvious and using an auto-incrementing surrogate key when no
+  natural key is clear.
+- Match foreign key column data types and MySQL-required attributes with the
+  referenced columns: fixed-precision size and sign must match, and nonbinary
+  string columns must use the same character set and collation.
+- Name foreign key columns consistently with the referenced domain concept so
+  join intent remains easy to review.
+- Do not encode multiple logical values in a single column when those values
+  need to be queried, indexed, constrained, or updated independently.
+- Document the purpose of non-obvious indexes, especially composite, prefix,
+  covering, or workload-specific indexes.
+
+### Formatting
+
+- Keep MySQL DDL, DML, migration scripts, and maintenance SQL readable enough
+  that storage engine choices, transaction boundaries, locking behavior, and
+  operational assumptions are visible to a reviewer.
+- Prefer explicit column lists in production MySQL queries and return only the
+  rows and columns required by the caller, report, migration, or validation
+  step.
+- Use deterministic `ORDER BY` clauses for pagination and for any query where
+  result order matters.
+- Keep predicates sargable by avoiding unnecessary functions, casts, arithmetic,
+  implicit conversions, or incompatible type comparisons on indexed columns.
+- Keep related transaction statements close together and make `START
+  TRANSACTION`, `COMMIT`, and `ROLLBACK` boundaries explicit.
+
+### Errors
+
+- Handle MySQL deadlocks and lock wait timeouts at the application boundary with
+  bounded retries only when the operation is idempotent or safely repeatable.
+- Define rollback behavior before adding multi-step writes, production
+  migrations, or destructive schema changes.
+
+### Safety
+
+- Use `InnoDB` as the default storage engine for transactional application data
+  unless a documented requirement justifies another engine.
+- Require `NO_ENGINE_SUBSTITUTION` in controlled environments where accidental
+  storage engine substitution would create operational risk.
+- Use MySQL foreign keys when the application domain requires referential
+  integrity to be enforced by the database.
+- Add or change indexes only when justified by an observed query pattern, an
+  `EXPLAIN` plan, or a documented performance reason.
+- Design composite indexes according to MySQL's leftmost-prefix rule.
+- Avoid redundant indexes that serve the same prefix and access pattern as an
+  existing index.
+- Consider storage cost and write overhead before adding indexes to high-write
+  MySQL tables.
+- Analyze non-trivial `SELECT`, `UPDATE`, `DELETE`, `INSERT ... SELECT`, and
+  `REPLACE` statements with `EXPLAIN` before optimizing or approving them.
+- Avoid unbounded reads in application endpoints and batch large reads or writes
+  when practical.
+- Keep MySQL transactions short, explicit, and limited to one business
+  operation.
+- Do not mix unrelated business operations in the same MySQL transaction.
+- Do not use `LOCK TABLES` for normal InnoDB application workflows.
+- Use row-level locking patterns such as `SELECT ... FOR UPDATE` only when
+  exclusive access to specific rows is required.
+- Do not create long-running transactions for batch jobs without chunking,
+  progress tracking, and rollback strategy.
+- Use dedicated MySQL users per application, service, or job.
+- Do not use `root` or broad administrative accounts for application runtime
+  access.
+- Grant the minimum required privileges at the narrowest practical scope:
+  database, table, column, or routine.
+- Require prepared statements or parameterized query APIs for
+  application-provided values.
+- Require TLS for sensitive database connections and avoid plaintext credentials
+  or data in transit.
+- Avoid exposing MySQL directly to the public internet unless an explicit,
+  reviewed operational requirement exists.
+- Prefer private networking for MySQL access when possible.
+- Never allow unrestricted `0.0.0.0/0` database access without an explicitly
+  documented temporary exception.
+- Treat `SECURITY DEFINER`, stored routines, dynamic SQL, triggers, and elevated
+  privileges as high-risk areas requiring explicit review.
+- Do not store MySQL credentials in source code, committed configuration files,
+  or logs.
+- Avoid destructive schema changes without an explicit backup, rollback, or data
+  recovery strategy.
+
+### Operations
+
+- Configure database connection timeouts explicitly instead of relying on
+  unknown client, driver, or server defaults.
+- Use exponential backoff for transient connection failures, maintenance events,
+  and failover recovery.
+- Split large schema or data migrations into ordered, observable, and restartable
+  steps.
+- Ensure failed migrations, interrupted batch jobs, and partially applied data
+  changes have a documented recovery path.
+- Do not treat a backup, export, or point-in-time recovery setup as valid until
+  restore behavior has been tested.
+- Rotate credentials and remove unused MySQL users during regular maintenance
+  reviews.
+- Verify that production backups, retention, binary log retention, recovery
+  point objective, and recovery time objective match project recovery
+  requirements.
+- Protect MySQL backups from accidental deletion and unauthorized access.
+- Monitor CPU, memory, disk, connections, slow queries, replication, and
+  failover health for production MySQL systems.
+- Add alerting for disk space thresholds and avoid running near full storage.
+- Tune MySQL server parameters only with a documented hypothesis, before-and-
+  after measurements, and a rollback plan.
+- Test major MySQL upgrades in a representative environment before production.
+- Run MySQL upgrade checks and fix incompatibilities before the production
+  upgrade.
+- Verify that a full backup exists and is restorable before upgrading
+  production.
+- Benchmark critical queries before and after MySQL upgrades because optimizer,
+  authentication, encryption, storage engine, index, and memory changes can
+  introduce regressions.
+- Test application behavior during MySQL maintenance and failover events because
+  existing connections can be dropped.
+- Use slow query logs, query insights, or equivalent tooling to identify real
+  bottlenecks before changing schema, indexes, or server configuration.
+- Review slow queries periodically and prioritize fixes by frequency, latency,
+  and business impact.
+- Use connection pooling for applications that open many short-lived MySQL
+  connections.
+- Set a clear upper bound for connection pools per application instance and
+  account for horizontal scaling.
+- Close or return MySQL connections to the pool promptly after each unit of
+  work.
+- Use exports only as an additional protection mechanism when backup scope or
+  retention does not cover the recovery scenario.
+
+### Tests
+
+- Use the same SQL mode for export and import migrations when moving data
+  between MySQL environments.
+- Test schema migrations in an environment that represents production data
+  volume, indexes, constraints, storage engine, character sets, collations, and
+  SQL mode.
+- Capture baseline metrics before performance changes and compare them after the
+  change.
+
+### Idioms
+
+- Use joins for relational access instead of repeated application-side lookups
+  when related data can be retrieved in one controlled MySQL query.
+- Use explicit `START TRANSACTION` and `COMMIT` blocks for related DML
+  operations that must succeed or fail together.
+- Prefer covering indexes only for hot read paths where selected columns are
+  stable and the query benefit outweighs maintenance overhead.
+- Prefer clear MySQL over clever MySQL unless the optimized form is measurably
+  better and remains maintainable.
+
+### Other
+
+- Prefer official MySQL documentation and maintained managed-provider
+  documentation when MySQL guidance conflicts.
+- Do not generate MySQL-specific rules for another SQL dialect without explicit
+  compatibility validation.
+- Do not assume cloud-provider recommendations apply unchanged to self-managed
+  MySQL.
+- Do not assume self-managed MySQL settings apply unchanged to managed MySQL
+  services.
+- Keep MySQL rules separate from ORM-specific, framework-specific, and
+  cloud-provider-specific rules unless the target context explicitly requires
+  them.
+- Document assumptions about MySQL version, deployment model, storage engine,
+  SQL mode, character set, collation, and client driver when they affect a
+  recommendation.
+- Do not introduce a new index, transaction boundary, privilege, trigger, stored
+  procedure, routine, server parameter, or migration behavior without explaining
+  the operational impact.
+- When modifying MySQL, always check regression risk in result cardinality,
+  locking behavior, transaction scope, index usage, privilege requirements,
+  migration compatibility, and deployment model compatibility.
+
 ## Oracle PL/SQL
 
 Apply this section to Oracle PL/SQL code in addition to the generic `SQL`
