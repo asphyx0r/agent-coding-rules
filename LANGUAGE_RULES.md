@@ -101,6 +101,138 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Treat SQL as code and store DDL, DML, migrations, seed scripts, and repeatable maintenance scripts in version control.
 - Do not rely on undocumented manual production changes.
 
+## Oracle PL/SQL
+
+Apply this section to Oracle PL/SQL code in addition to the generic `SQL`
+section. When both sections address the same topic, prefer the more specific
+Oracle PL/SQL rule.
+
+### Naming
+
+- Use project-defined naming conventions consistently for packages, procedures,
+  functions, parameters, variables, constants, and exceptions.
+- When a repository defines PL/SQL prefixes such as `p_`, `l_`, `g_`, `lc_`, or
+  `gc_`, apply them consistently inside the touched PL/SQL scope.
+- Name functions after the value they return and procedures after the action
+  they perform.
+- Use `%TYPE` and `%ROWTYPE` for variables, records, rows, and cursor results
+  that are tied to database columns or query results.
+- Do not hard-code PL/SQL data types when the variable represents an existing
+  table column, row, cursor row, or schema-owned type.
+- Replace magic values with named constants, domain concepts, lookup functions,
+  or package-level APIs when they represent statuses, thresholds, business
+  rules, or domain values.
+
+### Formatting
+
+- Keep package specifications focused on the public API and keep implementation
+  details in the package body.
+- Do not change a package specification unless the public API must change.
+- Prefer implementation changes in package bodies when the public contract does
+  not need to change.
+- Keep executable sections short enough that the main control flow remains easy
+  to review.
+- Extract named local procedures or functions when a PL/SQL block grows into
+  multiple logical steps.
+- Use `ELSIF` or `CASE` for mutually exclusive branches instead of independent
+  `IF` blocks.
+- Do not generate `GOTO` in PL/SQL code; use structured conditionals, loops,
+  local subprograms, or explicit error handling instead.
+
+### Errors
+
+- Centralize reusable PL/SQL error handling in package APIs instead of
+  duplicating exception logging logic in every handler.
+- Catch specific exceptions before using `WHEN OTHERS`.
+- Use `WHEN OTHERS` only at an outer boundary where the error can be logged,
+  preserved, and deliberately re-raised or translated.
+- Do not hide the root cause of an exception.
+- Do not use exceptions as normal branching logic.
+- Keep transaction control out of reusable PL/SQL components by default.
+- Do not issue `COMMIT` or `ROLLBACK` inside reusable packages, procedures, or
+  functions unless that component explicitly owns the transaction boundary.
+- Use autonomous transactions only for isolated logging or audit records that
+  must survive rollback of the main transaction.
+
+### Safety
+
+- Do not expose mutable package state in the package specification.
+- Declare non-constant package-level data in the package body, and expose access
+  through explicit getter or setter subprograms only when needed.
+- Keep functions value-oriented and side-effect-light.
+- Do not use `OUT` or `IN OUT` parameters in functions.
+- Use procedures when logic performs DML, modifies state, or must return
+  multiple outputs.
+- Use `NOCOPY` only when large `OUT` or `IN OUT` parameters are necessary and
+  safe after checking exception and aliasing risks.
+- Use bind variables whenever runtime values are passed into SQL.
+- Do not concatenate runtime values into SQL text when bind variables can be
+  used.
+- Prefer static SQL when dynamic SQL is not required.
+- Validate identifiers, values, and allowed operations explicitly before using
+  them in dynamic SQL.
+- Choose invoker-rights or definer-rights deliberately for PL/SQL units.
+- Do not rely on the default privilege model without checking the security
+  impact.
+- Apply least privilege to PL/SQL APIs and underlying schema objects.
+- Prefer granting access through narrow package APIs instead of broad direct
+  privileges on tables, views, or critical procedures.
+
+### Tests
+
+- Write regression tests before changing legacy PL/SQL behavior.
+- Write unit tests for packages, procedures, and functions when their behavior
+  must not regress.
+- Keep each PL/SQL unit test focused on one behavior.
+- Use an Arrange-Act-Assert structure for PL/SQL tests: set up inputs and
+  database state, execute the PL/SQL unit, then assert the expected result.
+- Design tests so that an incorrect implementation can actually fail the test.
+- Rerun affected PL/SQL tests after code, data, package specification, package
+  body, or schema changes.
+- Use available PL/SQL checks and tools such as compiler warnings, PL/Scope,
+  the PL/SQL hierarchical profiler, SQL Developer, Toad, or SonarQube when they
+  are part of the project toolchain.
+
+### Idioms
+
+- Implement reusable PL/SQL logic inside packages by default.
+- Avoid standalone procedures or functions unless the target environment or
+  integration point explicitly requires them.
+- Treat the package specification as the public API and the package body as the
+  private implementation.
+- Encapsulate business rules and repeated SQL behind package functions or
+  procedures.
+- Do not duplicate business logic, predicates, formulas, or SQL fragments across
+  pages, triggers, procedures, or anonymous blocks.
+- Prefer set-based SQL and bulk processing over row-by-row processing.
+- Use `BULK COLLECT` and `FORALL` for high-volume operations when they reduce
+  context switches and fit the available memory constraints.
+- Minimize work inside loops by avoiding repeated calculations and unnecessary
+  repeated passes over collections or result sets.
+- Use cursor `FOR` loops only when every row must be processed.
+- Do not use cursor `FOR` loops for single-row retrieval.
+- When fetching from explicit cursors, fetch into records rather than unrelated
+  individual variables.
+- Do not declare the index variable of a numeric `FOR` loop; let PL/SQL define
+  it implicitly.
+- Use Oracle built-ins, SQL functions, PL/SQL built-ins, and Oracle-supplied
+  packages before writing custom implementations.
+- Use early `EXIT`, `EXIT WHEN`, or `RETURN` from `FOR` and `WHILE` loops only
+  when the exit condition is intentional and clearer than carrying extra state
+  or nesting conditionals.
+- For searched `CASE` expressions with overlapping predicates, preserve
+  semantic correctness before optimizing branch order.
+- Reorder searched `CASE` branches for performance only when the predicates
+  remain semantically equivalent.
+
+### Other
+
+- Document public package APIs in the package specification.
+- Public package API documentation should explain the purpose, parameters, and
+  return values of exposed procedures and functions.
+- Avoid documenting obvious implementation details that are already clear from
+  the PL/SQL code itself.
+
 ## Microsoft SQL Server Transact-SQL
 
 Apply this section to Microsoft SQL Server Transact-SQL code in addition to the generic `SQL` section when the target language or database dialect is T-SQL. When both sections address the same topic, prefer the more specific T-SQL rule.
