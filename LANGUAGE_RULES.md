@@ -337,7 +337,12 @@ both sections address the same topic, prefer the more specific MySQL rule.
 - Avoid destructive schema changes without an explicit backup, rollback, or data
   recovery strategy.
 
-### Operations
+### Deployment and Operations
+
+Apply this section only when creating, editing, reviewing, or refactoring MySQL
+deployment, runtime configuration, migrations, backups, or maintenance scripts.
+For ordinary query, schema, or application SQL changes, do not expand the task
+into operational changes unless the current change directly affects them.
 
 - Configure database connection timeouts explicitly instead of relying on
   unknown client, driver, or server defaults.
@@ -1136,7 +1141,7 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 ### Tests
 
 - Run `bash -n` before accepting generated Bash code.
-- Run ShellCheck when available, and fix or explicitly justify every warning that remains.
+- Run ShellCheck when available, and fix or explicitly justify warnings introduced or exposed by the current change in the touched Bash scope.
 - For Bash scripts, exercise nonzero exit paths and missing argument, missing file, or missing command cases when they are affected by a change.
 - Verify scripts that use strict mode, traps, globs, temporary files, or argument forwarding with representative inputs before presenting them as final.
 
