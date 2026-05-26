@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.16.0
+
+References | Description | Author(s)
+--- | --- | ---
+8595dd0 | Add HTML language rules | asphyx
+
 ## v1.15.0
 
 References | Description | Author(s)
