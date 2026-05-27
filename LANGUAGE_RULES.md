@@ -1872,3 +1872,114 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 - Write comments that explain intent, configuration, assumptions, permission
   requirements, queue choices, timer lifecycle, or non-obvious Eggdrop behavior.
 - Do not generate comments that merely restate the next Tcl command.
+
+## mIRC scripting language
+
+### Naming
+
+- Use clear alias names that describe the command shortcut, reusable routine, or
+  custom identifier behavior.
+- Define implementation-only aliases with `alias -l` so they remain local to the
+  current script file and are not exposed as public commands.
+- Use `/var` for routine-local state and reserve variables created with `/set`
+  for state that must intentionally survive beyond the current alias, event, or
+  script execution.
+- Use clear socket names when raw socket handling is required, so each socket's
+  lifecycle and event handlers remain easy to audit.
+
+### Formatting
+
+- Keep aliases small, explicit, and focused on one command shortcut, reusable
+  routine, or simple custom identifier behavior.
+- Do not generate aliases that call themselves recursively.
+- Inside script files, omit leading `/` command prefixes unless they improve
+  clarity in an example or are required by the surrounding context.
+- Use `//` only when command-line identifier evaluation is intentionally
+  required, `.` only when a quiet command is intended, and `!` only when alias
+  processing must be bypassed.
+- Use `;` for line comments and `/* ... */` for block comments.
+- Comment non-obvious event triggers, risky commands, identifier evaluation,
+  file access, socket handling, and intentional use of `halt`, `goto`, or global
+  state.
+
+### Errors
+
+- Validate required alias parameters before using them, using required-parameter
+  forms such as `$$1` or explicit guards before commands that depend on user
+  input.
+- Use positional parameters such as `$1`, `$2`, and `$2-` deliberately and only
+  where their meaning is clear at the call site.
+- Treat identifiers as runtime expressions that may return `$null`; check for
+  `$null` before branching, formatting output, or passing identifier results to
+  commands.
+- For non-trivial scripts that need recovery or cleanup, define an `:error`
+  label, read `$error`, handle the failure, and call `/reseterror` before
+  continuing or returning.
+- When using file commands, check file access errors with
+  `$fopen(<handle>).err`, `$ferr`, or the relevant mIRC file-error identifier
+  because file access failures do not necessarily halt execution.
+- When using sockets, check `$sockerr` after socket commands and before
+  processing socket events.
+
+### Safety
+
+- Keep remote events narrow by using precise levels, match text, and locations.
+- Avoid broad catch-all private or channel message handlers unless the behavior
+  is intentionally global and documented.
+- Do not generate opaque, obfuscated, or unexplained remote scripts; generated
+  mIRC scripts must remain readable and reviewable before loading.
+- Avoid generating file server or DCC exposure unless explicitly requested.
+- If file server behavior is required, restrict the exposed home directory,
+  document the risk, and avoid exposing private or confidential files.
+- Use raw sockets only for scripts that genuinely need raw network connections;
+  do not generate socket code for ordinary IRC automation.
+- Close files after use with `/fclose`, and close sockets after use when the
+  socket lifecycle is complete.
+- Avoid unintended double evaluation when assigning literal expression-like
+  content; use non-evaluating forms such as `/set -n` or `/var -n` when the
+  value must remain literal.
+
+### Tests
+
+- Verify generated mIRC scripts against the official mIRC Help behavior for the
+  commands, identifiers, events, file handling, hash tables, sockets, and script
+  features used.
+- Test aliases with missing, empty, and multi-word parameters when positional
+  parameters, required parameters, or `$2-` are used.
+- Test `$null` results from identifiers before approving branches or output that
+  depends on identifier values.
+- Test file access success and failure paths, including cleanup paths that must
+  call `/fclose`.
+- Test socket success and failure paths when socket code is generated, including
+  `$sockerr` handling and socket closure.
+- Verify that remote event handlers match only the intended levels, text, and
+  locations.
+- Verify that generated hash-table logic does not depend on item storage, save,
+  or load order.
+
+### Idioms
+
+- Prefer structured control flow with `if`, `elseif`, `else`, `while`, `break`,
+  and `continue` for normal logic.
+- Avoid `goto` except for simple, clearly bounded labels where structured flow
+  would be less clear; document every intentional `goto` use.
+- Use `/return [value]` when an alias or custom identifier must return a value
+  to its caller through `$result`.
+- Use `/halt` only when the intended behavior is to stop the current script and
+  prevent further processing.
+- Use hash tables for large keyed data that needs efficient storage and lookup,
+  but never rely on hash table item order.
+- Use `$calc()` for intentionally complex calculations.
+- Enable big-float calculations only for scripts that require very large numeric
+  calculations, because big-float calculations are slower than normal
+  calculations.
+
+### Other
+
+- Treat official mIRC Help semantics as the primary source of truth for mIRC
+  scripting behavior.
+- Do not treat editor completion files, autocomplete snippets, historical
+  articles, forums, or examples as authoritative language specifications.
+- Use autocomplete data only as editor-support context for discovering possible
+  command names or parameters, never as a replacement for official mIRC
+  documentation.
