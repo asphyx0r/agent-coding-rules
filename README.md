@@ -2,6 +2,13 @@
 
 Practical behavior and code-quality rules for AI coding agents.
 
+## Features
+
+- Provides reusable behavioral rules for AI coding agents.
+- Defines language-agnostic, language-specific, documentation, commit, and
+  release rules.
+- Keeps agent instructions separate from human-facing project documentation.
+
 ## Files
 
 - `AGENTS.md`: Defines the model behavior rules.
@@ -12,6 +19,46 @@ Practical behavior and code-quality rules for AI coding agents.
   changelog rules.
 - `LANGUAGE_RULES.md`: Defines language-specific coding rules.
 - `RELEASE_RULES.md`: Defines release version and Git tag rules.
+
+## Supported Languages
+
+- Bash
+- CSS
+- Go
+- HTML
+- Java
+- Java (Properties Files)
+- JavaScript
+- mIRC Scripting Language
+- PCBoard Programming Language
+- Perl
+- PHP
+- PowerShell
+- Python
+- SQL (Generic)
+- SQL (Microsoft SQL Server Transact-SQL)
+- SQL (MySQL)
+- SQL (Oracle PL/SQL)
+- Tcl (Eggdrop Scripting)
+- TypeScript
+- Windows Batch
+
+## Installation
+
+```bash
+mkdir -p /home/user/project-name
+cd /home/user/project-name
+git clone https://github.com/asphyx0r/agent-coding-rules.git .agent-coding-rules
+cp .agent-coding-rules/AGENTS.md .
+cp .agent-coding-rules/*_RULES.md .
+```
+
+## Usage
+
+- Create or update code in your project as usual.
+- Ask your coding agent to follow `AGENTS.md`.
+- Review generated changes against the applicable rule files.
+- Keep project-specific instructions in your local `AGENTS.md` when needed.
 
 ## Sources
 
