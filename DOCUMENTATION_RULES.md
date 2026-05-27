@@ -326,21 +326,174 @@ No tagged release entries have been documented yet.
 
 ## Markdown Documentation Quality
 
+### Naming
+
+- Use clear, unique, and descriptive headings so generated anchors remain
+  predictable.
+- Use one level-one heading as the document title unless the target platform
+  requires another structure.
+- Use descriptive link text that remains understandable outside its surrounding
+  sentence.
+- Avoid vague link labels such as `here`, `link`, or raw URLs as visible link
+  text.
+- Use stable, readable, repository-safe image filenames.
+- Prefer hyphenated image filenames when the target documentation pipeline has
+  known rendering issues with underscores.
+- Keep front matter keys explicit, stable, and documented when front matter is
+  required.
+
+### Formatting
+
+- Prefer simple, portable, human-readable Markdown over complex
+  renderer-specific syntax.
+- Keep Markdown source readable in plain text, not only correct after
+  rendering.
+- State the target Markdown dialect when output depends on platform-specific
+  rendering behavior.
+- Do not assume GitHub Flavored Markdown, Azure DevOps Markdown, Adobe Markdown
+  extensions, or another dialect unless the target renderer is explicitly
+  known.
+- Use platform-specific Markdown extensions only when the target platform
+  supports them and the document is intended for that platform.
 - Use valid Markdown syntax.
+- Start main content with level-two headings after the document title.
+- Add a short introduction after the title when the document explains a
+  process, reference, or concept.
 - Put a space after heading markers, for example `## Usage`, not `##Usage`.
+- Prefer ATX headings using `#`, `##`, and `###`; avoid Setext-style headings
+  for maintainability.
+- Keep heading levels hierarchical; do not skip levels without a structural
+  reason.
 - Put blank lines before and after headings and horizontal rules for better
   renderer compatibility.
+- Separate paragraphs with a blank line.
+- Keep paragraphs left-aligned unless indentation is required by Markdown
+  syntax.
+- Avoid trailing whitespace entirely.
+- Do not rely on trailing spaces to create line breaks.
+- Use hard line breaks only when the rendered layout genuinely requires them.
+- Use one unordered-list marker style consistently within a document.
+- Use ordered lists for ordered procedures and unordered lists for unordered
+  collections.
+- Use lazy numbering with `1.` only when the target renderer supports it and
+  the list may change frequently.
+- Use explicit sequential numbering for short, stable ordered lists when it
+  improves source readability.
+- Keep nested list indentation consistent.
+- Avoid deeply nested lists when headings or separate sections would be
+  clearer.
+- Prefer lists and tables only when they improve scanning or comparison.
+- Use inline code spans for commands, filenames, field names, literals,
+  placeholders, and syntax examples.
 - Use fenced code blocks for commands, configuration examples, and code
   snippets.
 - Use language identifiers on fenced code blocks when the language or shell is
   known.
-- Keep paragraphs left-aligned unless indentation is required by Markdown
+- Avoid indented code blocks when fenced code blocks are clearer.
+- Keep code blocks copy-safe; avoid prompts, ellipses, or hidden assumptions
+  unless they are intentionally part of the example.
+- Escape or quote placeholders that could be interpreted as HTML or Markdown
   syntax.
-- Avoid invisible trailing whitespace as a formatting mechanism.
-- Keep heading levels hierarchical; do not skip levels without a structural
-  reason.
-- Prefer lists and tables only when they improve scanning or comparison.
-- Keep links descriptive enough to be understood out of context.
+- Prefer inline links for short, readable links.
+- Use reference links when a long URL would damage source readability or when
+  the same URL is repeated.
+- Keep internal link strategy consistent with the repository or documentation
+  platform.
+- Prefer relative links for repository files when the repository and renderer
+  support them.
+- Provide meaningful alt text for informative images.
+- Add captions or surrounding text when an image is necessary to understand the
+  document.
+- Use Markdown tables only for compact, simple, tabular data.
+- Add a blank line before Markdown tables to improve renderer compatibility.
+- Keep table columns short enough to remain readable in source form.
+- Avoid complex multi-paragraph content inside table cells.
+- Avoid lists inside table cells unless the target renderer is known to support
+  them cleanly.
+- Prefer headings, lists, or definition-style sections over oversized tables.
+- Add front matter only when the target toolchain requires metadata.
+- Prefer simple key-value front matter before introducing nested metadata
+  structures.
+- Validate front matter syntax separately from Markdown content.
+
+### Errors
+
+- Treat malformed Markdown syntax, broken heading hierarchy, malformed links,
+  malformed image syntax, and unclosed code fences as defects to fix before
+  finalizing Markdown.
+- Treat duplicate headings as defects when generated anchors must remain
+  predictable or when the target platform generates conflicting anchors.
+- Treat missing language identifiers on known-language fenced code blocks as
+  defects unless the repository style intentionally omits them.
+- Treat invalid or unsupported renderer-specific syntax as a defect when the
+  target renderer is unknown or different from the syntax source.
+- Do not invent link targets, image paths, anchors, metadata fields, badges,
+  commands, or external references.
+- Verify anchors and relative paths when generating repository documentation.
+- Do not add undocumented metadata fields for speculative future use.
+
+### Safety
+
+- Treat Markdown from users or external systems as untrusted input.
+- Prefer Markdown syntax over raw HTML.
+- Use raw HTML only when Markdown cannot express the required structure and the
+  target renderer allows HTML.
+- Do not emit raw HTML in security-sensitive or user-generated Markdown
+  pipelines unless sanitization is guaranteed.
+- Disable raw HTML in Markdown parsers when it is not required.
+- Sanitize rendered HTML before displaying user-generated Markdown.
+- Apply a whitelist approach for allowed tags and attributes when HTML output
+  must be supported.
+- Validate links and reject unsafe protocols such as `javascript:` or `data:`.
+- Do not embed external images unless the project allows external dependencies.
+- Do not store secrets, API keys, credentials, private tokens, passwords, or
+  private URLs in Markdown examples.
+- Keep Markdown parsing dependencies updated when dependency maintenance is
+  part of the project scope.
+
+### Tests
+
+- Validate generated Markdown syntax before presenting it as final when a
+  validator or renderer check is available.
+- Check heading order, duplicate headings, blank lines around headings,
+  trailing whitespace, malformed lists, invalid tables, and unclosed code
+  fences.
+- Check that fenced code blocks use language identifiers when the language is
+  known.
+- Check links, anchors, and repository-relative paths when the documentation
+  will be stored in a repository.
+- Check front matter with a front matter or YAML validator when front matter is
+  present.
+- Check renderer-specific extensions against the declared target renderer
+  before using callouts, admonitions, task lists, footnotes, heading IDs, or
+  other non-portable syntax.
+- When editing existing Markdown, verify that the change matches the existing
+  repository documentation style.
+- Check image paths, alt text, and external image usage against repository
+  documentation rules.
+
+### Idioms
+
+- Generate the smallest Markdown structure that satisfies the request.
+- Prefer consistent Markdown patterns over local cleverness.
+- Use explicit Markdown syntax instead of invisible formatting whenever
+  possible.
+- Do not add speculative sections.
+- Do not duplicate the same rule or content under multiple headings.
+- Do not mix tutorial content with coding-agent rules unless the user requested
+  a tutorial.
+- Keep each Markdown rule, example, and section action-oriented and testable.
+- Use headings to structure meaning, not merely to control visual size.
+- Keep documentation source maintainable for human review, diffs, and version
+  control.
+
+### Other
+
+- Treat callouts, admonitions, task lists, footnotes, heading IDs, and other
+  Markdown extensions as platform-specific unless explicitly supported.
+- Document any required Markdown extension in the file or project rules.
+- Prefer plain Markdown over proprietary or tool-specific formats for durable
+  repository documentation unless project requirements justify otherwise.
 
 ## Review Checklist for Documentation
 
