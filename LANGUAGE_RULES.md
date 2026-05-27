@@ -11,7 +11,12 @@ Use this file together with `AGENTS.md` and `CODING_RULES.md`:
 
 ## Scope
 
-Apply only the section that matches the language of the files being created, edited, reviewed, or refactored.
+Apply only the section or sections that match the language of the files being
+created, edited, reviewed, or refactored.
+
+When a language or dialect section explicitly says it applies in addition to a
+more general section, apply both sections. If those sections overlap, prefer
+the more specific language or dialect rule.
 
 If the target language has no section in this file, apply only `CODING_RULES.md` plus repository conventions; do not invent language-specific rules.
 

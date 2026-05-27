@@ -32,6 +32,27 @@ When rules conflict, apply them in this order:
 5. General code-quality rules from `CODING_RULES.md`.
 6. General behavioral rules from this `AGENTS.md`.
 
+## Observable Instruction Protocol
+
+Before creating, editing, reviewing, or refactoring code, modifying
+documentation, creating commits, or creating Git tags, the agent must state an
+instruction audit before taking the requested action.
+
+The instruction audit must include:
+- The task type.
+- The instruction files that apply.
+- The instruction files already read for the task.
+- Any assumptions that affect scope or verification.
+- The planned verification step.
+
+Use the instruction scope above to determine which instruction files apply to
+the task. Do not duplicate the scope rules in this protocol.
+
+After completing the task, the agent must include a brief compliance recap:
+- Which instruction files were applied.
+- What verification was run.
+- Any instruction that could not be applied, with the reason.
+
 **Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
 ## 1. Think Before Coding
@@ -87,7 +108,7 @@ Transform tasks into verifiable goals:
 - "Refactor X" → "Ensure tests pass before and after"
 
 For multi-step tasks, state a brief plan:
-```
+```text
 1. [Step] → verify: [check]
 2. [Step] → verify: [check]
 3. [Step] → verify: [check]
