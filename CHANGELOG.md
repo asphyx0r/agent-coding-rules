@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.21.0
+
+References | Description | Author(s)
+--- | --- | ---
+2755169 | Clarify agent rule scope | asphyx
+
 ## v1.20.0
 
 References | Description | Author(s)
