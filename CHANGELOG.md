@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.20.0
+
+References | Description | Author(s)
+--- | --- | ---
+43ad43f | Organize Markdown quality rules | asphyx
+
 ## v1.19.0
 
 References | Description | Author(s)
