@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.21.1
+
+References | Description | Author(s)
+--- | --- | ---
+1281b6f | Document README onboarding | asphyx
+
 ## v1.21.0
 
 References | Description | Author(s)
