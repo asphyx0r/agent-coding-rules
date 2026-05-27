@@ -61,7 +61,11 @@ If repository-specific documentation conventions exist, follow them first.
 ### Existence and Location
 
 - A `README.md` file must exist at the repository root.
-- If no `README.md` exists, create a minimal one.
+- If no `README.md` exists while creating, editing, or refactoring project
+  documentation, create a minimal one.
+- If no `README.md` exists during a review-only documentation task, report the
+  missing file instead of creating it unless the user explicitly asks for
+  remediation.
 - Place the main repository README at the repository root unless the hosting
   platform or project convention requires another location.
 - Do not rely on `.github/README.md` or `docs/README.md` as the only project
@@ -120,6 +124,9 @@ When a root `README.md` is missing, create a minimal README using the structure
 below. Replace every placeholder with project-specific content at generation
 time. Adapt or remove commands, examples, contribution text, and license text
 when the template content is not accurate for the documented project.
+
+When creating a missing minimal root `README.md`, write it in English unless
+the user explicitly requests another language.
 
 Do not keep the sample package manager, command, module name, examples, or
 license unless they are correct for the project.

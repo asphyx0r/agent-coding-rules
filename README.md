@@ -14,7 +14,7 @@ Practical behavior and code-quality rules for AI coding agents.
 - `AGENTS.md`: Defines the model behavior rules.
 - `CHANGELOG.md`: Lists tagged release history.
 - `CODING_RULES.md`: Defines the code-quality rules for code produced by the model.
-- `COMMIT_RULES.md`: Defines commit message rules.
+- `COMMIT_RULES.md`: Defines commit readiness, privacy, and message rules.
 - `DOCUMENTATION_RULES.md`: Defines documentation rules, including README and
   changelog rules.
 - `LANGUAGE_RULES.md`: Defines language-specific coding rules.
