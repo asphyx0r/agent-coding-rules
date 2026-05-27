@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.19.0
+
+References | Description | Author(s)
+--- | --- | ---
+576278e | Add mIRC language rules | asphyx
+
 ## v1.18.0
 
 References | Description | Author(s)
