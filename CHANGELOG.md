@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.21.3
+
+References | Description | Author(s)
+--- | --- | ---
+0dd1c94 | Clarify README source links | asphyx
+
 ## v1.21.2
 
 References | Description | Author(s)
