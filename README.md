@@ -45,6 +45,8 @@ Practical behavior and code-quality rules for AI coding agents.
 
 ## Installation
 
+The example below uses POSIX shell commands:
+
 ```bash
 mkdir -p /home/user/project-name
 cd /home/user/project-name
@@ -62,9 +64,9 @@ cp .agent-coding-rules/*_RULES.md .
 
 ## Sources
 
-- Karpathy-Inspired Claude Code Guidelines (https://github.com/multica-ai/andrej-karpathy-skills)
+- [Karpathy-Inspired Claude Code Guidelines](https://github.com/multica-ai/andrej-karpathy-skills)
 - Robert C. Martin, Clean Code: A Handbook of Agile Software Craftsmanship (978-0132350884)
-- Semantic Versioning 2.0.0 (https://semver.org/)
+- [Semantic Versioning 2.0.0](https://semver.org/)
 - The PPL Development Kit: The PCBoard Programming Language Reference Manual (1993, Clark Development)
 
 ## License
