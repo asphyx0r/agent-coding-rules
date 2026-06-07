@@ -18,6 +18,8 @@ Practical behavior and code-quality rules for AI coding agents.
   layering, build context, image safety, and publication checks.
 - Includes Rust-specific rules for ownership, error handling, unsafe code,
   rustdoc examples, Cargo features, and Cargo-based verification.
+- Includes Warez Release NFO File rules for fixed-width `.nfo` artifacts,
+  `FILE_ID.DIZ`, ASCII/CP437 rendering, safe scope, and piracy-risk boundaries.
 - Keeps agent instructions separate from human-facing project documentation.
 
 ## Files
@@ -59,6 +61,7 @@ Practical behavior and code-quality rules for AI coding agents.
 - SQL (Oracle PL/SQL)
 - Tcl (Eggdrop Scripting)
 - TypeScript
+- Warez Release NFO File
 - Windows Batch
 
 ## Installation
@@ -106,6 +109,10 @@ cp .agent-coding-rules/*_RULES.md .
 - [The Cargo Book](https://doc.rust-lang.org/cargo/)
 - [The Rust Reference](https://doc.rust-lang.org/reference/)
 - [Docker Documentation](https://docs.docker.com/)
+- [.nfo](https://en.wikipedia.org/wiki/.nfo)
+- [NFO File Format](https://docs.fileformat.com/system/nfo/)
+- [FILE_ID.DIZ](https://en.wikipedia.org/wiki/FILE_ID.DIZ)
+- [File_ID.diz Frequently Asked Questions](https://www.roysac.com/file_iddesc.html)
 
 ## License
 

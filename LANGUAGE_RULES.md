@@ -2893,3 +2893,157 @@ layering, build context, and image-runtime concerns in this section.
 - Do not expand a Dockerfile change into CI, deployment, orchestration, or
   runtime infrastructure changes unless the user explicitly requests that
   broader scope.
+
+## Warez Release NFO File
+
+### Naming
+
+- Use `.nfo` as the filename extension for NFO-style plain-text release
+  information artifacts.
+- Keep generated NFO-adjacent filenames portable across common filesystems.
+- Avoid spaces in generated NFO-adjacent filenames; use dots, underscores, or
+  hyphens consistently instead.
+- Use a stable, readable release title format and preserve the full title in
+  metadata or notes when the filename or displayed title must be shortened.
+- Do not invent release names, group names, release dates, versions, sources,
+  provenance, affiliations, or status claims.
+- Do not impersonate real Warez groups, topsites, couriers, site operators,
+  affiliates, or Scene actors.
+- Use fictional group tags only when the user explicitly requests a fictional or
+  aesthetic NFO and the tag cannot be mistaken for a real group.
+- Do not use Scene-specific tags such as `PROPER`, `REPACK`, `FIX`, `INTERNAL`,
+  or `READNFO` unless their meaning is explained safely and lawfully.
+- When a language tag is used, state the language clearly in the NFO metadata.
+
+### Formatting
+
+- Treat a Warez Release NFO File as a fixed-width plain-text information file,
+  not as executable code or markup.
+- Assume a monospaced display for every visual element, table, divider, and
+  ASCII-art block.
+- Keep the NFO readable in a plain text viewer without relying on colors,
+  images, proportional fonts, CSS, HTML, Markdown rendering, or
+  terminal-specific effects.
+- Prefer 7-bit ASCII when maximum portability is required.
+- Use CP437-compatible extended characters only when the target renderer,
+  archive, or display context explicitly supports them.
+- Do not mix incompatible encodings in the same NFO file.
+- Use spaces, not tabs, for alignment.
+- Preserve intentional interior spacing inside ASCII art and fixed-width tables.
+- Do not leave trailing whitespace at line ends.
+- Keep each generated NFO line at or below the configured width limit; use 80
+  columns when no narrower project limit is provided.
+- Split long titles, release names, source references, URLs, and metadata values
+  across multiple aligned lines instead of exceeding the width limit.
+- Use consistent horizontal separators, section boxes, indentation, and blank
+  lines across the generated NFO.
+- Keep ASCII art compact enough to fit within the width limit and avoid dense
+  decorative blocks that hide the release information.
+- Do not prioritize ASCII art over readability of the core metadata and notes.
+- Use a stable section order: header, title or release name, release metadata,
+  description or notes, lawful technical or compatibility information, lawful
+  proof or source references, authorized or fictional credits, then any useful
+  legal or safety note.
+- Do not include a section when it would contain speculative, unsafe, private,
+  or unavailable information.
+- Use short section names that remain readable in fixed-width output.
+- Do not duplicate the same metadata in multiple sections unless duplication
+  improves human readability.
+
+### Errors
+
+- Treat missing required lawful context as a blocking issue only when it would
+  make safe generation impossible.
+- When metadata is incomplete but safe generation remains possible, omit the
+  unknown field or use `Unknown` or `N/A` consistently.
+- Reject or rewrite any request for operational piracy instructions, access to
+  pirated material, cracking, DRM bypass, credential misuse, unauthorized
+  distribution, or private Scene infrastructure details.
+- If the user asks for a real operational piracy NFO, refuse the operational
+  content and offer a safe historical, fictional, archival, educational, or
+  legitimate-release alternative.
+- Treat encoding mismatches, line-width overflow, broken alignment, tabs,
+  trailing spaces, unsafe operational content, and private identifiers as
+  defects to fix before finalizing an NFO.
+- Treat misleading historical authenticity, invented provenance, fake credits,
+  or unauthorized real group signatures as defects.
+
+### Safety
+
+- Generate NFO-style content only for lawful, fictional, archival, documentary,
+  educational, or legitimate release-note use.
+- Do not generate instructions that enable copyright infringement, cracking,
+  DRM bypass, credential misuse, unauthorized distribution, or access to
+  pirated material.
+- Do not include serial numbers, activation bypasses, keygen instructions, crack
+  usage steps, private download links, private server names, credentials, IP
+  addresses, invite paths, or operational piracy details.
+- Do not include real nicknames, identities, site operators, affiliates,
+  private group members, or identifying metadata unless the user provides
+  explicit, lawful, publication-ready material.
+- Do not add Scene-specific claims of precedence, private access, affiliation,
+  status, supply-chain position, or release authority unless the file is
+  explicitly fictional or based on lawful historical quotation.
+- Do not browse for pirated material, release databases, cracks, serials,
+  private Scene sources, download paths, or other operational piracy resources.
+- Do not use offensive, hateful, sexually explicit, or targeted abusive ASCII
+  art.
+- Do not copy protected ASCII artwork from real groups unless the user provides
+  authorization or the use is clearly lawful historical quotation within
+  applicable limits.
+- When uncertainty remains, prioritize safety, legality, readability, and
+  maintainability over Scene authenticity.
+
+### Tests
+
+- Validate that every generated NFO line respects the configured width limit.
+- Validate that ASCII art, tables, separators, and aligned metadata remain
+  aligned after saving and reopening the file in a monospaced plain-text viewer.
+- Validate CP437 or extended ASCII output in a compatible viewer before treating
+  the NFO as final.
+- Validate that the raw NFO contains no tabs and no trailing spaces.
+- Validate that metadata values are internally consistent and that unknown
+  values are omitted or represented consistently.
+- Validate that no unsafe operational piracy content is present.
+- Validate that no real private identifiers, credentials, IP addresses,
+  download paths, invite paths, or personal data are present.
+- Validate that the NFO can be read as plain text without special tooling.
+- Validate that Markdown, HTML, ANSI escape sequences, or terminal rendering
+  syntax has not been mixed into the raw NFO unless explicitly required.
+- When generating a companion `FILE_ID.DIZ`, validate its separate width,
+  height, and summary constraints independently from the NFO.
+
+### Idioms
+
+- Use an NFO for readable release information, metadata, and longer notes.
+- Use a `FILE_ID.DIZ` only as a short archive description when explicitly
+  requested.
+- Do not copy the full NFO body into a `FILE_ID.DIZ` file.
+- Use concise, human-readable labels such as `Title`, `Version`, `Date`,
+  `Language`, `Platform`, `Format`, `Notes`, and `Source`.
+- Prefer direct, readable language over excessive leetspeak or deliberately
+  misspelled text.
+- Use stylized capitalization only when the meaning remains obvious.
+- Avoid unexplained Scene jargon when writing for a general audience.
+- Define necessary jargon briefly inside the NFO or in the surrounding
+  documentation.
+- Use ASCII art only as a header, logo, divider, or signature that supports the
+  information layout.
+- For historical sources, summarize structure and aesthetics rather than
+  reproducing operational release instructions.
+
+### Other
+
+- Apply this section only to `.nfo` files, `FILE_ID.DIZ`, or explicitly
+  NFO-style fixed-width plain-text artifacts.
+- Do not apply this section to Markdown changelogs, README files, ordinary
+  project release notes, or non-NFO plain-text documentation.
+- Ask for missing metadata only when the missing information blocks safe and
+  useful generation.
+- If a real-world release is requested, ensure the release is lawful or reframe
+  the artifact as a fictional, archival, educational, or legitimate software or
+  media release note.
+- Do not infer hidden Scene affiliations, release provenance, private access, or
+  historical authenticity from style alone.
+- When the user requests a downloadable NFO, generate only the safe plain-text
+  NFO-style artifact and keep unsafe operational material out of the file.
