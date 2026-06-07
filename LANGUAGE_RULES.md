@@ -1988,3 +1988,142 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 - Use autocomplete data only as editor-support context for discovering possible
   command names or parameters, never as a replacement for official mIRC
   documentation.
+
+## GW-BASIC
+
+### Naming
+
+- Do not use GW-BASIC reserved words as variable names.
+- Start variable names with a letter.
+- Use only letters, digits, and the decimal point in variable names before any
+  type declaration character.
+- Keep variable names meaningfully unique within the first 40 characters,
+  because GW-BASIC recognizes only that significant part.
+- Put any type declaration character at the end of the variable name.
+- Use explicit type suffixes when type clarity matters.
+- Use `$` for string variables, `%` for integer variables, `!` for
+  single-precision variables, and `#` for double-precision variables.
+- Avoid unnecessary double precision because it uses more memory and calculation
+  time.
+- Keep variable and expression types compatible.
+- Do not assign numeric values to string variables.
+- Do not assign string values to numeric variables unless an explicit conversion
+  is intended.
+
+### Formatting
+
+- Every stored GW-BASIC program line must start with a valid line number.
+- Use line numbers in ascending logical order and keep them within the valid
+  GW-BASIC range.
+- Prefer line-number increments of `10`, such as `10`, `20`, and `30`, to leave
+  insertion space for later edits.
+- Use `RENUM` when line numbering becomes hard to maintain.
+- Keep each logical line short enough to remain readable and maintainable.
+- Avoid packing unrelated logic on one line.
+- Use `:` to combine statements only when the resulting line remains easy to
+  read, test, and renumber.
+- Use indirect mode for persistent programs.
+- Use direct mode only for quick calculations, experiments, or debugging
+  commands that do not need to be stored.
+- Prefer direct assignment with `variable = expression` instead of
+  `LET variable = expression`, unless compatibility with older BASIC dialects is
+  explicitly required.
+- Use `REM` or apostrophe comments to explain intent.
+- Use standalone `REM` lines for section headers or longer notes.
+- Use apostrophe comments only for short end-of-line explanations.
+- Comment non-obvious formulas, hardware assumptions, file layouts, and error
+  handlers.
+- Do not place `REM` inside a `DATA` statement, because it is treated as data
+  rather than as a comment.
+- Keep comments synchronized with the code they describe.
+- Remove misleading comments when changing the associated logic.
+
+### Errors
+
+- Use `ON ERROR GOTO lineNumber` around file I/O, device I/O, conversions, and
+  other recoverable operations.
+- Ensure every error-handler target line exists.
+- Keep error handlers short and readable.
+- Use `ERR` to identify the error code inside error handlers.
+- Use `ERL` to identify the failing line number inside error handlers.
+- Recover with `RESUME` or `RESUME NEXT` only when continuing execution is safe.
+- Use `ON ERROR GOTO 0` when intentional error trapping should be disabled.
+- Avoid code paths that can trigger new errors inside an error handler.
+- Ensure every reachable `GOSUB` path returns with `RETURN`.
+- Validate that the number of `READ` operations matches the available `DATA`
+  values.
+
+### Safety
+
+- Use explicit `OPEN` modes for file I/O.
+- Keep file-number usage consistent.
+- Document file-number assignments when more than one file or device is used.
+- Always `CLOSE` files or devices when the program no longer needs them.
+- Use `CLOSE` without a file number only when closing all open files and devices
+  is intentional.
+- When using record files, ensure that the selected record length is compatible
+  with the runtime configuration.
+- Document redirected input or output requirements in the program header or
+  execution notes.
+- Treat printer, serial, joystick, and other device-specific behavior as
+  environment-dependent.
+- Avoid `PEEK`, `POKE`, `DEF SEG`, `CALL`, `USR`, `INP`, and `OUT` unless
+  low-level access is explicitly required.
+- Isolate hardware-specific or memory-specific logic in clearly labeled blocks.
+- Document memory addresses, port numbers, expected machine state, and emulator
+  assumptions.
+- Do not assume that behavior from historical DOS hardware will work unchanged
+  in modern environments.
+- Treat emulator behavior as an implementation detail unless the target emulator
+  is explicitly part of the requirements.
+
+### Tests
+
+- Before modifying an existing GW-BASIC program, list and inspect the relevant
+  line range.
+- After structural edits, verify that all referenced target lines still exist.
+- Run the program after each meaningful change when execution is possible.
+- Inspect the affected output before continuing to the next change.
+- Use deterministic random sequences intentionally when repeatable behavior is
+  required for testing.
+- Document whether random behavior is expected to be repeatable or
+  non-repeatable.
+
+### Idioms
+
+- Use `DIM` explicitly for arrays whose subscript can exceed the default
+  implicit bound.
+- Do not rely on implicit array allocation for non-trivial arrays.
+- Document whether arrays are zero-based or one-based.
+- Use `OPTION BASE` only when changing the default array base is intentional and
+  documented.
+- Keep array dimensions simple.
+- Avoid high-dimensional arrays unless the data model clearly requires them.
+- Prefer simple array layouts that can be inspected and debugged manually.
+- Prefer `FOR...NEXT` loops for counted iteration.
+- Prefer `WHILE...WEND` loops for condition-based iteration.
+- Use `GOTO` only for simple top-level flow or legacy-compatible control paths
+  where a structured alternative would be less readable.
+- Use `GOSUB...RETURN` for reusable subroutines.
+- Clearly document the input variables expected by each `GOSUB` block.
+- Clearly document the output variables modified by each `GOSUB` block.
+- Use `DEF FN` only for short single-expression functions.
+- Do not use `DEF FN` as a substitute for multi-statement procedures.
+- Keep `DATA` statements close to the logic that reads them when practical.
+- Use `READ` and `RESTORE` deliberately.
+- Document the expected order and meaning of values stored in `DATA`
+  statements.
+- Avoid mixing unrelated data structures in the same `DATA` block.
+- Use `RANDOMIZE TIMER` at the beginning of programs that require
+  non-repeatable random sequences.
+- Avoid `RANDOMIZE` without an argument in automated programs unless interactive
+  seed input is intended.
+
+### Other
+
+- Do not reuse an existing line number unless replacing that line is
+  intentional.
+- Do not enter a bare existing line number unless deleting that line is
+  intentional.
+- Use `RENUM` only when it improves maintainability.
+- Save the program before exiting GW-BASIC or returning to DOS.

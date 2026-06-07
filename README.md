@@ -25,6 +25,7 @@ Practical behavior and code-quality rules for AI coding agents.
 - Bash
 - CSS
 - Go
+- GW-BASIC
 - HTML
 - Java
 - Java (Properties Files)
@@ -68,6 +69,7 @@ cp .agent-coding-rules/*_RULES.md .
 - Robert C. Martin, Clean Code: A Handbook of Agile Software Craftsmanship (978-0132350884)
 - [Semantic Versioning 2.0.0](https://semver.org/)
 - The PPL Development Kit: The PCBoard Programming Language Reference Manual (1993, Clark Development)
+- Microsoft GW-BASIC Interpreter User's Guide and User's Reference (1986)
 
 ## License
 
