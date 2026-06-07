@@ -2289,3 +2289,109 @@ rule for framework code.
   intentional.
 - Use `RENUM` only when it improves maintainability.
 - Save the program before exiting GW-BASIC or returning to DOS.
+
+## Rust
+
+### Naming
+
+- Use idiomatic Rust naming consistently: `snake_case` for functions, methods, variables, and modules; `UpperCamelCase` for types, traits, and enum variants; and `SCREAMING_SNAKE_CASE` for constants and statics.
+- Follow Rust API naming conventions for conversions, getters, iterator methods, and Cargo feature names.
+- Choose names that make call sites predictable and do not encode implementation details that callers should not depend on.
+- Use `const` items for repeated values, domain-significant values, thresholds, and limits; use `static` only when a stable memory location or intentional global state is required.
+- Document non-obvious Rust constants and magic values with the invariant or domain reason they represent, not with a restatement of their value.
+- Name Rust tests after the behavior they protect instead of naming them only after issue numbers or bug IDs.
+
+### Formatting
+
+- Format Rust code with `cargo fmt` or `rustfmt` before presenting or committing it.
+- Keep function signatures explicit: declare parameter types and prefer narrow signatures that expose the real contract of the function.
+- Prefer immutable bindings by default; add `mut` only when reassignment is intentional and clearer than creating a new binding.
+- Use shadowing when transforming a value into a new immutable value, especially when the type changes.
+- Use Rust expression semantics intentionally: do not add a semicolon to the final expression when the value must be returned.
+- Prefer implicit final-expression returns for simple functions, and use `return` only when early exit improves clarity.
+- Keep Rust comments focused on ownership invariants, safety reasoning, platform behavior, public API contracts, or business rules that the type system and names cannot express.
+- Do not write comments that merely restate obvious Rust syntax or repeat identifier names.
+- When modifying existing Rust code, change only the lines required by the requested behavior and preserve the local style.
+- Remove only unused imports, variables, functions, feature gates, or Cargo dependencies made unused by the current Rust change.
+
+### Errors
+
+- Use `Result<T, E>` for recoverable failures that the caller can handle.
+- Use `?` to propagate recoverable errors when it keeps control flow clear.
+- Use `Option<T>` only when a value may legitimately be absent and absence is not an error.
+- Use `Result<T, E>` instead of `Option<T>` when absence or failure needs an explanation or caller action.
+- Avoid `unwrap()` and `expect()` in production paths unless the invariant is truly impossible to violate.
+- When `expect()` is justified, write a message that explains the invariant being relied on.
+- Use `panic!` for tests, unrecoverable programming bugs, violated invariants, or impossible states.
+- Do not use `panic!` as a normal upstream error channel.
+- For libraries, expose meaningful error types that provide useful `Display` output and implement the expected traits.
+- For applications, broader executable-boundary error wrappers are acceptable when callers are not expected to branch on library-level error variants.
+- Do not make callers depend on formatting details of human-readable error messages when a typed error would be more stable.
+
+### Safety
+
+- Design Rust code around ownership and borrowing instead of working around the borrow checker.
+- Keep scopes tight so borrows expire as soon as possible.
+- Avoid unnecessary `clone()` calls when borrowing, moving, or restructuring ownership is clearer and sufficient.
+- Prefer strong domain types such as newtypes, enums, and structs over ambiguous `bool`, `Option`, string, or numeric parameters.
+- Return values directly instead of mutating caller-provided out-parameters.
+- Use tuples, structs, enums, or custom result types when multiple values must be returned.
+- Do not expose dependency-specific types in public APIs unless the dependency is intentionally part of the public contract.
+- Prefer stable domain types at API boundaries when the dependency is an implementation detail.
+- Avoid surprising operator overloads.
+- Implement `Deref` only for smart-pointer-like types where dereference behavior is expected by callers.
+- Derive or implement `Debug`, `Clone`, `Copy`, `Eq`, `PartialEq`, `Ord`, `PartialOrd`, `Hash`, `Default`, and `Display` only when their semantics are correct for the type.
+- Ensure all public types implement `Debug` unless there is a specific documented reason not to.
+- If a public type contains secrets or sensitive data, implement `Debug` manually and verify that sensitive values are redacted.
+- Prefer structured logging with named fields when the logging API supports it.
+- Never log plain secrets, personal data, tokens, or sensitive file paths.
+- Avoid `unsafe` code by default.
+- Use `unsafe` only for a valid reason such as FFI, platform calls, low-level abstractions, or measured performance work.
+- Do not use `unsafe` to bypass lifetimes, `Send` bounds, or ordinary type-system constraints.
+- Every unsafe block or unsafe abstraction must include plain-text safety reasoning that states the invariants the code relies on.
+- If an abstraction cannot be soundly encapsulated as safe Rust, expose an unsafe API instead of pretending it is safe.
+
+### Tests
+
+- Use `cargo fmt`, `cargo clippy`, `cargo test`, and compiler lints as standard Rust verification gates.
+- Run the narrowest meaningful Rust verification command first, then broaden checks when the change can affect shared behavior.
+- Use `cargo audit`, `cargo hack`, `cargo udeps`, or Miri when those tools are available and dependency risk, feature combinations, unused dependencies, or unsafe-code assumptions are relevant.
+- Prefer `#[expect(..., reason = "...")]` over broad `#[allow(...)]` in handwritten code when the project's Rust toolchain supports it.
+- Reserve broad `#[allow(...)]` usage for generated code, macros, or cases where `expect` is not appropriate.
+- Write unit tests, doc tests, and integration tests according to the behavior being protected.
+- Keep Rust tests minimal, reproducible, clearly named, and focused on observable behavior.
+- Test recoverable error paths, invalid inputs, boundary cases, and invariants that callers rely on.
+- Do not accept flaky tests as normal; make tests deterministic or document any platform-specific ignore or requirement directive.
+- Remove unrelated syntax, unused features, distracting setup, and non-critical failures from tests.
+- Reference issue numbers in test comments when useful, but keep the test name semantic.
+- Validate unsafe code with focused tests, adversarial cases where relevant, and Miri when applicable.
+- Justify unsafe performance work with benchmarks.
+- Profile and benchmark before adding performance-motivated complexity.
+
+### Idioms
+
+- Prefer idiomatic Rust APIs, strong types, clear ownership, and testable boundaries.
+- Use static inherent constructors such as `Type::new()` for normal construction.
+- Implement `Default` only when there is a clear and unsurprising default state.
+- Use a builder when construction requires many optional parameters, ordered configuration, or validation before instantiation.
+- Do not introduce a builder for simple values that can be constructed clearly with `new`, struct literals, or `Default`.
+- Keep conversions on the most specific type involved.
+- Use iterator conventions consistently: expose `iter`, `iter_mut`, and `into_iter` where they match the collection behavior.
+- Implement `FromIterator` and `Extend` for collection types when that behavior is natural.
+- Keep Cargo features additive: features should add capabilities without disabling existing behavior or creating incompatible combinations.
+- Validate important Cargo feature combinations when the project exposes multiple features.
+- Do not optimize by guesswork; identify hot paths, measure them, and document performance-sensitive decisions.
+- In performance-sensitive code, watch for repeated string allocation, redundant cloning, repeated hashing, and avoidable collection growth.
+- Optimize allocation, cloning, hashing, or collection growth only when measurement shows the path matters.
+- Design long-running CPU-heavy async work to yield or batch work so it does not starve unrelated tasks.
+- Use runtime-specific async budget APIs only when the selected runtime supports them and the need is clear.
+
+### Other
+
+- Document crate-level behavior, modules, public items, examples, errors, panics, and safety requirements for public APIs.
+- Prefer directly usable documentation examples and use `?` instead of `unwrap()` in normal examples.
+- Keep `Cargo.toml` metadata complete for published libraries, including description, license, repository, documentation, keywords, and categories when applicable.
+- Avoid wildcard dependency versions.
+- Treat Cargo features, public error types, public dependency types, and trait implementations as part of the public API contract when they affect downstream users.
+- Favor idiomatic Rust APIs, strong types, rustdoc examples, explicit unsafe invariants, and Cargo-based verification gates.
+- Do not introduce new Rust abstractions, builders, feature flags, dependencies, unsafe code, or performance optimizations unless they solve the requested Rust problem.

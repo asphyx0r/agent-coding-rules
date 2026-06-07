@@ -7,6 +7,8 @@ Practical behavior and code-quality rules for AI coding agents.
 - Provides reusable behavioral rules for AI coding agents.
 - Defines language-agnostic, language-specific, framework-specific,
   documentation, commit, and release rules.
+- Includes Rust-specific rules for ownership, error handling, unsafe code,
+  rustdoc examples, Cargo features, and Cargo-based verification.
 - Keeps agent instructions separate from human-facing project documentation.
 
 ## Files
@@ -37,6 +39,7 @@ Practical behavior and code-quality rules for AI coding agents.
 - PHP
 - PowerShell
 - Python
+- Rust
 - SQL (Generic)
 - SQL (Microsoft SQL Server Transact-SQL)
 - SQL (MySQL)
@@ -72,6 +75,9 @@ cp .agent-coding-rules/*_RULES.md .
 - The PPL Development Kit: The PCBoard Programming Language Reference Manual (1993, Clark Development)
 - Microsoft GW-BASIC Interpreter User's Guide and User's Reference (1986)
 - [Laravel Documentation](https://laravel.com/docs)
+- [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
+- [The Cargo Book](https://doc.rust-lang.org/cargo/)
+- [The Rust Reference](https://doc.rust-lang.org/reference/)
 
 ## License
 
