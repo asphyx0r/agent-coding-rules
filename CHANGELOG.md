@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.29.0
+
+References | Description | Author(s)
+--- | --- | ---
+cbcce64 | Add NFO language rules | asphyx
+
 ## v1.28.0
 
 References | Description | Author(s)
