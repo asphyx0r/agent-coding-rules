@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.28.0
+
+References | Description | Author(s)
+--- | --- | ---
+94f79b8 | Add C# language rules | asphyx
+
 ## v1.27.0
 
 References | Description | Author(s)
