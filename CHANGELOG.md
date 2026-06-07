@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.27.0
+
+References | Description | Author(s)
+--- | --- | ---
+dafa0a0 | Add C++ language rules | asphyx
+
 ## v1.26.0
 
 References | Description | Author(s)
