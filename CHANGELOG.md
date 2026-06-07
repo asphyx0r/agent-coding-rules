@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.25.0
+
+References | Description | Author(s)
+--- | --- | ---
+59bf780 | Add Docker language rules | asphyx
+
 ## v1.24.0
 
 References | Description | Author(s)
