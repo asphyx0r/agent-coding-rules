@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.26.0
+
+References | Description | Author(s)
+--- | --- | ---
+645a18e | Add C language rules | asphyx
+
 ## v1.25.0
 
 References | Description | Author(s)
