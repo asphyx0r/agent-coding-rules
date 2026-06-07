@@ -2395,3 +2395,178 @@ rule for framework code.
 - Treat Cargo features, public error types, public dependency types, and trait implementations as part of the public API contract when they affect downstream users.
 - Favor idiomatic Rust APIs, strong types, rustdoc examples, explicit unsafe invariants, and Cargo-based verification gates.
 - Do not introduce new Rust abstractions, builders, feature flags, dependencies, unsafe code, or performance optimizations unless they solve the requested Rust problem.
+
+## Docker Files
+
+Apply this section to Dockerfiles and `.dockerignore` files. Do not apply it to
+Docker Compose files, Kubernetes manifests, CI workflows, deployment scripts, or
+broader runtime infrastructure unless the user explicitly requests that broader
+scope. When `RUN` instructions contain substantial shell code, apply the
+relevant shell section to that embedded shell logic while keeping Dockerfile
+layering, build context, and image-runtime concerns in this section.
+
+### Naming
+
+- Use clear Docker build stage names that describe their role, such as
+  `builder`, `test`, or `runtime`.
+- When a Dockerfile exposes multiple build targets, name each target after the
+  image concern or build role it represents.
+- Use consistent names for runtime users, groups, application directories, and
+  label keys when those names are introduced by the Dockerfile.
+
+### Formatting
+
+- Generate Dockerfiles only for image build logic; do not use Dockerfiles as CI
+  scripts, deployment scripts, database migration runners, or generic shell
+  automation wrappers.
+- Keep Dockerfile build steps local, deterministic, and limited to producing the
+  image filesystem.
+- Order instructions from least frequently changing to most frequently changing.
+- Copy dependency manifests before copying application source code so dependency
+  layers stay cached when only source files change.
+- Copy only the files required by each build step.
+- Avoid broad `COPY . .` instructions before dependency installation when a
+  smaller manifest-only copy can preserve build cache efficiency.
+- Combine related package installation and cleanup commands in the same `RUN`
+  instruction when doing so reduces image size without harming readability.
+- Do not split package-manager update, install, and cleanup steps into separate
+  layers when the cleanup is required to keep the image small.
+- Clean package-manager caches, temporary files, and build-only artifacts in the
+  same layer where they are created.
+- Use a `.dockerignore` file to exclude files that are not required for the
+  image build, such as VCS metadata, local dependencies, build artifacts, logs,
+  documentation, test outputs, and local secrets.
+- Keep test stages separate from runtime stages.
+- Use `COPY --from=<stage>` to copy artifacts from earlier stages instead of
+  rebuilding or reinstalling them in the final image.
+- Use `COPY --chown=<user>:<group>` or an equivalent ownership strategy when
+  files must be owned by a non-root runtime user.
+- Keep production runtime stages focused on runtime execution only.
+
+### Errors
+
+- Treat Dockerfile syntax errors and failed image builds as blocking defects.
+- Treat failing test stages as build failures.
+- Do not mark a Dockerfile target as valid until that target builds
+  successfully in a clean environment.
+- Treat known critical vulnerabilities, leaked secrets, and Dockerfile policy
+  violations as image publication blockers before publishing an image.
+- Treat an unverifiable direct download as a defect when the Dockerfile depends
+  on that downloaded artifact.
+- Treat a health check as defective when it is expensive, nondeterministic,
+  depends on unrelated external systems, or does not represent the image's
+  actual local health signal.
+
+### Safety
+
+- Prefer trusted, maintained, technology-specific base images when they match
+  the application stack and security requirements.
+- Avoid building from a generic operating-system image when an appropriate
+  maintained runtime image exists.
+- Choose the smallest compatible base image, but do not select Alpine, scratch,
+  slim, or distroless images blindly.
+- Verify base image compatibility with the runtime, native libraries, debugging
+  needs, and security scanning requirements before adopting a minimal image.
+- Do not use `latest` tags for production images.
+- Use an explicit production image versioning policy, such as pinned tags or
+  digests for reproducibility combined with scheduled rebuilds and vulnerability
+  scans for security updates.
+- Keep production images free of source code, compilers, test frameworks,
+  scanners, package managers, and development-only tools unless they are
+  explicitly required at runtime.
+- Install only packages required by the application.
+- Do not add debugging tools, editors, shells, package managers, or network
+  tools to production images unless there is an explicit runtime requirement.
+- Prefer package managers and trusted repositories for dependencies.
+- Avoid `curl | sh`, unverified downloads, and ad hoc binary copies.
+- When direct downloads are unavoidable, use HTTPS and verify checksums or
+  signatures.
+- Pin application dependencies and system packages according to the project
+  reproducibility policy.
+- Avoid broad `upgrade all` commands in Dockerfiles because they reduce
+  reproducibility and make future builds harder to audit.
+- Never hardcode secrets, tokens, certificates, SSH keys, database credentials,
+  or private endpoints in a Dockerfile, image layer, copied file, `ARG`, or
+  `ENV`.
+- Inject secrets at runtime through a secrets manager or orchestrator mechanism.
+- Use `ARG` only for non-secret build-time values such as build metadata, tool
+  versions, target platforms, or feature flags.
+- Do not use `ARG` as a secret-passing mechanism because build history and
+  intermediate layers may expose values.
+- Use `ENV` only for safe default runtime configuration.
+- Document required environment variables while keeping sensitive values outside
+  the image.
+- Do not run production containers as root by default.
+- Create or select a non-root user and switch to it with `USER` before the final
+  `ENTRYPOINT` or `CMD`.
+- Ensure the non-root user can read application files and write only to the
+  directories required at runtime.
+- Adjust ownership and permissions during the build instead of requiring
+  privileged startup scripts.
+- Do not rely on root-owned application files unless the runtime explicitly
+  requires them.
+- Do not design a Dockerfile that requires privileged containers, host Docker
+  socket access, or broad Linux capabilities unless the requirement is explicit,
+  documented, and reviewed as a security exception.
+
+### Tests
+
+- Build every Dockerfile target that is intended for use.
+- When a Dockerfile includes a test stage, build the test stage and make test
+  failures fail the build.
+- Verify that test-only dependencies and test artifacts are not included in the
+  final runtime image unless they are explicitly required at runtime.
+- Run Dockerfile linting before publishing or accepting Dockerfile changes when
+  a linter is available.
+- Run image vulnerability scanning before publishing production images when a
+  scanner is available.
+- Verify the final image size, runtime user, exposed ports, entrypoint, health
+  check, installed packages, and absence of secrets before marking the image as
+  production-ready.
+- Verify that the `.dockerignore` file excludes unnecessary build-context files
+  without excluding files required by the build.
+
+### Idioms
+
+- Prefer one clear runtime concern per image.
+- Do not combine unrelated services into one container image when they should be
+  separate services or containers.
+- Use multi-stage builds whenever build tools, compilers, package managers, test
+  dependencies, or source files are not needed in the final runtime image.
+- Keep the final stage limited to built artifacts and required runtime files.
+- Use `COPY` by default.
+- Use `ADD` only when its specific behavior is required, such as intentional
+  local archive extraction, and document why `ADD` is necessary.
+- Use BuildKit cache mounts for dependency caches when BuildKit is available for
+  the target builder and they improve repeatable build performance without
+  leaking runtime dependencies into the final image.
+- Use BuildKit bind mounts for build-only source access when BuildKit is
+  available for the target builder and files are needed temporarily during a
+  build step.
+- Prefer exec-form `ENTRYPOINT` and `CMD` so the main process receives signals
+  correctly.
+- Avoid shell-form `ENTRYPOINT` and `CMD` unless shell expansion is explicitly
+  required.
+- Use `ENTRYPOINT` for the executable when the image has a fixed primary
+  command.
+- Use `CMD` for default arguments that users may override.
+- Add a `HEALTHCHECK` only when the image exposes a reliable local health
+  signal.
+- Keep health checks lightweight, deterministic, and scoped to the image's
+  actual health.
+
+### Other
+
+- Add useful `LABEL` metadata for ownership, source repository, version,
+  license, build revision, and image publication information when the project
+  requires traceability.
+- Keep Dockerfiles in version control and review Dockerfile changes through the
+  same code-review process as application and deployment changes.
+- Run Dockerfile linting and image scanning in CI before publishing images when
+  the project has CI coverage for container images.
+- Prefer official Docker documentation, Dockerfile reference material, and
+  maintained image documentation over generic blog posts, forums, social media
+  discussions, or video content.
+- Do not expand a Dockerfile change into CI, deployment, orchestration, or
+  runtime infrastructure changes unless the user explicitly requests that
+  broader scope.

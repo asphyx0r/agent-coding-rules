@@ -7,6 +7,8 @@ Practical behavior and code-quality rules for AI coding agents.
 - Provides reusable behavioral rules for AI coding agents.
 - Defines language-agnostic, language-specific, framework-specific,
   documentation, commit, and release rules.
+- Includes Dockerfile and `.dockerignore` rules for image build logic,
+  layering, build context, image safety, and publication checks.
 - Includes Rust-specific rules for ownership, error handling, unsafe code,
   rustdoc examples, Cargo features, and Cargo-based verification.
 - Keeps agent instructions separate from human-facing project documentation.
@@ -26,6 +28,7 @@ Practical behavior and code-quality rules for AI coding agents.
 
 - Bash
 - CSS
+- Docker Files
 - Go
 - GW-BASIC
 - HTML
@@ -78,6 +81,7 @@ cp .agent-coding-rules/*_RULES.md .
 - [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
 - [The Cargo Book](https://doc.rust-lang.org/cargo/)
 - [The Rust Reference](https://doc.rust-lang.org/reference/)
+- [Docker Documentation](https://docs.docker.com/)
 
 ## License
 
