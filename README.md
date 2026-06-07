@@ -9,6 +9,9 @@ Practical behavior and code-quality rules for AI coding agents.
   documentation, commit, and release rules.
 - Includes C-specific rules for standard selection, C89/C90/C95 through C23
   compatibility, headers, allocation checks, macros, buffers, and verification.
+- Includes C++-specific rules for standard selection, RAII, ownership,
+  parameter passing, smart pointers, headers, templates, error handling,
+  concurrency assumptions, and verification.
 - Includes Dockerfile and `.dockerignore` rules for image build logic,
   layering, build context, image safety, and publication checks.
 - Includes Rust-specific rules for ownership, error handling, unsafe code,
@@ -30,6 +33,7 @@ Practical behavior and code-quality rules for AI coding agents.
 
 - Bash
 - C
+- C++
 - CSS
 - Docker Files
 - Go
@@ -85,6 +89,9 @@ cp .agent-coding-rules/*_RULES.md .
 - [ISO/IEC 9899:2011 - Information technology - Programming languages - C](https://www.iso.org/standard/57853.html)
 - [ISO/IEC 9899:2018 - Information technology - Programming languages - C](https://www.iso.org/standard/74528.html)
 - [ISO/IEC 9899:2024 - Information technology - Programming languages - C](https://www.iso.org/standard/82075.html)
+- [Standard C++ - The Standard](https://isocpp.org/std/the-standard)
+- [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
+- [cppreference - C++ language reference](https://en.cppreference.com/cpp/language)
 - The PPL Development Kit: The PCBoard Programming Language Reference Manual (1993, Clark Development)
 - Microsoft GW-BASIC Interpreter User's Guide and User's Reference (1986)
 - [Laravel Documentation](https://laravel.com/docs)

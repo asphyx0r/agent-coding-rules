@@ -110,6 +110,94 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Document deliberate hacks, portability workarounds, and performance deviations with the reason and the failure they avoid.
 - Avoid redundant parameter comments that merely repeat the parameter name.
 
+## C++
+
+### Naming
+
+- Match the existing C++ project naming style before applying generic C++ naming rules.
+- Use names that expose intent, ownership, unit, lifetime, and thread-safety expectations when those details affect correct use.
+- Prefer explicit, strongly typed interfaces over loosely typed parameters, hidden global state, namespace-scope mutable variables, or implicit side effects.
+- Use raw pointers or references only for non-owning access, and use smart pointer types only when the interface must express ownership or lifetime semantics.
+
+### Formatting
+
+- Match the existing C++ project formatting, file layout, include organization, formatter configuration, and idioms before applying generic C++ preferences.
+- Use only the C++ language and standard library features supported by the project's declared C++ standard, compiler versions, build flags, and platform constraints.
+- Do not silently introduce newer C++ features, non-standard extensions, or vendor-specific behavior unless the project explicitly allows them.
+- Declare variables as late as possible, in the smallest practical scope, and initialize them at declaration.
+- Prefer initialization over later assignment, especially in constructors and complex control flow.
+- Keep headers self-contained, guarded, and safe to include from more than one translation unit.
+- Do not place non-inline object definitions or non-inline function definitions in headers when they would violate the one-definition rule.
+- Do not place global `using namespace` directives in headers.
+- Keep header include dependencies explicit and avoid cyclic dependencies.
+- Use templates only when they reduce real duplication or express a real abstraction.
+- Do not introduce templates for speculative flexibility.
+- When using C++20 concepts, constrain template parameters with meaningful standard concepts where possible.
+- For pre-C++20 code, document template requirements clearly and keep template interfaces minimal.
+
+### Errors
+
+- Follow one project-wide C++ error-handling policy consistently.
+- Do not mix exceptions, error codes, assertions, status objects, and fail-fast behavior inconsistently inside the same C++ error boundary.
+- If the project uses exceptions as its C++ error-handling policy, use them for failures that prevent a function from performing its assigned task.
+- If the project disables exceptions, use a systematic alternative while still relying on RAII for cleanup.
+- Use assertions only for internal invariants, preconditions, postconditions, and impossible states; handle ordinary runtime failures through the project's normal error path.
+- Do not hide recoverable C++ errors behind silent fallbacks unless the fallback is explicitly safe and documented.
+
+### Safety
+
+- Use RAII objects to manage resource ownership instead of manual acquire/release pairs.
+- Encapsulate files, locks, memory, sockets, handles, and other resources in objects whose destructors release them.
+- Express ownership explicitly with values, references, raw pointers, `std::unique_ptr`, `std::shared_ptr`, or `std::weak_ptr` according to the required ownership semantics.
+- Prefer `std::unique_ptr` for exclusive ownership.
+- Use `std::shared_ptr` only when shared ownership is required.
+- Prefer the rule of zero: design classes so compiler-generated special member functions are correct.
+- If any special member function must be declared or deleted, review and explicitly define or delete the related destructor, copy, and move operations to avoid accidental ownership semantics.
+- Always initialize objects before use.
+- Use `const` or `constexpr` by default for values that should not change.
+- Mark member functions `const` when they do not modify observable state.
+- Pass cheap-to-copy values by value and expensive-to-copy input objects by `const` reference; use pointers only when identity, nullability, polymorphism, or lifetime semantics matter.
+- Avoid shared mutable state by default.
+- Treat global variables, static mutable locals, cached state, and shared references as potential data-race risks.
+- Make thread-safety assumptions explicit in APIs or documentation when code can be used concurrently.
+- Prefer `std::array` for fixed-size arrays and `std::vector` for variable-size sequences unless a stronger project-specific reason exists.
+- Avoid owning raw arrays and manual `delete[]`.
+- Use non-owning views such as spans only when they are available in the project C++ standard.
+- Avoid C-style casts, unchecked raw arrays, function-like macros, constant macros, varargs, and representation-based type tricks in maintained C++ code.
+- Do not use `memset` or `memcpy` on non-trivial C++ objects.
+- Prefer typed C++ alternatives such as `constexpr`, inline functions, constructors, standard containers, and standard algorithms.
+
+### Tests
+
+- Define success criteria before editing C++ code.
+- For a C++ bug fix, identify the failing behavior and the smallest verification command before modifying files.
+- For new C++ behavior, identify the expected observable result before modifying files.
+- After modifying C++ code, run the smallest relevant build, unit test, formatter, linter, static-analysis, sanitizer, or runtime check available in the project.
+- When the project declares a C++ standard, verify with the project's configured standard flags or build target instead of compiling under an unrelated dialect.
+- Keep successful C++ builds warning-free under the project's strict warning configuration.
+- Understand each warning and fix the code rather than suppressing warnings without a documented justification.
+- Prefer automated checks integrated into the build or CI so formatting, linting, static analysis, tests, and sanitizer regressions are caught early.
+- If verification cannot be run, report exactly which C++ build, test, formatting, linting, static-analysis, sanitizer, or runtime checks were not run and why.
+
+### Idioms
+
+- Prefer clarity, correctness, and maintainability over premature optimization.
+- Do not optimize C++ code speculatively or obscure intent for unmeasured performance assumptions.
+- Measure bottlenecks before adding performance-oriented complexity.
+- Keep functions focused on one clear logical operation.
+- Split functions that mix unrelated responsibilities, hidden I/O, formatting, validation, state mutation, or business logic.
+- Avoid duplicated C++ logic; extract a helper only when it has a clear purpose and does not add unnecessary abstraction.
+- Prefer standard library containers, algorithms, and typed language facilities over lower-level C-style constructs.
+- Preserve the project's established error-handling model, ownership idioms, naming, formatting, and file layout unless the user explicitly asks for a migration.
+
+### Other
+
+- Make surgical C++ changes only; do not refactor adjacent code, normalize unrelated formatting, or replace project conventions unless the requested change requires it.
+- Comment intent, invariants, constraints, ownership, concurrency assumptions, and non-obvious tradeoffs instead of restating obvious C++ syntax.
+- Update comments when code changes invalidate the intent or assumptions they describe.
+- Apply Unreal Engine, CUDA, embedded, safety-critical, MISRA-like, organization-specific, or framework-specific C++ rules only when the target code belongs to that ecosystem or the project explicitly requires them.
+- Do not apply ecosystem-specific naming, exception, performance, memory, or safety policies to unrelated generic C++ code.
+
 ## HTML
 
 ### Naming
