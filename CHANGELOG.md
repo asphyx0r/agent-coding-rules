@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.23.0
+
+References | Description | Author(s)
+--- | --- | ---
+a7d1119 | Add Laravel framework rules | asphyx
+
 ## v1.22.0
 
 References | Description | Author(s)
