@@ -31,6 +31,85 @@ rule from `CODING_RULES.md`, the specific rule takes precedence.
 
 Use the operational definitions in `CODING_RULES.md` for qualitative phrases such as `small`, `when practical`, `when possible`, and `when appropriate`.
 
+## C
+
+### Naming
+
+- Match the existing C project naming style before applying generic C naming rules.
+- If no project convention exists, use `lower_snake_case` for functions and variables, and `UPPER_SNAKE_CASE` for macros, enum constants, and project-wide constants.
+- Avoid identifiers reserved by the selected C standard, the implementation, or the standard library; do not introduce names that start with reserved underscore patterns or collide with standard library identifiers.
+- Use meaningful names that expose intent, role, and unit, such as `timeout_ms` instead of `timeout`.
+- Name functions after the action they perform or the value they compute.
+- Replace meaningful numeric literals with named constants, enum constants, or macros according to the project convention.
+
+### Formatting
+
+- Match the existing C project indentation, brace style, file organization, formatter configuration, and spacing before applying generic formatting preferences.
+- Use `.c` files for implementation and `.h` files for shared declarations unless the project intentionally uses another C file layout.
+- Keep C source files in a stable, readable order: standard and system includes, project includes, macros and constants, typedefs, enums, structs, globals, internal prototypes, then function implementations.
+- Keep headers functionally scoped, expose only declarations needed by their module users, and protect each header against double inclusion with include guards.
+- Include the matching public header from the source file that implements it so the compiler can detect declaration and definition mismatches.
+- Use an automated formatter only when the project provides or requires one, and do not reformat unrelated C code.
+- If no formatter exists, preserve local formatting and avoid mixed indentation, inconsistent spacing, and unrelated whitespace churn.
+- Use braces consistently for `if`, `else`, `for`, `while`, and `do` bodies; when one branch needs braces, use braces for the related branches.
+
+### Errors
+
+- Check error returns from standard library calls, allocation calls, and platform APIs that report failure unless the project has a validated wrapper that handles failure centrally.
+- Check `malloc` and `realloc` results before dereferencing the returned pointer or passing it to code that assumes success.
+- When using `realloc`, keep the original pointer until the returned pointer has been checked so a failed resize does not lose the existing allocation.
+- Include `errno`, `strerror`, or the relevant platform error detail in diagnostics when that information is available, meaningful, and safe to expose.
+- Return a useful status, error code, or project-standard failure signal when a bounds check, allocation, file operation, or API call fails.
+- Use assertions only for internal invariants, preconditions, postconditions, and impossible states; handle user input and runtime failures through the project's normal error path.
+- Do not hide recoverable C errors behind silent fallbacks unless the fallback is explicitly safe and documented.
+
+### Safety
+
+- Do not change the configured C language standard silently; use the standard already selected by the build, CI, or project documentation.
+- If no C standard is configured and syntax compatibility matters, state the assumption before selecting one.
+- Do not use compiler-specific extensions, non-standard pragmas, implementation-specific attributes, or non-portable library calls unless they are required by the task and documented locally.
+- When code must be portable across several C revisions, use only syntax and library facilities available in the oldest targeted standard.
+- When targeting C89, C90, or C95, avoid later C conveniences unless the build explicitly permits them, including `//` comments, mixed declarations and statements, `inline`, variable length arrays, designated initializers, compound literals, `_Bool`, `restrict`, `<stdbool.h>`, and `<stdint.h>`.
+- Do not define storage-owning global variables in headers; declare them with `extern` in a header and define them once in a source file only when global state is truly necessary.
+- Mark file-local functions, objects, and private state as `static`.
+- Mark pointer parameters as `const` when the pointed-to data is not modified.
+- Pass destination capacity to every function that writes into caller-provided storage, and check the capacity before writing.
+- Prefer enum constants for integral compile-time constants and `static const` objects for typed constants when preprocessing is not required.
+- Use macros only for conditional compilation, compile-time substitution, or patterns that cannot be expressed cleanly with typed C constructs.
+- Parenthesize macro parameters and expression bodies where applicable.
+- Use `do { ... } while (0)` for multi-statement macros, and do not put a trailing semicolon inside the macro definition.
+- Isolate platform and feature conditionals in localized compatibility headers or feature-level configuration macros when practical.
+- Do not impose a universal `#if` versus `#ifdef` rule; follow the local project convention and avoid changing existing preprocessor style without explicit approval.
+
+### Tests
+
+- Define success criteria before editing C code.
+- For a C bug fix, identify the failing behavior and the smallest verification command before modifying files.
+- For new C behavior, identify the expected observable result before modifying files.
+- After modifying C code, run the smallest relevant compilation, test, formatter, or static-analysis command available in the project.
+- When the project declares a C standard, verify with the project's configured standard flags or build target instead of compiling under an unrelated dialect.
+- If verification cannot be run, report exactly which C build, test, formatting, or static-analysis checks were not run and why.
+
+### Idioms
+
+- Prefer clarity, correctness, and maintainability over premature low-level optimization.
+- Do not introduce low-level C optimizations unless the performance problem is explicit, measured, and documented.
+- Keep functions focused on one reasonable unit of work.
+- Split or rename functions when the code cannot be understood without excessive comments.
+- Avoid duplicated C logic; extract a helper only when it has a clear purpose and does not add unnecessary abstraction.
+- Order function parameters predictably: input parameters first, then output parameters.
+- Use `goto` only for structured cleanup paths, with clear cleanup labels and no hidden control-flow surprises.
+- Avoid assignments inside conditions; assign first, then test explicitly, unless the local project convention intentionally allows the idiom and the expression remains unambiguous.
+
+### Other
+
+- Make surgical C changes only; do not refactor adjacent code, normalize unrelated formatting, or replace project conventions unless the requested change requires it.
+- Preserve surrounding C style, error-handling conventions, and module boundaries when modifying existing code.
+- Document public C APIs and non-obvious functions so parameters, ownership expectations, return values, and failure modes are understandable.
+- Comment intent, constraints, portability assumptions, ownership rules, and non-obvious decisions instead of restating obvious C syntax.
+- Document deliberate hacks, portability workarounds, and performance deviations with the reason and the failure they avoid.
+- Avoid redundant parameter comments that merely repeat the parameter name.
+
 ## HTML
 
 ### Naming

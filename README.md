@@ -7,6 +7,8 @@ Practical behavior and code-quality rules for AI coding agents.
 - Provides reusable behavioral rules for AI coding agents.
 - Defines language-agnostic, language-specific, framework-specific,
   documentation, commit, and release rules.
+- Includes C-specific rules for standard selection, C89/C90/C95 through C23
+  compatibility, headers, allocation checks, macros, buffers, and verification.
 - Includes Dockerfile and `.dockerignore` rules for image build logic,
   layering, build context, image safety, and publication checks.
 - Includes Rust-specific rules for ownership, error handling, unsafe code,
@@ -27,6 +29,7 @@ Practical behavior and code-quality rules for AI coding agents.
 ## Supported Languages and Frameworks
 
 - Bash
+- C
 - CSS
 - Docker Files
 - Go
@@ -75,6 +78,13 @@ cp .agent-coding-rules/*_RULES.md .
 - [Karpathy-Inspired Claude Code Guidelines](https://github.com/multica-ai/andrej-karpathy-skills)
 - Robert C. Martin, Clean Code: A Handbook of Agile Software Craftsmanship (978-0132350884)
 - [Semantic Versioning 2.0.0](https://semver.org/)
+- [ISO/IEC JTC1/SC22/WG14 - C](https://www.open-std.org/jtc1/sc22/wg14/)
+- [ISO/IEC 9899:1990 - Programming languages - C](https://www.iso.org/standard/17782.html)
+- [ISO/IEC 9899:1990/Amd 1:1995 - Programming languages - C - Amendment 1: C Integrity](https://www.iso.org/standard/23909.html)
+- [ISO/IEC 9899:1999 - Programming languages - C](https://www.iso.org/standard/29237.html)
+- [ISO/IEC 9899:2011 - Information technology - Programming languages - C](https://www.iso.org/standard/57853.html)
+- [ISO/IEC 9899:2018 - Information technology - Programming languages - C](https://www.iso.org/standard/74528.html)
+- [ISO/IEC 9899:2024 - Information technology - Programming languages - C](https://www.iso.org/standard/82075.html)
 - The PPL Development Kit: The PCBoard Programming Language Reference Manual (1993, Clark Development)
 - Microsoft GW-BASIC Interpreter User's Guide and User's Reference (1986)
 - [Laravel Documentation](https://laravel.com/docs)
