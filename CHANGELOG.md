@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.24.0
+
+References | Description | Author(s)
+--- | --- | ---
+47995bf | Add Rust language rules | asphyx
+
 ## v1.23.0
 
 References | Description | Author(s)
