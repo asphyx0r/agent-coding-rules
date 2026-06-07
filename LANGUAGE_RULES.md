@@ -3010,14 +3010,14 @@ layering, build context, and image-runtime concerns in this section.
 - Validate that the NFO can be read as plain text without special tooling.
 - Validate that Markdown, HTML, ANSI escape sequences, or terminal rendering
   syntax has not been mixed into the raw NFO unless explicitly required.
-- When generating a companion `FILE_ID.DIZ`, validate its separate width,
-  height, and summary constraints independently from the NFO.
+- When a request includes a companion `FILE_ID.DIZ`, validate that sidecar under
+  the Warez Release FILE_ID.DIZ section instead of using NFO layout constraints.
 
 ### Idioms
 
 - Use an NFO for readable release information, metadata, and longer notes.
-- Use a `FILE_ID.DIZ` only as a short archive description when explicitly
-  requested.
+- Treat a companion `FILE_ID.DIZ` as a separate archive description governed by
+  the Warez Release FILE_ID.DIZ section.
 - Do not copy the full NFO body into a `FILE_ID.DIZ` file.
 - Use concise, human-readable labels such as `Title`, `Version`, `Date`,
   `Language`, `Platform`, `Format`, `Notes`, and `Source`.
@@ -3034,8 +3034,10 @@ layering, build context, and image-runtime concerns in this section.
 
 ### Other
 
-- Apply this section only to `.nfo` files, `FILE_ID.DIZ`, or explicitly
-  NFO-style fixed-width plain-text artifacts.
+- Apply this section only to `.nfo` files or explicitly NFO-style fixed-width
+  plain-text artifacts.
+- When working on `FILE_ID.DIZ` or `.diz` artifacts, apply the Warez Release
+  FILE_ID.DIZ section instead for DIZ-specific constraints.
 - Do not apply this section to Markdown changelogs, README files, ordinary
   project release notes, or non-NFO plain-text documentation.
 - Ask for missing metadata only when the missing information blocks safe and
@@ -3047,3 +3049,155 @@ layering, build context, and image-runtime concerns in this section.
   historical authenticity from style alone.
 - When the user requests a downloadable NFO, generate only the safe plain-text
   NFO-style artifact and keep unsafe operational material out of the file.
+
+## Warez Release FILE_ID.DIZ
+
+### Naming
+
+- Use `FILE_ID.DIZ` as the canonical uppercase filename for DIZ archive
+  description files.
+- Treat `FILE_ID.DIZ` as a short plain-text archive description artifact, not
+  as executable code, script output, markup, or a full release note.
+- Name and describe only the actual lawful package being summarized.
+- Do not invent package titles, versions, disk counts, release categories,
+  provenance, group names, affiliations, or compatibility claims.
+- Identify the current disk or volume and the total disk or volume count when
+  the active profile requires multi-volume metadata.
+- Do not assume that every Scene-style or archive package requires a
+  `FILE_ID.DIZ`; apply the active category or packaging rules first.
+
+### Formatting
+
+- Treat a DIZ as fixed-width plain text intended for archive and BBS-style
+  description workflows.
+- Use the default BBS-compatible profile when no more specific DIZ profile is
+  provided.
+- For the default BBS-compatible profile, use plain ASCII text, at most 10
+  lines, at most 45 characters per line, and no blank lines.
+- For the default BBS-compatible profile, do not center text and do not use
+  Markdown, HTML, ANSI escape sequences, or rich formatting.
+- For the default BBS-compatible profile, make the first two lines
+  self-contained because older BBS software may truncate descriptions.
+- Use the Scene 0day ZIP+DIZ profile only when the active ruleset explicitly
+  follows the historical ZIP+DIZ packaging model.
+- For the Scene 0day ZIP+DIZ profile, include a DIZ file in each ZIP, include a
+  concrete current-disk and total-disk marker, limit the file to 30 lines, and
+  limit each line to 45 characters.
+- Use `[xx/??]` only as a template marker form; finalized DIZ files must replace
+  both placeholders with concrete values.
+- Use the Scene eBook profile only for an eBook ruleset or another explicitly
+  compatible ruleset.
+- For the Scene eBook profile, include a valid `.diz` file, include a concrete
+  disk count line such as `DISK: [01/03]`, limit width to 44 characters, and
+  limit height to 30 lines.
+- Keep `.diz` and `.nfo` files inside ZIP archives when the active ZIP+DIZ
+  packaging profile requires archive-embedded metadata.
+- Treat historical DIZ and NFO dimensions as compatibility recommendations
+  unless the active ruleset makes them mandatory.
+- Use the Scene-art compatibility profile only when the user explicitly requests
+  Scene-style ASCII or ANSI-art aesthetics.
+- For Scene-art DIZ output, preserve readability in a plain-text viewer, keep
+  required metadata visible, and validate line width against the intended
+  rendered width rather than only Unicode code-point count.
+- Use CP437-compatible text art only when the target renderer is known.
+- Do not apply Scene-art conventions to strict BBS-compatible DIZ output.
+- Keep DIZ content concise; place detailed release notes, changelog entries,
+  license text, and long documentation in an NFO, README, changelog, or license
+  artifact instead.
+- Hard-wrap every generated line before the active profile width limit.
+- Do not emit trailing spaces, tab characters, or control characters other than
+  normal line breaks.
+- Do not emit empty lines in strict BBS-compatible output.
+
+### Errors
+
+- Fail closed when the target DIZ profile, disk count, width limit, or required
+  archive placement is unknown and cannot be inferred safely.
+- Reject a finalized DIZ that still contains unresolved template placeholders
+  such as `[xx/??]` or `DISK: [xx/??]`.
+- Treat line-width overflow, excessive line count, broken disk markers, tabs,
+  trailing spaces, forbidden control characters, and unexpected blank lines as
+  defects to fix before finalizing a DIZ.
+- Treat Markdown syntax, HTML markup, ANSI escape sequences, rich formatting, or
+  incompatible encodings as defects unless the active profile explicitly permits
+  them.
+- If a modern ruleset does not list DIZ as an allowed final artifact, do not
+  generate a DIZ unless the user explicitly requests a lawful archival or
+  compatibility sidecar outside that release profile.
+- Reject or rewrite requests that would make the DIZ contain operational piracy
+  material, private infrastructure details, credentials, cracking information,
+  DRM-bypass guidance, keygens, serials, or unauthorized distribution details.
+- Do not hide detailed release information inside a DIZ when the active profile
+  expects only a compact archive description.
+
+### Safety
+
+- Generate DIZ metadata only for lawful, archival, shareware, demo,
+  preservation, fictional, educational, or rights-cleared packages.
+- Do not generate cracks, keygens, serials, DRM-bypass instructions, credential
+  material, distribution automation, or operational piracy guidance.
+- Do not include site names, IP addresses, credentials, private contacts,
+  private distribution paths, invite details, or infrastructure hints.
+- Keep descriptions short, factual, package-specific, and limited to information
+  useful for quick archive identification.
+- Avoid unverifiable claims, promotional filler, excessive slogans, private
+  operational details, and misleading authenticity signals.
+- Do not generalize 0day, eBook, music, game ISO, BBS, or Scene-art rules across
+  unrelated release categories.
+- When uncertainty remains, prioritize legality, safety, compatibility,
+  readability, and machine-checkable metadata over Scene authenticity.
+
+### Tests
+
+- Before presenting a generated DIZ as usable, report the selected DIZ profile,
+  maximum line count, maximum width, allowed character set, required disk marker,
+  and archive placement rule.
+- Validate the generated DIZ after rendering and wrapping, not only before
+  wrapping.
+- Validate that every line respects the active width limit and that total height
+  respects the active line-count limit.
+- Validate that required disk or volume markers are present, concrete, correctly
+  formatted, and internally consistent.
+- Validate that the raw DIZ contains no trailing spaces, tabs, forbidden control
+  characters, or forbidden empty lines.
+- Validate that Markdown, HTML, ANSI escape sequences, rich formatting, and
+  incompatible encodings have not leaked into strict plain-text output.
+- Validate that the first two lines are self-contained when using the default
+  BBS-compatible profile.
+- Validate CP437-compatible or extended-character output in an intended
+  monospaced NFO/DIZ-capable viewer before treating Scene-art output as final.
+- Validate that no unsafe operational piracy content, private identifiers,
+  credentials, IP addresses, download paths, invite paths, or personal data are
+  present.
+- When documenting DIZ validators, use `MUST`, `MUST NOT`, `SHOULD`,
+  `SHOULD NOT`, `MAY`, and `OPTIONAL` according to RFC 2119 semantics.
+
+### Idioms
+
+- Prefer a compact DIZ structure: package name, version when applicable,
+  separator, short description, and required disk marker when applicable.
+- Mention only information that helps identify the archive quickly, such as
+  title, version, format, language, disk count, and a compact description.
+- Keep the DIZ concise and use the companion NFO for detailed release notes,
+  compatibility notes, credits, history, or longer explanations.
+- Preserve required metadata, especially disk or volume count, in a visible and
+  machine-checkable form.
+- Prefer direct, readable wording over excessive slogans, decorative filler,
+  unexplained Scene jargon, or stylized text that weakens identification.
+- Use placeholders such as `[xx/??]` only in reusable templates, never in
+  finalized DIZ output.
+
+### Other
+
+- Apply this section only to `FILE_ID.DIZ`, `.diz` artifacts, or explicit
+  DIZ-style archive description sidecars.
+- For `FILE_ID.DIZ`, this section takes precedence over the more general
+  Warez Release NFO File section whenever their constraints overlap.
+- Apply the most specific applicable DIZ profile first.
+- If a category-specific ruleset conflicts with the generic BBS-compatible DIZ
+  profile, the category-specific ruleset wins.
+- Place `FILE_ID.DIZ` inside the archive when the target packaging profile
+  requires archive-embedded metadata.
+- For multi-volume ZIP+DIZ packaging, include the applicable `FILE_ID.DIZ` in
+  each ZIP volume when required by the active rule profile.
+- Ask for missing metadata only when it blocks safe and valid DIZ generation.

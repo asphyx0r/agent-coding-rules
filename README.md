@@ -19,7 +19,10 @@ Practical behavior and code-quality rules for AI coding agents.
 - Includes Rust-specific rules for ownership, error handling, unsafe code,
   rustdoc examples, Cargo features, and Cargo-based verification.
 - Includes Warez Release NFO File rules for fixed-width `.nfo` artifacts,
-  `FILE_ID.DIZ`, ASCII/CP437 rendering, safe scope, and piracy-risk boundaries.
+  ASCII/CP437 rendering, safe scope, and piracy-risk boundaries.
+- Includes Warez Release `FILE_ID.DIZ` rules for BBS-compatible archive
+  descriptions, profile-specific width and height limits, disk markers, archive
+  placement, and DIZ-specific validation.
 - Keeps agent instructions separate from human-facing project documentation.
 
 ## Files
@@ -61,6 +64,7 @@ Practical behavior and code-quality rules for AI coding agents.
 - SQL (Oracle PL/SQL)
 - Tcl (Eggdrop Scripting)
 - TypeScript
+- Warez Release FILE_ID.DIZ
 - Warez Release NFO File
 - Windows Batch
 
@@ -88,6 +92,7 @@ cp .agent-coding-rules/*_RULES.md .
 - [Karpathy-Inspired Claude Code Guidelines](https://github.com/multica-ai/andrej-karpathy-skills)
 - Robert C. Martin, Clean Code: A Handbook of Agile Software Craftsmanship (978-0132350884)
 - [Semantic Versioning 2.0.0](https://semver.org/)
+- [RFC 2119 - Key words for use in RFCs to Indicate Requirement Levels](https://www.rfc-editor.org/rfc/rfc2119)
 - [ISO/IEC JTC1/SC22/WG14 - C](https://www.open-std.org/jtc1/sc22/wg14/)
 - [ISO/IEC 9899:1990 - Programming languages - C](https://www.iso.org/standard/17782.html)
 - [ISO/IEC 9899:1990/Amd 1:1995 - Programming languages - C - Amendment 1: C Integrity](https://www.iso.org/standard/23909.html)
