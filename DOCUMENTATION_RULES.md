@@ -9,7 +9,8 @@ Use this file together with `AGENTS.md`, `CODING_RULES.md`, and
 `LANGUAGE_RULES.md`:
 - `AGENTS.md` governs agent behavior.
 - `CODING_RULES.md` governs language-agnostic code quality.
-- `LANGUAGE_RULES.md` governs language-specific code rules.
+- `LANGUAGE_RULES.md` governs language-, dialect-, and framework-specific code
+  rules.
 - `DOCUMENTATION_RULES.md` governs human-facing project documentation.
 
 Documentation should help humans understand, install, use, verify, contribute

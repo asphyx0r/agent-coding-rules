@@ -5,8 +5,8 @@ Practical behavior and code-quality rules for AI coding agents.
 ## Features
 
 - Provides reusable behavioral rules for AI coding agents.
-- Defines language-agnostic, language-specific, documentation, commit, and
-  release rules.
+- Defines language-agnostic, language-specific, framework-specific,
+  documentation, commit, and release rules.
 - Keeps agent instructions separate from human-facing project documentation.
 
 ## Files
@@ -17,10 +17,10 @@ Practical behavior and code-quality rules for AI coding agents.
 - `COMMIT_RULES.md`: Defines commit readiness, privacy, and message rules.
 - `DOCUMENTATION_RULES.md`: Defines documentation rules, including README and
   changelog rules.
-- `LANGUAGE_RULES.md`: Defines language-specific coding rules.
+- `LANGUAGE_RULES.md`: Defines language- and framework-specific coding rules.
 - `RELEASE_RULES.md`: Defines release version and Git tag rules.
 
-## Supported Languages
+## Supported Languages and Frameworks
 
 - Bash
 - CSS
@@ -30,6 +30,7 @@ Practical behavior and code-quality rules for AI coding agents.
 - Java
 - Java (Properties Files)
 - JavaScript
+- Laravel (PHP Framework)
 - mIRC Scripting Language
 - PCBoard Programming Language
 - Perl
@@ -70,6 +71,7 @@ cp .agent-coding-rules/*_RULES.md .
 - [Semantic Versioning 2.0.0](https://semver.org/)
 - The PPL Development Kit: The PCBoard Programming Language Reference Manual (1993, Clark Development)
 - Microsoft GW-BASIC Interpreter User's Guide and User's Reference (1986)
+- [Laravel Documentation](https://laravel.com/docs)
 
 ## License
 

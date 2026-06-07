@@ -8,8 +8,8 @@ Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-s
 - Before creating, editing, reviewing, or refactoring code, read and follow
   `CODING_RULES.md` for language-agnostic code quality rules.
 - When creating, editing, reviewing, or refactoring code, also read and follow
-  `LANGUAGE_RULES.md`, applying only the sections for the target language of
-  the files being edited.
+  `LANGUAGE_RULES.md`, applying only the sections for the target language,
+  dialect, or framework of the files being edited.
 - Before creating, editing, reviewing, or refactoring project documentation,
   read and follow `DOCUMENTATION_RULES.md`.
 - When creating or updating `README.md`, apply `DOCUMENTATION_RULES.md`
@@ -28,7 +28,7 @@ When rules conflict, apply them in this order:
    when creating commits or Git tags.
 3. Documentation-specific rules from `DOCUMENTATION_RULES.md` when creating,
    editing, reviewing, or refactoring documentation.
-4. Language-specific rules from `LANGUAGE_RULES.md`.
+4. Language-, dialect-, and framework-specific rules from `LANGUAGE_RULES.md`.
 5. General code-quality rules from `CODING_RULES.md`.
 6. General behavioral rules from this `AGENTS.md`.
 

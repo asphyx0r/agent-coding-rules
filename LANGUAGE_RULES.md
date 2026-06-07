@@ -2,27 +2,32 @@
 
 ## Purpose
 
-This file defines language-specific coding rules for code generated or modified by an AI coding agent.
+This file defines language-, dialect-, and framework-specific coding rules for
+code generated or modified by an AI coding agent.
 
 Use this file together with `AGENTS.md` and `CODING_RULES.md`:
 - `AGENTS.md` governs agent behavior.
 - `CODING_RULES.md` governs language-agnostic code quality.
-- `LANGUAGE_RULES.md` governs restrictions, conventions, and exceptions specific to each target language.
+- `LANGUAGE_RULES.md` governs restrictions, conventions, and exceptions specific
+  to each target language, dialect, or framework.
 
 ## Scope
 
-Apply only the section or sections that match the language of the files being
-created, edited, reviewed, or refactored.
+Apply only the section or sections that match the language, dialect, or
+framework of the files being created, edited, reviewed, or refactored.
 
-When a language or dialect section explicitly says it applies in addition to a
-more general section, apply both sections. If those sections overlap, prefer
-the more specific language or dialect rule.
+When a language, dialect, or framework section explicitly says it applies in
+addition to a more general section, apply both sections. If those sections
+overlap, prefer the more specific language, dialect, or framework rule.
 
-If the target language has no section in this file, apply only `CODING_RULES.md` plus repository conventions; do not invent language-specific rules.
+If the target language, dialect, or framework has no section in this file, apply
+only `CODING_RULES.md` plus repository conventions; do not invent unsupported
+specific rules.
 
 If a repository has stronger local conventions, follow the repository conventions first.
 
-If a language-specific rule conflicts with a general rule from `CODING_RULES.md`, the language-specific rule takes precedence.
+If a language-, dialect-, or framework-specific rule conflicts with a general
+rule from `CODING_RULES.md`, the specific rule takes precedence.
 
 Use the operational definitions in `CODING_RULES.md` for qualitative phrases such as `small`, `when practical`, `when possible`, and `when appropriate`.
 
@@ -828,6 +833,163 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 - Namespace project classes unless the surrounding PHP code intentionally uses another convention.
 - Avoid adding new global state; use the project's existing class, configuration, or function structure.
 - In template-oriented PHP, avoid adding new database queries directly to view templates; use the existing controller, model, repository, or service layer.
+
+## Laravel
+
+Apply this section to Laravel application code in addition to the generic `PHP`
+section. When both sections address the same topic, prefer the Laravel-specific
+rule for framework code.
+
+### Naming
+
+- Follow PSR standards and established Laravel naming conventions for classes,
+  controllers, models, routes, route names, relationships, tables, columns,
+  migrations, methods, variables, views, configuration files, contracts, and
+  traits.
+- Name Laravel classes according to their framework role, and keep
+  framework-generated classes in conventional Laravel locations such as
+  controllers, middleware, and form requests under `app/Http`, models under
+  `app/Models`, policies under `app/Policies`, jobs under `app/Jobs`, rules
+  under `app/Rules`, and tests under `tests`.
+- Use PHP enums or Laravel configuration values for repeated statuses and
+  literals that must be shared across controllers, jobs, validation rules,
+  views, or API resources.
+
+### Formatting
+
+- Follow Laravel's default project structure unless the existing project
+  explicitly documents a different structure.
+- Prefer Artisan `make:*` commands when generating Laravel framework classes.
+- When scaling a codebase, organize code by business domain inside Laravel's
+  conventional structure before creating a parallel architecture.
+- Keep Blade templates focused on presentation.
+- Avoid database queries, heavy business logic, large PHP blocks, and embedded
+  JavaScript or CSS in Blade templates.
+- Keep frontend assets in the project's asset pipeline instead of embedding
+  reusable assets directly in Blade templates.
+- Store repeated configurable values in configuration files.
+- Store user-facing text in language files when localization or reuse is
+  expected.
+- Read environment variables only from configuration files.
+- In application code, use `config()` values instead of calling `env()`
+  directly.
+- Use model casts or Carbon objects for Laravel date and datetime handling.
+- Format dates at the presentation boundary, not inside persistence logic.
+
+### Errors
+
+- Return accurate HTTP status codes for API success and error cases.
+- Do not return a successful `2xx` response for failed operations.
+- Make validation, authorization, persistence, and external-service failures
+  visible through Laravel's normal exception, validation, logging, and response
+  mechanisms.
+- Set `APP_DEBUG=false` in production.
+- Never expose debug output, stack traces, or sensitive configuration values to
+  end users.
+- Clear Laravel caches only when needed for deployment or troubleshooting.
+
+### Safety
+
+- Validate external input before using it in Laravel application logic,
+  persistence, jobs, API responses, or view rendering.
+- Move meaningful validation into dedicated Form Request classes when
+  applicable.
+- Use Form Request classes for validation rules, authorization checks, and input
+  normalization when they fit the request boundary.
+- Keep authorization decisions centralized in policies, gates, or Form Request
+  authorization methods.
+- Do not scatter permission checks across controllers, jobs, Blade templates,
+  and helper classes.
+- Protect mass assignment by defining `$fillable` or `$guarded` intentionally.
+- Persist only validated or explicitly controlled input.
+- Never blindly persist untrusted request data.
+- Use Laravel's authentication and authorization facilities for APIs, such as
+  Sanctum or Passport when token-based authentication is required.
+- Use policies or gates for fine-grained API permissions.
+- Do not expose raw Eloquent models directly when an API response must hide
+  fields, rename fields, or provide a stable response contract.
+- Serve Laravel through the `public` directory and route all requests through
+  `public/index.php`.
+- Never expose the project root as the web root.
+- Ensure the web server process can write to `bootstrap/cache` and `storage`.
+- Do not solve permission problems with overly broad permissions unless the
+  security impact is explicitly accepted.
+
+### Tests
+
+- Put automated tests under `tests`.
+- Suffix test classes with `Test`.
+- Prefer `php artisan test`, Pest, or PHPUnit according to the project's
+  existing tooling.
+- Run the existing project test command before presenting behavior-changing work
+  as complete.
+- When changing behavior, add or update the smallest relevant Laravel test
+  before or alongside the code change.
+- Prefer feature or HTTP tests for user-visible Laravel behavior.
+- Prefer unit tests for isolated domain logic.
+- Verify Laravel changes with the narrowest meaningful command first, then run
+  broader tests when the change can affect shared behavior.
+- State any unverified assumptions, skipped checks, or unavailable runtime
+  validations before presenting the work as complete.
+
+### Idioms
+
+- Prefer Laravel's built-in conventions and features before adding custom
+  patterns.
+- Do not introduce custom architecture, repository layers, DTO systems, or
+  enterprise-style abstractions unless they solve a documented project problem.
+- Prefer expressive Laravel helpers and idioms when they improve readability,
+  such as `session()`, `back()`, `now()`, `latest()`, `value()`, and
+  `compact()`.
+- Keep controllers thin; controllers should orchestrate request handling,
+  authorization, validation, domain calls, and responses.
+- Do not place database-heavy logic, complex business workflows, or repeated
+  domain rules directly in controllers.
+- Extract business workflows into service, action, or job classes when the
+  logic has a clear responsibility outside request orchestration.
+- Use queued jobs for slow, retryable, asynchronous, or external-service work.
+- Split a controller method when validation, authorization, persistence,
+  notifications, and response building are mixed together.
+- Prefer Eloquent relationships, scopes, casts, accessors, mutators, and
+  collections for model-centered application data access.
+- Use Laravel Query Builder for aggregate, reporting, bulk, or cross-table
+  queries that are clearer outside Eloquent models.
+- Use raw SQL only when Laravel's Eloquent and Query Builder APIs are
+  unsuitable, performance has been measured, or the project already uses that
+  pattern.
+- Fetch data in controllers, services, actions, view models, or query objects,
+  then pass prepared data to views.
+- Prevent N+1 query problems with eager loading, relationship counts, selective
+  columns, and strict loading checks where appropriate.
+- Load only the data required by the current use case.
+- Use Eloquent scopes or dedicated query builders to remove repeated query
+  fragments.
+- Return a query builder from reusable query constraints instead of executing
+  the query too early.
+- Use chunking, lazy iteration, pagination, or cursor-based approaches for
+  large datasets.
+- Do not load an unbounded table into memory for data-heavy tasks.
+- Use API Resources when returning JSON responses so the response shape is
+  explicit, stable, and controlled.
+- Paginate large API responses.
+- Expose pagination metadata through Laravel's paginator or resource
+  collections when relevant.
+- Version public or client-consumed APIs when breaking changes are possible.
+- Do not generate HTML inside unrelated PHP service classes.
+
+### Other
+
+- For AI-assisted coding, rely on project-local Laravel conventions, project
+  documentation, and version-specific Laravel documentation before suggesting
+  framework syntax.
+- In production deployments, cache configuration, routes, events, and views
+  using Laravel's deployment optimization commands where applicable.
+- Restart or reload long-running Laravel processes after deployment, including
+  queue workers, Reverb, and Octane.
+- Configure a process monitor for long-running Laravel processes when the
+  deployment platform does not manage them.
+- Use Laravel's health route or a documented health-check mechanism for uptime
+  monitors, load balancers, or orchestration systems.
 
 ## Java
 
