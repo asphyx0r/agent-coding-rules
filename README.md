@@ -12,6 +12,8 @@ Practical behavior and code-quality rules for AI coding agents.
 - Includes C++-specific rules for standard selection, RAII, ownership,
   parameter passing, smart pointers, headers, templates, error handling,
   concurrency assumptions, and verification.
+- Includes C#-specific rules for .NET naming, formatting, exception handling,
+  async code, analyzers, LINQ, initialization idioms, and verification.
 - Includes Dockerfile and `.dockerignore` rules for image build logic,
   layering, build context, image safety, and publication checks.
 - Includes Rust-specific rules for ownership, error handling, unsafe code,
@@ -34,6 +36,7 @@ Practical behavior and code-quality rules for AI coding agents.
 - Bash
 - C
 - C++
+- C#
 - CSS
 - Docker Files
 - Go
@@ -92,6 +95,10 @@ cp .agent-coding-rules/*_RULES.md .
 - [Standard C++ - The Standard](https://isocpp.org/std/the-standard)
 - [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 - [cppreference - C++ language reference](https://en.cppreference.com/cpp/language)
+- [Microsoft Learn - Common C# code conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
+- [Microsoft Learn - Names of Classes, Structs, and Interfaces](https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces)
+- [Microsoft Learn - Asynchronous programming scenarios](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/async-scenarios)
+- [Microsoft Learn - Built-in types and literals](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/built-in-types)
 - The PPL Development Kit: The PCBoard Programming Language Reference Manual (1993, Clark Development)
 - Microsoft GW-BASIC Interpreter User's Guide and User's Reference (1986)
 - [Laravel Documentation](https://laravel.com/docs)

@@ -198,6 +198,162 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Apply Unreal Engine, CUDA, embedded, safety-critical, MISRA-like, organization-specific, or framework-specific C++ rules only when the target code belongs to that ecosystem or the project explicitly requires them.
 - Do not apply ecosystem-specific naming, exception, performance, memory, or safety policies to unrelated generic C++ code.
 
+## C#
+
+### Naming
+
+- Match the existing C# project naming style before applying generic C# naming rules.
+- Use `PascalCase` for public types, public members, namespaces, methods,
+  properties, events, and enum values.
+- Use `camelCase` for parameters and local variables.
+- Prefix interface names with `I`.
+- Name classes and structs with nouns or noun phrases.
+- Name methods with verbs or verb phrases.
+- Name properties with nouns, noun phrases, or adjectives.
+- Name Boolean properties with affirmative names, optionally using `Is`, `Can`,
+  or `Has` only when it improves readability.
+- Use descriptive names and prefer readability over brevity.
+- Avoid Hungarian notation, unclear abbreviations, contractions, and names that
+  differ only by casing.
+
+### Formatting
+
+- Match the existing C# project formatting, file layout, namespace style,
+  formatter configuration, and analyzer configuration before applying generic
+  C# preferences.
+- Use only the C# language features and .NET APIs supported by the project's
+  declared target framework, language version, build configuration, and runtime
+  constraints.
+- Do not silently introduce newer C# syntax, framework-specific behavior, or
+  runtime-specific APIs unless the project explicitly allows them.
+- For new generic C# code without a local convention, use four spaces for
+  indentation and do not use tab characters.
+- Use one statement per line.
+- Use one declaration per line.
+- Use braces consistently for control-flow blocks.
+- Keep `using` directives outside namespace declarations unless the repository
+  style says otherwise.
+- Prefer file-scoped namespaces for files that declare a single namespace when
+  the target C# version supports them and the repository style accepts them.
+- Use C# language keywords for built-in types in ordinary code, such as
+  `string`, `int`, `bool`, and `object`, instead of `System.String`,
+  `System.Int32`, `System.Boolean`, or `System.Object`.
+- Place comments on their own line, start comment text with an uppercase letter,
+  and end full-sentence comments with a period.
+- Use XML documentation comments for public types and public members when
+  documentation is required by the project or by the API contract.
+
+### Errors
+
+- Catch only exceptions that can be handled correctly at the current boundary.
+- Avoid catching `Exception` broadly unless the code is at a controlled boundary
+  and deliberately logs, rethrows, or translates the exception.
+- Use specific exception types when they make diagnostics or caller handling more
+  meaningful.
+- Preserve the original stack trace by using `throw;` when rethrowing the current
+  exception.
+- Do not hide recoverable C# errors behind silent fallbacks unless the fallback
+  is explicitly safe and documented.
+
+### Safety
+
+- Use `dynamic` only when runtime dispatch is intentionally required.
+- Use `using` statements or `using` declarations for disposable resources.
+- Implement the Dispose pattern only for types that own disposable or unmanaged
+  resources.
+- Avoid finalizers unless the type directly owns unmanaged resources that require
+  finalization.
+- Use `async` and `await` for I/O-bound operations when asynchronous APIs are
+  available.
+- Suffix asynchronous methods with `Async` unless the member is an event handler,
+  override, interface implementation, or existing contract where the name is not
+  freely controlled.
+- Do not block asynchronous execution with `.Wait()`, `.Result`, or
+  `Thread.Sleep`.
+- Use `Task.Delay` instead of `Thread.Sleep` inside asynchronous flows.
+- Accept and pass `CancellationToken` when asynchronous work may need
+  cancellation.
+- Do not use `Task.Run` as a generic wrapper to make synchronous I/O look
+  asynchronous.
+- Review shared mutable state for concurrency risks and protect it explicitly.
+- Prefer properties over public fields for externally visible state.
+- Keep fields as private as possible.
+- Use properties for data-like access.
+- Use methods for actions, computations, or operations with side effects.
+- Do not make members public only to make unit testing easier.
+- Do not expose mutable implementation details unless mutation is part of the
+  intended contract.
+- Replace repeated magic numbers and magic strings with named constants, enums,
+  or configuration values.
+- Explain non-obvious numeric values with a clear name or a short comment.
+- Access static members through the declaring type, not through a derived type or
+  an instance.
+
+### Tests
+
+- After modifying C# code, run the narrowest relevant build, test, formatter,
+  analyzer, or inspection available in the project.
+- When using version-dependent C# syntax or .NET APIs, verify them against the
+  project's configured target framework, language version, and build target.
+- Use `.editorconfig` to encode C# formatting and naming rules when maintaining
+  project-wide C# style configuration.
+- Enable .NET analyzers when practical and consistent with the project's
+  existing tooling.
+- Enforce C# style and analyzer rules in CI when the project already has a CI
+  pipeline for those checks.
+- Treat warnings as errors only when this matches the project's policy or when
+  the repository explicitly opts into it.
+- Do not change analyzer, formatter, or warning policies while editing unrelated
+  C# code.
+- If verification cannot be run, report exactly which C# build, test,
+  formatting, analyzer, or inspection checks were not run and why.
+
+### Idioms
+
+- Use `int` by default for integer values unless the domain requires another
+  numeric type.
+- Use `var` only when the assigned type is obvious from the right side of the
+  assignment.
+- Do not use `var` when the type is hidden behind a method call or when explicit
+  typing improves readability.
+- Do not use variable names to encode the variable type.
+- Use concise object creation when the target type is obvious and the target C#
+  version supports it.
+- Use object initializers when they make object construction clearer.
+- Use collection expressions or concise collection initialization when supported
+  by the target C# version and accepted by the repository style.
+- Use `required` properties or `init` properties only when the project's target
+  C# version supports them and they clarify mandatory initialization.
+- Use string interpolation for short string composition.
+- Use `StringBuilder` when appending strings repeatedly in loops or when
+  building large text.
+- Prefer raw string literals when they reduce escaping and improve readability.
+- Use LINQ when it improves readability.
+- Do not replace a simple readable loop with LINQ when LINQ makes the code
+  harder to read or worse for performance.
+- Use meaningful LINQ query variable names.
+- Use aliases for anonymous type properties when names would otherwise be
+  ambiguous.
+- Apply `where` clauses before later LINQ clauses when doing so reduces the data
+  processed by subsequent clauses and preserves query semantics.
+- Be careful not to change query execution semantics accidentally, especially
+  when moving between `IQueryable<T>` and `IEnumerable<T>`.
+
+### Other
+
+- Apply this section to general C# and .NET code unless the repository already
+  defines a stricter local style guide, `.editorconfig`, analyzer configuration,
+  or framework-specific convention.
+- Do not generalize ASP.NET Core, Unity, or library-design-specific guidance to
+  all C# code unless the current codebase actually targets that ecosystem.
+- Prefer official Microsoft C# and .NET guidance over third-party style guides
+  when sources conflict.
+- Make surgical C# changes only; do not reformat unrelated code.
+- Do not refactor adjacent C# code unless the task explicitly requires it.
+- Match existing repository style even when a generic C# rule would be different.
+- Remove only unused imports, variables, or helpers made unused by the current
+  C# change.
+
 ## HTML
 
 ### Naming
