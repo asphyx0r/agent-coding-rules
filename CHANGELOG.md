@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.22.0
+
+References | Description | Author(s)
+--- | --- | ---
+b0d4905 | Add GW-BASIC language rules | asphyx
+
 ## v1.21.3
 
 References | Description | Author(s)
