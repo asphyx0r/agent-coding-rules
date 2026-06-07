@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.30.0
+
+References | Description | Author(s)
+--- | --- | ---
+03037c9 | Add FILE_ID.DIZ language rules | asphyx
+
 ## v1.29.0
 
 References | Description | Author(s)
