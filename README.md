@@ -20,14 +20,20 @@ Practical behavior and code-quality rules for AI coding agents.
 
 ## Files
 
-- `AGENTS.md`: Defines the model behavior rules.
+These files form a layered instruction stack:
+
+- `AGENTS.md`: Governs the model's behavior and defines when each rule file
+  applies.
+- `CODING_RULES.md`: Applies universal, language-agnostic code-quality rules.
+- `LANGUAGE_RULES.md`: Applies language-, dialect-, and framework-specific
+  coding rules.
+- `DOCUMENTATION_RULES.md`: Controls documentation quality and consistency,
+  including README and changelog rules.
+- `COMMIT_RULES.md`: Controls repository readiness, privacy checks, and commit
+  message quality before commits.
+- `RELEASE_RULES.md`: Controls SemVer version selection, Git tag creation, and
+  release readiness.
 - `CHANGELOG.md`: Lists tagged release history.
-- `CODING_RULES.md`: Defines the code-quality rules for code produced by the model.
-- `COMMIT_RULES.md`: Defines commit readiness, privacy, and message rules.
-- `DOCUMENTATION_RULES.md`: Defines documentation rules, including README and
-  changelog rules.
-- `LANGUAGE_RULES.md`: Defines language- and framework-specific coding rules.
-- `RELEASE_RULES.md`: Defines release version and Git tag rules.
 
 ## Supported Languages and Frameworks
 
