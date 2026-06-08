@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.30.1
+
+References | Description | Author(s)
+--- | --- | ---
+81ba58a | Document rule file roles | asphyx
+c693cf1 | Clarify README features | asphyx
+c51f203 | Update README source references | asphyx
+
 ## v1.30.0
 
 References | Description | Author(s)
