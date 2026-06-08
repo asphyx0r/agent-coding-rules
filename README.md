@@ -16,6 +16,9 @@ Practical behavior and code-quality rules for AI coding agents.
 - Includes YAML-specific rules for extensions, indentation, scalar quoting,
   portable Boolean values, comments, block scalars, safe loaders, validation,
   anchors, aliases, and ecosystem-specific composition.
+- Adds Kubernetes-specific YAML rules for manifests, stable object identity,
+  labels and selectors, namespaces, API versions, Secrets, security contexts,
+  resource controls, NetworkPolicy, Services, probes, and cluster validation.
 - Covers documentation, README, changelog, commit, release, versioning, privacy,
   repository-readiness, and Git tag workflows.
 - Includes review checklists and verification expectations so generated changes
@@ -72,6 +75,7 @@ configuration:
 - Warez Release NFO File
 - Windows Batch
 - YAML
+- YAML for Kubernetes
 
 ## Installation
 
@@ -142,6 +146,14 @@ an exhaustive source map for every supported language or framework.
 - [YAML 1.2.2 Specification](https://yaml.org/spec/1.2.2/)
 - [yamllint documentation](https://yamllint.readthedocs.io/en/stable/)
 - [PyYAML security guidance](https://yaml.com/projects/pyyaml/)
+- [Kubernetes Documentation - Objects In Kubernetes](https://kubernetes.io/docs/concepts/overview/working-with-objects/)
+- [Kubernetes Documentation - Recommended Labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/)
+- [Kubernetes Documentation - Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
+- [Kubernetes Documentation - Secrets](https://kubernetes.io/docs/concepts/configuration/secret/)
+- [Kubernetes Documentation - Configure a Security Context for a Pod or Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
+- [Kubernetes Documentation - Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
+- [Kubernetes Documentation - Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
+- [Kubernetes Documentation - kubectl apply](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_apply/)
 
 ## License
 

@@ -772,7 +772,7 @@ both sections address the same topic, prefer the more specific MySQL rule.
 - Design composite indexes according to MySQL's leftmost-prefix rule.
 - Avoid redundant indexes that serve the same prefix and access pattern as an
   existing index.
-- Consider storage cost and write overhead before adding indexes to high-write
+- Evaluate storage cost and write overhead before adding indexes to high-write
   MySQL tables.
 - Analyze non-trivial `SELECT`, `UPDATE`, `DELETE`, `INSERT ... SELECT`, and
   `REPLACE` statements with `EXPLAIN` before optimizing or approving them.
@@ -3638,12 +3638,30 @@ layering, build context, and image-runtime concerns in this section.
 ### Tests
 
 - Validate YAML before committing or deploying it.
-- Use a linter, formatter, schema validator, or the target tool's native
-  validation command whenever available.
+- Use `yamllint` as the default first-line YAML syntax and style validator when
+  it is installed or provided by the project's toolchain.
+- Before presenting YAML changes as final, run `yamllint` against every
+  repository YAML file when practical. If full-repository linting is
+  impractical, run it against every generated or modified YAML file and state
+  why the broader check was skipped.
+- Use the repository's existing `.yamllint`, `.yamllint.yaml`, or
+  `.yamllint.yml` configuration when one exists.
+- Do not disable, relax, or bypass `yamllint` rules to make a change pass unless
+  the user explicitly requests that configuration change.
+- Treat `yamllint` syntax failures as blocking defects. Treat `yamllint` style
+  failures as defects unless they conflict with a verified target-tool
+  requirement.
+- If `yamllint` is not installed, unavailable, or inaccessible, report that
+  limitation and use the best available fallback check, such as a YAML parser,
+  schema validator, formatter, or the target tool's native validation command.
+- State that fallback validation does not replace a successful `yamllint` run.
 - Enforce YAML validation in CI when the repository already has CI or the target
   tool provides a reliable check.
 - Validate generated YAML with the exact target tool when using tool-specific
   includes, templates, schemas, or merge behavior.
+- Do not treat `yamllint` as schema validation or semantic validation; use it
+  together with schema or target-tool checks when correctness depends on keys,
+  value types, includes, templates, or platform-specific behavior.
 
 ### Idioms
 
@@ -3663,3 +3681,148 @@ layering, build context, and image-runtime concerns in this section.
 - Do not generalize framework or platform rules to YAML itself.
 - Apply Kubernetes, Home Assistant, dbt, Ansible, GitLab CI, Elastic, or similar
   conventions only inside the matching ecosystem.
+
+## YAML for Kubernetes
+
+### Naming
+
+- Set a stable `metadata.name` explicitly for declarative Kubernetes resources
+  stored as source-of-truth manifests.
+- Use `generateName` only for short-lived or generated Kubernetes resources
+  where stable identity is not required and the deployment flow supports
+  generated names.
+- Use semantic labels consistently across related Kubernetes resources.
+- Prefer standard labels such as `app.kubernetes.io/name`,
+  `app.kubernetes.io/instance`, `app.kubernetes.io/version`,
+  `app.kubernetes.io/component`, `app.kubernetes.io/part-of`, and
+  `app.kubernetes.io/managed-by` when they help ownership, selection,
+  observability, cost tracking, environment separation, or tier identification.
+- Use annotations for metadata that must survive deployment but should not be
+  used for selectors, such as build IDs, commit references, ownership
+  information, deployment context, or operational descriptions.
+- Keep Service selectors, workload selectors, and Pod template labels aligned so
+  that each selector identifies only the intended Pods.
+
+### Formatting
+
+- Generate Kubernetes configuration as YAML by default, not JSON, unless the user
+  explicitly requests another Kubernetes-supported format.
+- Follow the generic YAML section for indentation, scalar quoting, Boolean
+  values, comments, block scalars, and YAML validation before applying
+  Kubernetes-specific manifest rules.
+- Define the required object fields for every Kubernetes manifest, including
+  `apiVersion`, `kind`, `metadata.name` or a documented `generateName`
+  exception, and the resource-specific `spec` when the resource kind requires
+  one.
+- Use the latest stable API version supported by the target cluster, and verify
+  API availability with the target cluster when possible instead of hardcoding
+  outdated or deprecated APIs.
+- Keep manifests minimal; do not generate fields whose default values are
+  already supplied by Kubernetes unless the explicit value improves clarity,
+  reviewability, or policy compliance.
+- Declare namespaces explicitly for shared, team, staging, and production
+  resources; do not rely on the implicit `default` namespace for production or
+  multi-team manifests.
+- Group tightly related objects together when they are deployed as one
+  application unit, and keep unrelated resources separate.
+- Separate shared base manifests from environment-specific changes; use
+  overlays, patches, Helm values, or an equivalent project-approved mechanism
+  instead of copy-pasting full `dev`, `staging`, and `prod` manifests.
+- Use YAML comments only for useful human context, such as non-obvious intent,
+  constraints, workarounds, or environment-specific decisions.
+
+### Errors
+
+- Treat missing `apiVersion`, `kind`, `metadata.name` or documented
+  `generateName` exception, and required resource-specific `spec` fields as
+  manifest defects.
+- Treat API versions that are unsupported or deprecated for the target cluster
+  as defects when a supported stable replacement is available.
+- Treat selector and label mismatches as defects because they can route traffic
+  to the wrong Pods or leave workloads unmanaged.
+- Treat hardcoded Pod IPs in workload access paths as defects; use Services and
+  Service DNS names for stable in-cluster discovery.
+- Treat undocumented exceptions to required resource controls, security
+  contexts, NetworkPolicy, non-root execution, read-only root filesystems, or
+  other project security rules as defects until the exception is recorded close
+  to the manifest.
+
+### Safety
+
+- Do not hardcode real sensitive values in Kubernetes manifests; use Secret
+  references or an approved external secret manager for passwords, tokens, API
+  keys, and certificates.
+- Do not commit real sensitive values in Secret `data` or `stringData`; base64
+  encoding is not encryption.
+- Never commit production secrets as cleartext `stringData`.
+- Do not treat namespaces as complete security isolation; combine namespaces
+  with RBAC, ResourceQuota, LimitRange, and NetworkPolicy when isolation is
+  required.
+- Set restrictive security contexts by default for application containers.
+- Use `runAsNonRoot`, a non-zero `runAsUser` when applicable,
+  `readOnlyRootFilesystem` when compatible, and `allowPrivilegeEscalation:
+  false` unless an exception is explicitly documented.
+- Do not use privileged or host-coupled settings unless they are required and
+  documented.
+- Avoid `hostPort` and `hostNetwork` for normal access patterns; prefer
+  Services, DNS, or port-forwarding.
+- Set CPU and memory requests explicitly for application containers unless a
+  `LimitRange`, admission policy, or local policy supplies them.
+- Set memory limits and CPU limits when local policy, workload safety, or
+  capacity planning requires them, and document intentional omissions.
+- Generate NetworkPolicy when workload isolation is required, and do not assume
+  that the absence of Service exposure prevents Pod-to-Pod communication.
+- Use explicit, versioned, trusted image references; do not assume that floating
+  or unqualified image references are safe.
+
+### Tests
+
+- Validate Kubernetes manifests before deployment with the target cluster or the
+  target deployment tooling when possible.
+- Run `kubectl apply --dry-run=server --validate=strict -f <path>` or the
+  equivalent project deployment command when a target cluster is available.
+- Lint manifests before deployment with a Kubernetes-aware linter such as
+  KubeLinter in local checks or CI, and address findings before applying the
+  manifests.
+- Gate production manifests with policy-as-code when the project requires
+  policies for labels, non-root security contexts, signed images, or similar
+  controls.
+- Before applying manifests, verify required fields, API versions, namespaces,
+  selectors, labels, resource requests, resource limits when required, probes,
+  security contexts, Secret references, Service types, and NetworkPolicy
+  coverage when relevant.
+- Document every intentional exception close to the manifest in an annotation or
+  nearby comment so the exception remains reviewable.
+
+### Idioms
+
+- Do not generate naked Pods for production workloads.
+- Use a Deployment for continuously running stateless applications, a
+  StatefulSet for stateful workloads that need stable identity or storage, and
+  a Job for finite tasks.
+- Use one main container per Pod unless a sidecar is explicitly justified.
+- Do not add logging, proxy, or helper sidecars speculatively.
+- Configure readiness probes for traffic admission, liveness probes for
+  unhealthy container recovery, and startup probes when slow startup would
+  otherwise cause false failures.
+- Use Services for stable workload access instead of hardcoded Pod IPs, and
+  prefer Service DNS names for intra-cluster discovery.
+- Use headless Services only when direct Pod discovery is required.
+- Set `clusterIP: None` only for workloads that must discover individual Pod
+  addresses instead of using normal load-balanced Service routing.
+- Choose Service types deliberately: use `ClusterIP` for internal communication,
+  `NodePort` mainly for testing or constrained direct access, and `LoadBalancer`
+  for cloud-backed external exposure when appropriate.
+
+### Other
+
+- Apply this section only to Kubernetes manifests and Kubernetes-specific YAML
+  configuration.
+- Apply this section in addition to the generic YAML section; when the two
+  sections overlap, prefer the Kubernetes-specific rule.
+- Store source-of-truth manifests in version control before applying them to a
+  cluster.
+- Do not treat local, untracked YAML files as the source of truth for a
+  Kubernetes environment.
+- Do not generalize Kubernetes-specific rules to YAML used by unrelated tools or
+  platforms.
