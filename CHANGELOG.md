@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.33.0
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 10d4162 | Add Kubernetes YAML rules | asphyx |
+
 ## v1.32.0
 
 | References | Description | Author(s) |
