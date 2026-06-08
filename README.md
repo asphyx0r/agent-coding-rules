@@ -4,26 +4,19 @@ Practical behavior and code-quality rules for AI coding agents.
 
 ## Features
 
-- Provides reusable behavioral rules for AI coding agents.
-- Defines language-agnostic, language-specific, framework-specific,
-  documentation, commit, and release rules.
-- Includes C-specific rules for standard selection, C89/C90/C95 through C23
-  compatibility, headers, allocation checks, macros, buffers, and verification.
-- Includes C++-specific rules for standard selection, RAII, ownership,
-  parameter passing, smart pointers, headers, templates, error handling,
-  concurrency assumptions, and verification.
-- Includes C#-specific rules for .NET naming, formatting, exception handling,
-  async code, analyzers, LINQ, initialization idioms, and verification.
-- Includes Dockerfile and `.dockerignore` rules for image build logic,
-  layering, build context, image safety, and publication checks.
-- Includes Rust-specific rules for ownership, error handling, unsafe code,
-  rustdoc examples, Cargo features, and Cargo-based verification.
-- Includes Warez Release NFO File rules for fixed-width `.nfo` artifacts,
-  ASCII/CP437 rendering, safe scope, and piracy-risk boundaries.
-- Includes Warez Release `FILE_ID.DIZ` rules for BBS-compatible archive
-  descriptions, profile-specific width and height limits, disk markers, archive
-  placement, and DIZ-specific validation.
-- Keeps agent instructions separate from human-facing project documentation.
+- Provides a reusable instruction stack for AI coding agents, with explicit
+  scope and precedence rules.
+- Encourages cautious agent behavior: stated assumptions, clarification before
+  risky work, surgical changes, and goal-driven verification.
+- Defines language-agnostic code-quality guidance for naming, comments,
+  formatting, functions, errors, design, architecture, concurrency, testing,
+  refactoring, and review.
+- Adds language-, dialect-, and framework-specific rules for web, systems,
+  scripting, database, container, legacy, and release-description formats.
+- Covers documentation, README, changelog, commit, release, versioning, privacy,
+  repository-readiness, and Git tag workflows.
+- Includes review checklists and verification expectations so generated changes
+  can be checked before delivery.
 
 ## Files
 
@@ -89,10 +82,11 @@ cp .agent-coding-rules/*_RULES.md .
 
 ## Sources
 
-- [Karpathy-Inspired Claude Code Guidelines](https://github.com/multica-ai/andrej-karpathy-skills)
+- [Karpathy agent rules](https://github.com/multica-ai/andrej-karpathy-skills)
 - Robert C. Martin, "Clean Code: A Handbook of Agile Software Craftsmanship" (978-0132350884)
 - Martin Paul Eve, "Warez: The Infrastructure and Aesthetics of Piracy" (978-1-68571-036-1)
-- The PPL Development Kit: The PCBoard Programming Language Reference Manual (1993, Clark Development Co., Inc.)
+- The PPL Development Kit: The PCBoard Programming Language Reference Manual
+  (1993, Clark Development Co., Inc.)
 - Microsoft GW-BASIC Interpreter User's Guide and User's Reference (1986)
 - [Preslav Rachev, The 10 Go Error Handling Commandments](https://preslav.me/2026/05/19/10-golang-error-handling-commandments)
 - [Semantic Versioning 2.0.0](https://semver.org/)
