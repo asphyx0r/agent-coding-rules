@@ -251,6 +251,9 @@ Please make sure to update tests as appropriate.
   versioned, released, packaged, redistributed, or has user-visible changes that
   need release notes.
 - If such a project has no `CHANGELOG.md`, create a minimal one.
+- If no `CHANGELOG.md` exists during a review-only documentation task, report
+  the missing file instead of creating it unless the user explicitly asks for
+  remediation.
 - If it is unclear whether a changelog is required, ask before adding release
   history or state the assumption before creating the file.
 

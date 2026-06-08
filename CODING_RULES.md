@@ -123,7 +123,9 @@ Acceptable comments include:
 - Follow the repository formatter and style rules when they exist.
 - Use automated formatting tools whenever available.
 - Keep formatting consistent across the team and repository.
-- Prefer small files over very large files.
+- Prefer small files over very large files; when size starts to hide separate
+  responsibilities, split only along responsibilities exposed by the current
+  work.
 - Separate unrelated concepts vertically.
 - Keep tightly related lines close together.
 - Place related functions near each other when it improves readability.
@@ -144,7 +146,9 @@ Acceptable comments include:
 - Prefer pure functions when practical, especially for calculations and transformations.
 - Keep commands and queries separate when possible: a function should either change state or answer a question, not both.
 - Do not use flags to make one function perform multiple distinct behaviors.
-- Limit argument count. When arguments grow, introduce a meaningful object, data structure, or parameter object.
+- Limit argument count. When arguments make call sites hard to understand or
+  form one coherent concept, introduce a meaningful object, data structure, or
+  parameter object.
 - Use keyword or named parameters when the language supports them and they improve clarity.
 
 ## Error Handling Rules

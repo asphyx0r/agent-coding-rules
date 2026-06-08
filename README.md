@@ -20,7 +20,8 @@ Practical behavior and code-quality rules for AI coding agents.
 
 ## Files
 
-These files form a layered instruction stack:
+These files form a layered instruction stack, with one supporting Markdown lint
+configuration:
 
 - `AGENTS.md`: Governs the model's behavior and defines when each rule file
   applies.
@@ -34,8 +35,9 @@ These files form a layered instruction stack:
 - `RELEASE_RULES.md`: Controls SemVer version selection, Git tag creation, and
   release readiness.
 - `CHANGELOG.md`: Lists tagged release history.
+- `.markdownlint-cli2.yaml`: Configures repository Markdown lint rules.
 
-## Supported Languages and Frameworks
+## Supported Languages, Frameworks, and Artifact Formats
 
 - Bash
 - C

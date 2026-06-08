@@ -12,6 +12,9 @@ Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-s
   dialect, or framework of the files being edited.
 - Before creating, editing, reviewing, or refactoring project documentation,
   read and follow `DOCUMENTATION_RULES.md`.
+- When project documentation contains executable code, commands, configuration,
+  or API examples, also apply `CODING_RULES.md` and the relevant
+  `LANGUAGE_RULES.md` sections to those examples.
 - When creating or updating `README.md`, apply `DOCUMENTATION_RULES.md`
   rigorously.
 - If an existing `README.md` contains structural anomalies that conflict with
@@ -37,7 +40,8 @@ When rules conflict, apply them in this order:
 
 Before creating, editing, reviewing, refactoring, or otherwise modifying code or
 project documentation, creating commits, or creating Git tags, the agent must
-state an instruction audit before taking the requested action.
+read the applicable instruction files, then state an instruction audit before
+taking the requested action.
 
 The instruction audit must include:
 

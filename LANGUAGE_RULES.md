@@ -2362,7 +2362,7 @@ rule for framework code.
   requirements, queue choices, timer lifecycle, or non-obvious Eggdrop behavior.
 - Do not generate comments that merely restate the next Tcl command.
 
-## mIRC scripting language
+## mIRC Scripting Language
 
 ### Naming
 
