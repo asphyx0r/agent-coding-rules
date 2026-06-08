@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.34.1
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 617d241 | Tighten commit subject rules | asphyx |
+
 ## v1.34.0
 
 | References | Description | Author(s) |
