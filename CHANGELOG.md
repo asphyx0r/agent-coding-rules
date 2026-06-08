@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.32.0
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 0ad95d1 | Add YAML language rules | asphyx |
+
 ## v1.31.3
 
 | References | Description | Author(s) |
