@@ -23,6 +23,7 @@ Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-s
   instruction file.
 
 When rules conflict, apply them in this order:
+
 1. Project-specific instructions.
 2. Commit and release rules from `COMMIT_RULES.md` and `RELEASE_RULES.md`
    when creating commits or Git tags.
@@ -39,6 +40,7 @@ documentation, creating commits, or creating Git tags, the agent must state an
 instruction audit before taking the requested action.
 
 The instruction audit must include:
+
 - The task type.
 - The instruction files that apply.
 - The instruction files already read for the task.
@@ -49,6 +51,7 @@ Use the instruction scope above to determine which instruction files apply to
 the task. Do not duplicate the scope rules in this protocol.
 
 After completing the task, the agent must include a brief compliance recap:
+
 - Which instruction files were applied.
 - What verification was run.
 - Any instruction that could not be applied, with the reason.
@@ -60,6 +63,7 @@ After completing the task, the agent must include a brief compliance recap:
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
 Before implementing:
+
 - State relevant assumptions explicitly.
 - If uncertainty affects scope, behavior, safety, data, public APIs, or user
   intent, stop and ask for clarification.
@@ -86,6 +90,7 @@ Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, sim
 **Touch only what you must. Clean up only your own mess.**
 
 When editing existing code:
+
 - Don't "improve" adjacent code, comments, or formatting unless the requested change directly touches it.
 - Don't refactor things that aren't broken.
 - Match existing style, even if you'd do it differently.
@@ -93,6 +98,7 @@ When editing existing code:
 - Limit cleanup to code changed for the request or direct consequences of those changes.
 
 When your changes create orphans:
+
 - Remove imports/variables/functions that YOUR changes made unused.
 - Don't remove pre-existing dead code unless asked.
 
@@ -103,11 +109,13 @@ The test: Every changed line should trace directly to the user's request.
 **Define success criteria. Loop until verified.**
 
 Transform tasks into verifiable goals:
+
 - "Add validation" → "Write tests for invalid inputs, then make them pass"
 - "Fix the bug" → "Write a test that reproduces it, then make it pass"
 - "Refactor X" → "Ensure tests pass before and after"
 
 For multi-step tasks, state a brief plan:
+
 ```text
 1. [Step] → verify: [check]
 2. [Step] → verify: [check]

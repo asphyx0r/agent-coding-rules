@@ -6,6 +6,7 @@ This file defines language-, dialect-, and framework-specific coding rules for
 code generated or modified by an AI coding agent.
 
 Use this file together with `AGENTS.md` and `CODING_RULES.md`:
+
 - `AGENTS.md` governs agent behavior.
 - `CODING_RULES.md` governs language-agnostic code quality.
 - `LANGUAGE_RULES.md` governs restrictions, conventions, and exceptions specific
@@ -198,7 +199,7 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Apply Unreal Engine, CUDA, embedded, safety-critical, MISRA-like, organization-specific, or framework-specific C++ rules only when the target code belongs to that ecosystem or the project explicitly requires them.
 - Do not apply ecosystem-specific naming, exception, performance, memory, or safety policies to unrelated generic C++ code.
 
-## C#
+## C\#
 
 ### Naming
 
@@ -1468,7 +1469,6 @@ rule for framework code.
 - Keep one language or locale per localization properties file.
 - Keep Spring Boot, Apache Commons Configuration, and localization rules conditional to avoid applying framework-specific behavior to plain Java properties files.
 
-
 ## TypeScript
 
 ### Naming
@@ -1937,7 +1937,6 @@ rule for framework code.
 - Prefer named command-line options over fragile positional arguments when a script accepts multiple inputs, outputs, or modes.
 - Provide both short and long option forms for user-facing scripts when it improves usability.
 - Support standard CLI conventions where relevant, including `-` for standard input or output and `--` as the end of options.
-
 
 ## PowerShell
 

@@ -7,6 +7,7 @@ created or modified by an AI coding agent.
 
 Use this file together with `AGENTS.md`, `CODING_RULES.md`, and
 `LANGUAGE_RULES.md`:
+
 - `AGENTS.md` governs agent behavior.
 - `CODING_RULES.md` governs language-agnostic code quality.
 - `LANGUAGE_RULES.md` governs language-, dialect-, and framework-specific code
@@ -244,7 +245,7 @@ Please make sure to update tests as appropriate.
 
 ## CHANGELOG.md
 
-### Existence and Location
+### CHANGELOG.md Existence and Location
 
 - A `CHANGELOG.md` file should exist at the repository root when the project is
   versioned, released, packaged, redistributed, or has user-visible changes that
@@ -333,6 +334,25 @@ No tagged release entries have been documented yet.
 ```
 
 ## Markdown Documentation Quality
+
+### Linting
+
+- Every Markdown file in the repository must pass `markdownlint` before
+  documentation changes are presented as final.
+- Run `markdownlint` against all repository Markdown files, not only the files
+  changed in the current task, so formatting and syntax rules stay consistent.
+- Use the repository's existing `markdownlint` configuration when one exists.
+- Do not disable or relax `markdownlint` rules to make a change pass unless the
+  user explicitly requests that configuration change.
+- If `markdownlint` is not installed, unavailable, or inaccessible, report that
+  limitation and use a conservative fallback check before finalizing.
+- The fallback check must at minimum inspect Markdown syntax, heading order,
+  duplicate headings, blank lines around headings and tables, trailing
+  whitespace, malformed lists, invalid tables, malformed links or images,
+  unclosed code fences, and missing language identifiers on known-language
+  fenced code blocks.
+- State that the fallback check does not replace a successful `markdownlint`
+  run.
 
 ### Naming
 
@@ -525,4 +545,6 @@ Before presenting documentation changes as final, verify the following:
   chronological order and the required three-column commit table format.
 - Long or specialized content is moved out of the README when it makes the
   primary onboarding document hard to scan.
+- `markdownlint` passes for every Markdown file, or its unavailability is
+  reported with the conservative fallback checks that were performed.
 - Markdown renders cleanly and follows the repository's documentation style.
