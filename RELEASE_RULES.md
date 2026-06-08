@@ -50,12 +50,12 @@ Apply these rules before creating any Git tag.
   backward-compatible bug fixes.
 - Use pre-release labels and build metadata only as valid SemVer extensions to
   the `MAJOR.MINOR.PATCH` format, and only when they are explicitly required.
-- Before creating any tag, validate the selected version number with this exact
-  regular expression. Validate the version number without the leading lowercase
-  `v` tag prefix:
+- Before creating any tag, validate the selected version number with this
+  ECMAScript-compatible regular expression. Validate the version number without
+  the leading lowercase `v` tag prefix:
 
   ```regex
-  ^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
+  ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-((?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$
   ```
 
 - Do not create the tag if the selected version number fails the regular

@@ -19,7 +19,8 @@ the target language and repository.
 
 Produce code that other developers can understand, verify, modify, and safely extend.
 
-Working code is not enough. After making code work, clean it until its intent, structure, and behavior are clear.
+Within the requested and touched scope, working code is not enough. After making code work, clean it until its intent,
+structure, and behavior are clear.
 
 ## Operational Definitions
 
@@ -271,8 +272,10 @@ Acceptable comments include:
 - Avoid tests that depend on execution order.
 - Avoid tests that require hidden environment state.
 - Keep test failures easy to diagnose.
-- Use acceptance tests as executable definitions of done for user-facing behavior.
-- Add passing acceptance tests to continuous build or continuous integration.
+- Use acceptance tests as executable definitions of done for user-facing behavior when they are relevant to the
+  requested change.
+- Add passing acceptance tests to continuous build or continuous integration when the project already has a suitable
+  pipeline and the current change affects that acceptance path.
 - Treat a failing continuous build as urgent and stop accumulating additional changes until it is repaired.
 
 ## Refactoring Rules

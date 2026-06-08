@@ -315,6 +315,7 @@ Please make sure to update tests as appropriate.
 
   ```markdown
   ## vX.Y.Z
+
   | References | Description | Author(s) |
   | --- | --- | --- |
   | <COMMIT-CHECKSUM-1> | <COMMIT-TITLE-1> | <COMMIT-AUTHOR-1> |

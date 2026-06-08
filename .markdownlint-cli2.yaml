@@ -130,6 +130,9 @@ config:
     style: compact
     aligned_delimiter: false
 
+  # MD044 is intentionally broad because these rules discuss many languages,
+  # tools, and documentation sources. Keep it explicit so capitalization
+  # changes stay reviewable.
   # Keep this item last due to length.
   MD044:
     code_blocks: false

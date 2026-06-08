@@ -13,12 +13,6 @@ Practical behavior and code-quality rules for AI coding agents.
   refactoring, and review.
 - Adds language-, dialect-, and framework-specific rules for web, systems,
   scripting, database, container, legacy, and release-description formats.
-- Includes YAML-specific rules for extensions, indentation, scalar quoting,
-  portable Boolean values, comments, block scalars, safe loaders, validation,
-  anchors, aliases, and ecosystem-specific composition.
-- Adds Kubernetes-specific YAML rules for manifests, stable object identity,
-  labels and selectors, namespaces, API versions, Secrets, security contexts,
-  resource controls, NetworkPolicy, Services, probes, and cluster validation.
 - Covers documentation, README, changelog, commit, release, versioning, privacy,
   repository-readiness, and Git tag workflows.
 - Includes review checklists and verification expectations so generated changes
@@ -26,7 +20,7 @@ Practical behavior and code-quality rules for AI coding agents.
 
 ## Files
 
-These files form a layered instruction stack, with one supporting Markdown lint
+These files form a layered instruction stack, with supporting repository
 configuration:
 
 - `AGENTS.md`: Governs the model's behavior and defines when each rule file
@@ -42,22 +36,23 @@ configuration:
   release readiness.
 - `CHANGELOG.md`: Lists tagged release history.
 - `.markdownlint-cli2.yaml`: Configures repository Markdown lint rules.
+- `.gitattributes`: Defines repository text-file line-ending normalization.
 
 ## Supported Languages, Frameworks, and Artifact Formats
 
 - Bash
 - C
 - C++
-- C#
+- C\#
 - CSS
 - Docker Files
 - Go
 - GW-BASIC
 - HTML
 - Java
-- Java (Properties Files)
+- Java Properties Files
 - JavaScript
-- Laravel (PHP Framework)
+- Laravel
 - mIRC Scripting Language
 - PCBoard Programming Language
 - Perl
@@ -65,11 +60,11 @@ configuration:
 - PowerShell
 - Python
 - Rust
-- SQL (Generic)
-- SQL (Microsoft SQL Server Transact-SQL)
-- SQL (MySQL)
-- SQL (Oracle PL/SQL)
-- Tcl (Eggdrop Scripting)
+- SQL
+- Microsoft SQL Server Transact-SQL
+- MySQL
+- Oracle PL/SQL
+- Tcl Eggdrop Scripting
 - TypeScript
 - Warez Release FILE_ID.DIZ
 - Warez Release NFO File
@@ -97,10 +92,27 @@ configuration.
 
 ## Usage
 
-- Create or update code in your project as usual.
 - Ask your coding agent to follow `AGENTS.md`.
+- Create or update code in your project as usual.
 - Review generated changes against the applicable rule files.
 - Keep project-specific instructions in your local `AGENTS.md` when needed.
+
+## Validation
+
+Run Markdown lint against all Markdown files:
+
+```bash
+markdownlint-cli2 "**/*.md"
+```
+
+If `yamllint` is available, validate the Markdown lint configuration:
+
+```bash
+yamllint .markdownlint-cli2.yaml
+```
+
+The Markdown lint command also parses `.markdownlint-cli2.yaml`; use
+`yamllint` for YAML style checks when it is available.
 
 ## Sources
 
