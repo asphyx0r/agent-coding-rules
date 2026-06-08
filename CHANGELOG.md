@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.35.0
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 626e672 | Refine repository rule documentation | asphyx |
+
 ## v1.34.1
 
 | References | Description | Author(s) |
