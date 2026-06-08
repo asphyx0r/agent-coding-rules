@@ -67,6 +67,16 @@ Apply these rules before creating any commit.
   exists in the repository.
 - Write all commit message content in English.
 - Keep the commit subject line at 50 characters or fewer.
+- Before writing the commit subject, derive a concise inventory of the material
+  staged changes from the staged diff.
+- Make the commit subject representative of the full staged change set, not
+  only the largest, latest, or originally requested change.
+- Do not use a subject that names only one changed file, subsystem, or behavior
+  when another staged file, subsystem, or behavior contains material changes.
+- For commits with multiple material areas, use either a broader subject that
+  captures their shared intent or a short subject that names the main areas.
+- Treat a misleadingly narrow commit subject as a commit message defect to fix
+  before creating the commit.
 - Separate the subject from the body with a blank line.
 - Wrap all commit body lines at 72 characters or fewer.
 - In the body, briefly describe which files or areas changed and why.
