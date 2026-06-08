@@ -298,8 +298,8 @@ Please make sure to update tests as appropriate.
 - Use this exact table header and separator:
 
   ```markdown
-  References | Description | Author(s)
-  --- | --- | ---
+  | References | Description | Author(s) |
+  | --- | --- | --- |
   ```
 
 - In the `References` column, use a short unique commit checksum unless the
@@ -315,11 +315,11 @@ Please make sure to update tests as appropriate.
 
   ```markdown
   ## vX.Y.Z
-  References | Description | Author(s)
-  --- | --- | ---
-  <COMMIT-CHECKSUM-1> | <COMMIT-TITLE-1> | <COMMIT-AUTHOR-1>
-  <COMMIT-CHECKSUM-2> | <COMMIT-TITLE-2> | <COMMIT-AUTHOR-2>
-  <COMMIT-CHECKSUM-3> | <COMMIT-TITLE-3> | <COMMIT-AUTHOR-3>
+  | References | Description | Author(s) |
+  | --- | --- | --- |
+  | <COMMIT-CHECKSUM-1> | <COMMIT-TITLE-1> | <COMMIT-AUTHOR-1> |
+  | <COMMIT-CHECKSUM-2> | <COMMIT-TITLE-2> | <COMMIT-AUTHOR-2> |
+  | <COMMIT-CHECKSUM-3> | <COMMIT-TITLE-3> | <COMMIT-AUTHOR-3> |
   ```
 
 ### Minimal CHANGELOG Template
