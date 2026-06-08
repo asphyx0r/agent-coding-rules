@@ -3572,3 +3572,94 @@ layering, build context, and image-runtime concerns in this section.
 - For multi-volume ZIP+DIZ packaging, include the applicable `FILE_ID.DIZ` in
   each ZIP volume when required by the active rule profile.
 - Ask for missing metadata only when it blocks safe and valid DIZ generation.
+
+## YAML
+
+### Naming
+
+- Prefer `.yaml` for new YAML files unless the target ecosystem requires `.yml`.
+- Use `.yml` only when it is already established by the target tool,
+  repository, platform, or file set.
+
+### Formatting
+
+- Use spaces for indentation, never tabs.
+- Use two spaces per indentation level unless the repository style guide
+  explicitly requires another consistent value.
+- Keep indentation consistent within the same nesting level.
+- Do not mix indentation widths for sibling keys or sibling sequence items.
+- Write scalar mappings with exactly one space after the colon, such as
+  `key: value`, not `key:value`.
+- Prefer block-style mappings and sequences for maintainable configuration.
+- Avoid flow-style objects and inline lists for complex or long values.
+- Indent sequence items clearly under the key they belong to.
+- Do not place sequence dashes at an ambiguous indentation level.
+- Use only lowercase `true` and `false` for portable Boolean values.
+- Do not use `yes`, `no`, `on`, `off`, `True`, or `False` as portable YAML
+  Booleans.
+- Quote values that must remain strings when they look like another YAML type.
+- Quote numeric-looking identifiers, text Booleans, leading-zero values, and
+  other scalars that a parser could coerce.
+- Quote fragile scalars that contain YAML-significant characters when the value
+  must be parsed as a plain string.
+- Quote strings containing a colon followed by a space, a space before `#`, a
+  dash followed by a space, control characters, tabs, or flow-style delimiters
+  when needed.
+- Use single quotes for regular expressions and filesystem paths when escaping
+  or parser ambiguity is a risk.
+- Use block scalars for long or multiline strings.
+- Prefer `|`, `>`, `|-`, or `>-` over embedded `\n` sequences or very long
+  single-line strings.
+- Keep comments aligned with the YAML block they describe.
+- Put comments above the relevant line when possible, start them with `#`
+  followed by one space, and avoid unclear comment indentation.
+- Remove trailing whitespace from YAML files.
+
+### Errors
+
+- Treat tab indentation, mixed indentation, ambiguous sequence indentation, and
+  malformed key-value spacing as defects.
+- Treat trailing whitespace as a linting defect because it reduces readability
+  and can hide formatting issues.
+- Treat unquoted ambiguous scalar values as defects when the target consumer
+  must receive a string.
+- Do not accept YAML that depends on undocumented parser coercion, syntax
+  extensions, or tool-specific behavior.
+
+### Safety
+
+- Do not store secrets directly in YAML files.
+- Use a secret manager, keystore, environment integration, or platform-specific
+  secret mechanism for sensitive values.
+- Use safe YAML loaders for untrusted input.
+- Never parse untrusted YAML with loaders, constructors, or tags that can
+  instantiate arbitrary objects or execute unsafe behavior.
+
+### Tests
+
+- Validate YAML before committing or deploying it.
+- Use a linter, formatter, schema validator, or the target tool's native
+  validation command whenever available.
+- Enforce YAML validation in CI when the repository already has CI or the target
+  tool provides a reliable check.
+- Validate generated YAML with the exact target tool when using tool-specific
+  includes, templates, schemas, or merge behavior.
+
+### Idioms
+
+- Keep YAML configuration minimal.
+- Do not write default values already supplied by the target tool unless the
+  value is intentionally documented, overridden, or tested.
+- Use anchors and aliases only when they improve local readability.
+- Do not rely on anchors across files unless the target tool explicitly supports
+  that behavior.
+- Avoid anchor-heavy structures that obscure the final expanded configuration.
+- Use ecosystem-specific composition only when the ecosystem supports it.
+- Do not treat includes, templates, schemas, or merge behavior as generic YAML
+  behavior.
+
+### Other
+
+- Do not generalize framework or platform rules to YAML itself.
+- Apply Kubernetes, Home Assistant, dbt, Ansible, GitLab CI, Elastic, or similar
+  conventions only inside the matching ecosystem.

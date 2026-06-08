@@ -13,6 +13,9 @@ Practical behavior and code-quality rules for AI coding agents.
   refactoring, and review.
 - Adds language-, dialect-, and framework-specific rules for web, systems,
   scripting, database, container, legacy, and release-description formats.
+- Includes YAML-specific rules for extensions, indentation, scalar quoting,
+  portable Boolean values, comments, block scalars, safe loaders, validation,
+  anchors, aliases, and ecosystem-specific composition.
 - Covers documentation, README, changelog, commit, release, versioning, privacy,
   repository-readiness, and Git tag workflows.
 - Includes review checklists and verification expectations so generated changes
@@ -68,6 +71,7 @@ configuration:
 - Warez Release FILE_ID.DIZ
 - Warez Release NFO File
 - Windows Batch
+- YAML
 
 ## Installation
 
@@ -135,6 +139,9 @@ an exhaustive source map for every supported language or framework.
 - [Docker Documentation](https://docs.docker.com/)
 - [Google TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html)
 - [FILE_ID.DIZ Frequently Asked Questions](https://www.roysac.com/file_iddesc.html)
+- [YAML 1.2.2 Specification](https://yaml.org/spec/1.2.2/)
+- [yamllint documentation](https://yamllint.readthedocs.io/en/stable/)
+- [PyYAML security guidance](https://yaml.com/projects/pyyaml/)
 
 ## License
 
