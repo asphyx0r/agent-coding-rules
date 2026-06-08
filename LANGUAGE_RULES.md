@@ -2029,8 +2029,20 @@ rule for framework code.
 ### Tests
 
 - Run `bash -n` before accepting generated Bash code.
-- Run ShellCheck when available, and fix or explicitly justify warnings introduced or exposed by the current change in
-  the touched Bash scope.
+- Check and format every Bash shell script with `shfmt` when `shfmt` is installed or provided by the project's
+  toolchain.
+- If `shfmt` is not installed, unavailable, or inaccessible, explicitly warn the user and use the best available
+  fallback formatting check, such as preserving the local style and manually reviewing indentation, line wrapping,
+  quoting, and command layout.
+- Treat every `shfmt` error as a blocking defect to fix before presenting Bash changes as final, and explicitly report
+  the `shfmt` result to the user.
+- Check every Bash shell script with `shellcheck` when `shellcheck` is installed or provided by the project's toolchain.
+- If `shellcheck` is not installed, unavailable, or inaccessible, explicitly warn the user and use the best available
+  fallback static check, such as `bash -n` plus manual review for quoting, unset variables, command substitution status,
+  unsafe word splitting, and fragile argument handling.
+- Treat every `shellcheck` error as a blocking defect to fix before presenting Bash changes as final, and explicitly
+  report the `shellcheck` result to the user.
+- Bash shell scripts must not have unresolved `shellcheck` errors.
 - For Bash scripts, exercise nonzero exit paths and missing argument, missing file, or missing command cases when they
   are affected by a change.
 - Verify scripts that use strict mode, traps, globs, temporary files, or argument forwarding with representative inputs
