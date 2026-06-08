@@ -109,5 +109,6 @@ Before creating a tag:
   increment it using the requested SemVer bump type: major, minor, or patch.
 - If matching tags exist and no bump type is specified, ask before creating the
   tag.
+- Create lightweight tags unless the user explicitly requests annotated tags.
 - Create the tag using a lowercase `v` prefix followed by the selected strict
   SemVer version.

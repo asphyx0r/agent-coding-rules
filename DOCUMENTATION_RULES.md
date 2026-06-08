@@ -3,7 +3,7 @@
 ## Purpose
 
 This file defines practical documentation rules for project documentation
-created or modified by an AI coding agent.
+created, modified, reviewed, or refactored by an AI coding agent.
 
 Use this file together with `AGENTS.md`, `CODING_RULES.md`, and
 `LANGUAGE_RULES.md`:

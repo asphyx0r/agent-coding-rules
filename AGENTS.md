@@ -35,9 +35,9 @@ When rules conflict, apply them in this order:
 
 ## Observable Instruction Protocol
 
-Before creating, editing, reviewing, or refactoring code, modifying
-documentation, creating commits, or creating Git tags, the agent must state an
-instruction audit before taking the requested action.
+Before creating, editing, reviewing, refactoring, or otherwise modifying code or
+project documentation, creating commits, or creating Git tags, the agent must
+state an instruction audit before taking the requested action.
 
 The instruction audit must include:
 
@@ -110,16 +110,16 @@ The test: Every changed line should trace directly to the user's request.
 
 Transform tasks into verifiable goals:
 
-- "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
+- "Add validation" -> "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" -> "Write a test that reproduces it, then make it pass"
+- "Refactor X" -> "Ensure tests pass before and after"
 
 For multi-step tasks, state a brief plan:
 
 ```text
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
+1. [Step] -> verify: [check]
+2. [Step] -> verify: [check]
+3. [Step] -> verify: [check]
 ```
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.

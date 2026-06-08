@@ -77,7 +77,13 @@ cd /home/user/project-name
 git clone https://github.com/asphyx0r/agent-coding-rules.git .agent-coding-rules
 cp .agent-coding-rules/AGENTS.md .
 cp .agent-coding-rules/*_RULES.md .
+cp .agent-coding-rules/.markdownlint-cli2.yaml .
+cp .agent-coding-rules/LICENSE.txt .
 ```
+
+Copying `LICENSE.txt` preserves the MIT license notice for reused files, and
+copying `.markdownlint-cli2.yaml` preserves the repository's Markdown lint
+configuration.
 
 ## Usage
 
@@ -87,6 +93,9 @@ cp .agent-coding-rules/*_RULES.md .
 - Keep project-specific instructions in your local `AGENTS.md` when needed.
 
 ## Sources
+
+This list records cited references used while developing the rules; it is not
+an exhaustive source map for every supported language or framework.
 
 - [Karpathy agent rules](https://github.com/multica-ai/andrej-karpathy-skills)
 - Robert C. Martin, "Clean Code: A Handbook of Agile Software Craftsmanship" (978-0132350884)
