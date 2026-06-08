@@ -90,7 +90,11 @@ cp .agent-coding-rules/*_RULES.md .
 ## Sources
 
 - [Karpathy-Inspired Claude Code Guidelines](https://github.com/multica-ai/andrej-karpathy-skills)
-- Robert C. Martin, Clean Code: A Handbook of Agile Software Craftsmanship (978-0132350884)
+- Robert C. Martin, "Clean Code: A Handbook of Agile Software Craftsmanship" (978-0132350884)
+- Martin Paul Eve, "Warez: The Infrastructure and Aesthetics of Piracy" (978-1-68571-036-1)
+- The PPL Development Kit: The PCBoard Programming Language Reference Manual (1993, Clark Development Co., Inc.)
+- Microsoft GW-BASIC Interpreter User's Guide and User's Reference (1986)
+- [Preslav Rachev, The 10 Go Error Handling Commandments](https://preslav.me/2026/05/19/10-golang-error-handling-commandments)
 - [Semantic Versioning 2.0.0](https://semver.org/)
 - [RFC 2119 - Key words for use in RFCs to Indicate Requirement Levels](https://www.rfc-editor.org/rfc/rfc2119)
 - [ISO/IEC JTC1/SC22/WG14 - C](https://www.open-std.org/jtc1/sc22/wg14/)
@@ -107,17 +111,19 @@ cp .agent-coding-rules/*_RULES.md .
 - [Microsoft Learn - Names of Classes, Structs, and Interfaces](https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces)
 - [Microsoft Learn - Asynchronous programming scenarios](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/async-scenarios)
 - [Microsoft Learn - Built-in types and literals](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/built-in-types)
-- The PPL Development Kit: The PCBoard Programming Language Reference Manual (1993, Clark Development)
-- Microsoft GW-BASIC Interpreter User's Guide and User's Reference (1986)
 - [Laravel Documentation](https://laravel.com/docs)
 - [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
 - [The Cargo Book](https://doc.rust-lang.org/cargo/)
 - [The Rust Reference](https://doc.rust-lang.org/reference/)
+- [The Rust Programming Language](https://doc.rust-lang.org/stable/book/)
+- [Rust By Example](https://doc.rust-lang.org/rust-by-example/)
+- [Rust Compiler Development Guide](https://rustc-dev-guide.rust-lang.org/)
+- [Microsoft Pragmatic Rust Guidelines](https://microsoft.github.io/rust-guidelines/guidelines/index.html)
+- [Apollo Rust Best Practices](https://github.com/apollographql/rust-best-practices)
+- [Good Practices for Writing Rust Libraries](https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/)
 - [Docker Documentation](https://docs.docker.com/)
-- [.nfo](https://en.wikipedia.org/wiki/.nfo)
-- [NFO File Format](https://docs.fileformat.com/system/nfo/)
-- [FILE_ID.DIZ](https://en.wikipedia.org/wiki/FILE_ID.DIZ)
-- [File_ID.diz Frequently Asked Questions](https://www.roysac.com/file_iddesc.html)
+- [Google TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html)
+- [FILE_ID.DIZ Frequently Asked Questions](https://www.roysac.com/file_iddesc.html)
 
 ## License
 
