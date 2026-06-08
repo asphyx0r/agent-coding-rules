@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.31.1
+
+References | Description | Author(s)
+--- | --- | ---
+53e4686 | Clarify documentation audit rules | asphyx
+
 ## v1.31.0
 
 References | Description | Author(s)
