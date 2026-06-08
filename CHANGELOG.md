@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.31.3
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 1eb4937 | Align changelog table examples | asphyx |
+| 45ac664 | Add universal Markdown lint config | asphyx |
+
 ## v1.31.2
 
 | References | Description | Author(s) |
