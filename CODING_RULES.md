@@ -5,13 +5,15 @@
 This file defines practical coding rules for code generated or modified by an AI coding agent.
 It is intended to complement `AGENTS.md`: `AGENTS.md` governs agent behavior, while this file governs code quality.
 
-This document is a compact, operational rule set. It is not exhaustive; combine it with repository-specific instructions, tests, and conventions.
+This document is a compact, operational rule set. It is not exhaustive; combine it with repository-specific
+instructions, tests, and conventions.
 
 ## Scope
 
 Apply these rules when creating, editing, reviewing, or refactoring code.
 
-These rules are language-agnostic. Adapt naming, formatting, testing, and error-handling details to the conventions of the target language and repository.
+These rules are language-agnostic. Adapt naming, formatting, testing, and error-handling details to the conventions of
+the target language and repository.
 
 ## Core Principle
 
@@ -23,12 +25,18 @@ Working code is not enough. After making code work, clean it until its intent, s
 
 Use these definitions when applying qualitative words in this file:
 
-- `clear` or `readable`: a reviewer can identify intent from names, structure, tests, and local context without relying on hidden assumptions or explanatory comments.
-- `small`: a function, class, module, or change has one responsibility or one reason to change; split only when the current work exposes separate responsibilities.
-- `safe`: the change preserves existing public behavior or is covered by tests, static checks, or an explicit verification step.
+- `clear` or `readable` : a reviewer can identify intent from names, structure, tests, and local context without relying
+  on hidden assumptions or explanatory comments.
+- `small` : a function, class, module, or change has one responsibility or one reason to change; split only when the
+  current work exposes separate responsibilities.
+- `safe` : the change preserves existing public behavior or is covered by tests, static checks, or an explicit
+  verification step.
 - `relevant`: the change is necessary for the requested outcome, for cleanup caused by the change, or for verification.
-- `when practical`, `when possible`, `where possible`, or `when appropriate`: apply the rule unless it conflicts with repository conventions, requested behavior, or a verified technical constraint; state the reason when skipping it.
-- `clear enough`: the relevant review checklist items have an explicit pass, test result, verification step, or stated exception.
+- `when practical` , `when possible` , `where possible` , or `when appropriate` : apply the rule unless it conflicts
+  with repository conventions, requested behavior, or a verified technical constraint; state the reason when skipping
+  it.
+- `clear enough` : the relevant review checklist items have an explicit pass, test result, verification step, or stated
+  exception.
 
 ## General Rules
 
@@ -38,7 +46,8 @@ Use these definitions when applying qualitative words in this file:
 - Keep code small, well named, organized, and ordered.
 - Make behavior easy to verify with tests.
 - Treat structural degradation as a real defect, not as cosmetic debt.
-- Improve only code you already need to touch for the requested change, and only when the improvement is safe and relevant.
+- Improve only code you already need to touch for the requested change, and only when the improvement is safe and
+  relevant.
 - Do not rewrite unrelated code merely because it could be cleaner.
 - Do not optimize for performance before readability unless performance is an explicit, measured requirement.
 
@@ -61,12 +70,14 @@ Use these definitions when applying qualitative words in this file:
 - A name should explain why the element exists, what it represents, and how it is used.
 - If a name needs a comment to explain it, improve the name or the surrounding structure.
 - Use consistent vocabulary for the same concept across the codebase.
-- Use one word per concept; do not alternate between synonyms such as `amount`, `cost`, `price`, and `fee` for the same domain idea.
+- Use one word per concept; do not alternate between synonyms such as `amount` , `cost` , `price` , and `fee` for the
+  same domain idea.
 - Avoid names that differ only by small visual or textual variations.
 - Avoid misleading type or container names.
 - Avoid joke names, slang, cultural references, or clever puns.
 - Use solution-domain terms for technical concepts and problem-domain terms for business concepts.
-- Add context through classes, functions, modules, namespaces, or data structures instead of adding redundant prefixes everywhere.
+- Add context through classes, functions, modules, namespaces, or data structures instead of adding redundant prefixes
+  everywhere.
 
 ### Variable Names
 
@@ -93,9 +104,11 @@ Use these definitions when applying qualitative words in this file:
 
 ### Avoid Encodings
 
-- Do not encode type, scope, or implementation details into names when the language or tools already provide that information.
+- Do not encode type, scope, or implementation details into names when the language or tools already provide that
+  information.
 - Do not prefix interfaces merely to indicate that they are interfaces.
-- If implementation naming is needed, make the implementation name more specific rather than polluting the abstraction name.
+- If implementation naming is needed, make the implementation name more specific rather than polluting the abstraction
+  name.
 
 ## Comments Rules
 
@@ -144,7 +157,8 @@ Acceptable comments include:
 - Avoid hidden side effects.
 - Avoid output arguments when returning a value is clearer.
 - Prefer pure functions when practical, especially for calculations and transformations.
-- Keep commands and queries separate when possible: a function should either change state or answer a question, not both.
+- Keep commands and queries separate when possible: a function should either change state or answer a question, not
+  both.
 - Do not use flags to make one function perform multiple distinct behaviors.
 - Limit argument count. When arguments make call sites hard to understand or
   form one coherent concept, introduce a meaningful object, data structure, or
@@ -207,7 +221,8 @@ Acceptable comments include:
 - Open-Closed: prefer adding new code over repeatedly modifying stable existing code when variation is expected.
 - Liskov Substitution: ensure interchangeable implementations obey the same behavioral contract.
 - Interface Segregation: avoid forcing clients to depend on operations they do not use.
-- Dependency Inversion: high-level policy must not depend directly on low-level details; low-level details should depend on stable abstractions.
+- Dependency Inversion: high-level policy must not depend directly on low-level details; low-level details should depend
+  on stable abstractions.
 
 ## Architecture Rules
 

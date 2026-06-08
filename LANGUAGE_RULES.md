@@ -30,66 +30,98 @@ If a repository has stronger local conventions, follow the repository convention
 If a language-, dialect-, or framework-specific rule conflicts with a general
 rule from `CODING_RULES.md`, the specific rule takes precedence.
 
-Use the operational definitions in `CODING_RULES.md` for qualitative phrases such as `small`, `when practical`, `when possible`, and `when appropriate`.
+Use the operational definitions in `CODING_RULES.md` for qualitative phrases such as `small` , `when practical` ,
+`when possible` , and `when appropriate` .
 
 ## C
 
 ### Naming
 
 - Match the existing C project naming style before applying generic C naming rules.
-- If no project convention exists, use `lower_snake_case` for functions and variables, and `UPPER_SNAKE_CASE` for macros, enum constants, and project-wide constants.
-- Avoid identifiers reserved by the selected C standard, the implementation, or the standard library; do not introduce names that start with reserved underscore patterns or collide with standard library identifiers.
+- If no project convention exists, use `lower_snake_case` for functions and variables, and `UPPER_SNAKE_CASE` for
+  macros, enum constants, and project-wide constants.
+- Avoid identifiers reserved by the selected C standard, the implementation, or the standard library; do not introduce
+  names that start with reserved underscore patterns or collide with standard library identifiers.
 - Use meaningful names that expose intent, role, and unit, such as `timeout_ms` instead of `timeout`.
 - Name functions after the action they perform or the value they compute.
-- Replace meaningful numeric literals with named constants, enum constants, or macros according to the project convention.
+- Replace meaningful numeric literals with named constants, enum constants, or macros according to the project
+  convention.
 
 ### Formatting
 
-- Match the existing C project indentation, brace style, file organization, formatter configuration, and spacing before applying generic formatting preferences.
-- Use `.c` files for implementation and `.h` files for shared declarations unless the project intentionally uses another C file layout.
-- Keep C source files in a stable, readable order: standard and system includes, project includes, macros and constants, typedefs, enums, structs, globals, internal prototypes, then function implementations.
-- Keep headers functionally scoped, expose only declarations needed by their module users, and protect each header against double inclusion with include guards.
-- Include the matching public header from the source file that implements it so the compiler can detect declaration and definition mismatches.
+- Match the existing C project indentation, brace style, file organization, formatter configuration, and spacing before
+  applying generic formatting preferences.
+- Use `.c` files for implementation and `.h` files for shared declarations unless the project intentionally uses another
+  C file layout.
+- Keep C source files in a stable, readable order: standard and system includes, project includes, macros and constants,
+  typedefs, enums, structs, globals, internal prototypes, then function implementations.
+- Keep headers functionally scoped, expose only declarations needed by their module users, and protect each header
+  against double inclusion with include guards.
+- Include the matching public header from the source file that implements it so the compiler can detect declaration and
+  definition mismatches.
 - Use an automated formatter only when the project provides or requires one, and do not reformat unrelated C code.
-- If no formatter exists, preserve local formatting and avoid mixed indentation, inconsistent spacing, and unrelated whitespace churn.
-- Use braces consistently for `if`, `else`, `for`, `while`, and `do` bodies; when one branch needs braces, use braces for the related branches.
+- If no formatter exists, preserve local formatting and avoid mixed indentation, inconsistent spacing, and unrelated
+  whitespace churn.
+- Use braces consistently for `if` , `else` , `for` , `while` , and `do` bodies; when one branch needs braces, use
+  braces for the related branches.
 
 ### Errors
 
-- Check error returns from standard library calls, allocation calls, and platform APIs that report failure unless the project has a validated wrapper that handles failure centrally.
-- Check `malloc` and `realloc` results before dereferencing the returned pointer or passing it to code that assumes success.
-- When using `realloc`, keep the original pointer until the returned pointer has been checked so a failed resize does not lose the existing allocation.
-- Include `errno`, `strerror`, or the relevant platform error detail in diagnostics when that information is available, meaningful, and safe to expose.
-- Return a useful status, error code, or project-standard failure signal when a bounds check, allocation, file operation, or API call fails.
-- Use assertions only for internal invariants, preconditions, postconditions, and impossible states; handle user input and runtime failures through the project's normal error path.
+- Check error returns from standard library calls, allocation calls, and platform APIs that report failure unless the
+  project has a validated wrapper that handles failure centrally.
+- Check `malloc` and `realloc` results before dereferencing the returned pointer or passing it to code that assumes
+  success.
+- When using `realloc` , keep the original pointer until the returned pointer has been checked so a failed resize does
+  not lose the existing allocation.
+- Include `errno` , `strerror` , or the relevant platform error detail in diagnostics when that information is
+  available, meaningful, and safe to expose.
+- Return a useful status, error code, or project-standard failure signal when a bounds check, allocation, file
+  operation, or API call fails.
+- Use assertions only for internal invariants, preconditions, postconditions, and impossible states; handle user input
+  and runtime failures through the project's normal error path.
 - Do not hide recoverable C errors behind silent fallbacks unless the fallback is explicitly safe and documented.
 
 ### Safety
 
-- Do not change the configured C language standard silently; use the standard already selected by the build, CI, or project documentation.
+- Do not change the configured C language standard silently; use the standard already selected by the build, CI, or
+  project documentation.
 - If no C standard is configured and syntax compatibility matters, state the assumption before selecting one.
-- Do not use compiler-specific extensions, non-standard pragmas, implementation-specific attributes, or non-portable library calls unless they are required by the task and documented locally.
-- When code must be portable across several C revisions, use only syntax and library facilities available in the oldest targeted standard.
-- When targeting C89, C90, or C95, avoid later C conveniences unless the build explicitly permits them, including `//` comments, mixed declarations and statements, `inline`, variable length arrays, designated initializers, compound literals, `_Bool`, `restrict`, `<stdbool.h>`, and `<stdint.h>`.
-- Do not define storage-owning global variables in headers; declare them with `extern` in a header and define them once in a source file only when global state is truly necessary.
+- Do not use compiler-specific extensions, non-standard pragmas, implementation-specific attributes, or non-portable
+  library calls unless they are required by the task and documented locally.
+- When code must be portable across several C revisions, use only syntax and library facilities available in the oldest
+  targeted standard.
+- When targeting C89, C90, or C95, avoid later C conveniences unless the build explicitly permits them, including `//`
+  comments, mixed declarations and statements, `inline` , variable length arrays, designated initializers, compound
+  literals, `_Bool` , `restrict` , `<stdbool.h>` , and `<stdint.h>` .
+- Do not define storage-owning global variables in headers; declare them with `extern` in a header and define them once
+  in a source file only when global state is truly necessary.
 - Mark file-local functions, objects, and private state as `static`.
 - Mark pointer parameters as `const` when the pointed-to data is not modified.
-- Pass destination capacity to every function that writes into caller-provided storage, and check the capacity before writing.
-- Prefer enum constants for integral compile-time constants and `static const` objects for typed constants when preprocessing is not required.
-- Use macros only for conditional compilation, compile-time substitution, or patterns that cannot be expressed cleanly with typed C constructs.
+- Pass destination capacity to every function that writes into caller-provided storage, and check the capacity before
+  writing.
+- Prefer enum constants for integral compile-time constants and `static const` objects for typed constants when
+  preprocessing is not required.
+- Use macros only for conditional compilation, compile-time substitution, or patterns that cannot be expressed cleanly
+  with typed C constructs.
 - Parenthesize macro parameters and expression bodies where applicable.
-- Use `do { ... } while (0)` for multi-statement macros, and do not put a trailing semicolon inside the macro definition.
-- Isolate platform and feature conditionals in localized compatibility headers or feature-level configuration macros when practical.
-- Do not impose a universal `#if` versus `#ifdef` rule; follow the local project convention and avoid changing existing preprocessor style without explicit approval.
+- Use `do { ... } while (0)` for multi-statement macros, and do not put a trailing semicolon inside the macro
+  definition.
+- Isolate platform and feature conditionals in localized compatibility headers or feature-level configuration macros
+  when practical.
+- Do not impose a universal `#if` versus `#ifdef` rule; follow the local project convention and avoid changing existing
+  preprocessor style without explicit approval.
 
 ### Tests
 
 - Define success criteria before editing C code.
 - For a C bug fix, identify the failing behavior and the smallest verification command before modifying files.
 - For new C behavior, identify the expected observable result before modifying files.
-- After modifying C code, run the smallest relevant compilation, test, formatter, or static-analysis command available in the project.
-- When the project declares a C standard, verify with the project's configured standard flags or build target instead of compiling under an unrelated dialect.
-- If verification cannot be run, report exactly which C build, test, formatting, or static-analysis checks were not run and why.
+- After modifying C code, run the smallest relevant compilation, test, formatter, or static-analysis command available
+  in the project.
+- When the project declares a C standard, verify with the project's configured standard flags or build target instead of
+  compiling under an unrelated dialect.
+- If verification cannot be run, report exactly which C build, test, formatting, or static-analysis checks were not run
+  and why.
 
 ### Idioms
 
@@ -100,15 +132,20 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Avoid duplicated C logic; extract a helper only when it has a clear purpose and does not add unnecessary abstraction.
 - Order function parameters predictably: input parameters first, then output parameters.
 - Use `goto` only for structured cleanup paths, with clear cleanup labels and no hidden control-flow surprises.
-- Avoid assignments inside conditions; assign first, then test explicitly, unless the local project convention intentionally allows the idiom and the expression remains unambiguous.
+- Avoid assignments inside conditions; assign first, then test explicitly, unless the local project convention
+  intentionally allows the idiom and the expression remains unambiguous.
 
 ### Other
 
-- Make surgical C changes only; do not refactor adjacent code, normalize unrelated formatting, or replace project conventions unless the requested change requires it.
+- Make surgical C changes only; do not refactor adjacent code, normalize unrelated formatting, or replace project
+  conventions unless the requested change requires it.
 - Preserve surrounding C style, error-handling conventions, and module boundaries when modifying existing code.
-- Document public C APIs and non-obvious functions so parameters, ownership expectations, return values, and failure modes are understandable.
-- Comment intent, constraints, portability assumptions, ownership rules, and non-obvious decisions instead of restating obvious C syntax.
-- Document deliberate hacks, portability workarounds, and performance deviations with the reason and the failure they avoid.
+- Document public C APIs and non-obvious functions so parameters, ownership expectations, return values, and failure
+  modes are understandable.
+- Comment intent, constraints, portability assumptions, ownership rules, and non-obvious decisions instead of restating
+  obvious C syntax.
+- Document deliberate hacks, portability workarounds, and performance deviations with the reason and the failure they
+  avoid.
 - Avoid redundant parameter comments that merely repeat the parameter name.
 
 ## C++
@@ -116,19 +153,26 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 ### Naming
 
 - Match the existing C++ project naming style before applying generic C++ naming rules.
-- Use names that expose intent, ownership, unit, lifetime, and thread-safety expectations when those details affect correct use.
-- Prefer explicit, strongly typed interfaces over loosely typed parameters, hidden global state, namespace-scope mutable variables, or implicit side effects.
-- Use raw pointers or references only for non-owning access, and use smart pointer types only when the interface must express ownership or lifetime semantics.
+- Use names that expose intent, ownership, unit, lifetime, and thread-safety expectations when those details affect
+  correct use.
+- Prefer explicit, strongly typed interfaces over loosely typed parameters, hidden global state, namespace-scope mutable
+  variables, or implicit side effects.
+- Use raw pointers or references only for non-owning access, and use smart pointer types only when the interface must
+  express ownership or lifetime semantics.
 
 ### Formatting
 
-- Match the existing C++ project formatting, file layout, include organization, formatter configuration, and idioms before applying generic C++ preferences.
-- Use only the C++ language and standard library features supported by the project's declared C++ standard, compiler versions, build flags, and platform constraints.
-- Do not silently introduce newer C++ features, non-standard extensions, or vendor-specific behavior unless the project explicitly allows them.
+- Match the existing C++ project formatting, file layout, include organization, formatter configuration, and idioms
+  before applying generic C++ preferences.
+- Use only the C++ language and standard library features supported by the project's declared C++ standard, compiler
+  versions, build flags, and platform constraints.
+- Do not silently introduce newer C++ features, non-standard extensions, or vendor-specific behavior unless the project
+  explicitly allows them.
 - Declare variables as late as possible, in the smallest practical scope, and initialize them at declaration.
 - Prefer initialization over later assignment, especially in constructors and complex control flow.
 - Keep headers self-contained, guarded, and safe to include from more than one translation unit.
-- Do not place non-inline object definitions or non-inline function definitions in headers when they would violate the one-definition rule.
+- Do not place non-inline object definitions or non-inline function definitions in headers when they would violate the
+  one-definition rule.
 - Do not place global `using namespace` directives in headers.
 - Keep header include dependencies explicit and avoid cyclic dependencies.
 - Use templates only when they reduce real duplication or express a real abstraction.
@@ -139,46 +183,59 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 ### Errors
 
 - Follow one project-wide C++ error-handling policy consistently.
-- Do not mix exceptions, error codes, assertions, status objects, and fail-fast behavior inconsistently inside the same C++ error boundary.
-- If the project uses exceptions as its C++ error-handling policy, use them for failures that prevent a function from performing its assigned task.
+- Do not mix exceptions, error codes, assertions, status objects, and fail-fast behavior inconsistently inside the same
+  C++ error boundary.
+- If the project uses exceptions as its C++ error-handling policy, use them for failures that prevent a function from
+  performing its assigned task.
 - If the project disables exceptions, use a systematic alternative while still relying on RAII for cleanup.
-- Use assertions only for internal invariants, preconditions, postconditions, and impossible states; handle ordinary runtime failures through the project's normal error path.
+- Use assertions only for internal invariants, preconditions, postconditions, and impossible states; handle ordinary
+  runtime failures through the project's normal error path.
 - Do not hide recoverable C++ errors behind silent fallbacks unless the fallback is explicitly safe and documented.
 
 ### Safety
 
 - Use RAII objects to manage resource ownership instead of manual acquire/release pairs.
 - Encapsulate files, locks, memory, sockets, handles, and other resources in objects whose destructors release them.
-- Express ownership explicitly with values, references, raw pointers, `std::unique_ptr`, `std::shared_ptr`, or `std::weak_ptr` according to the required ownership semantics.
+- Express ownership explicitly with values, references, raw pointers, `std::unique_ptr` , `std::shared_ptr` , or
+  `std::weak_ptr` according to the required ownership semantics.
 - Prefer `std::unique_ptr` for exclusive ownership.
 - Use `std::shared_ptr` only when shared ownership is required.
 - Prefer the rule of zero: design classes so compiler-generated special member functions are correct.
-- If any special member function must be declared or deleted, review and explicitly define or delete the related destructor, copy, and move operations to avoid accidental ownership semantics.
+- If any special member function must be declared or deleted, review and explicitly define or delete the related
+  destructor, copy, and move operations to avoid accidental ownership semantics.
 - Always initialize objects before use.
 - Use `const` or `constexpr` by default for values that should not change.
 - Mark member functions `const` when they do not modify observable state.
-- Pass cheap-to-copy values by value and expensive-to-copy input objects by `const` reference; use pointers only when identity, nullability, polymorphism, or lifetime semantics matter.
+- Pass cheap-to-copy values by value and expensive-to-copy input objects by `const` reference; use pointers only when
+  identity, nullability, polymorphism, or lifetime semantics matter.
 - Avoid shared mutable state by default.
 - Treat global variables, static mutable locals, cached state, and shared references as potential data-race risks.
 - Make thread-safety assumptions explicit in APIs or documentation when code can be used concurrently.
-- Prefer `std::array` for fixed-size arrays and `std::vector` for variable-size sequences unless a stronger project-specific reason exists.
+- Prefer `std::array` for fixed-size arrays and `std::vector` for variable-size sequences unless a stronger
+  project-specific reason exists.
 - Avoid owning raw arrays and manual `delete[]`.
 - Use non-owning views such as spans only when they are available in the project C++ standard.
-- Avoid C-style casts, unchecked raw arrays, function-like macros, constant macros, varargs, and representation-based type tricks in maintained C++ code.
+- Avoid C-style casts, unchecked raw arrays, function-like macros, constant macros, varargs, and representation-based
+  type tricks in maintained C++ code.
 - Do not use `memset` or `memcpy` on non-trivial C++ objects.
-- Prefer typed C++ alternatives such as `constexpr`, inline functions, constructors, standard containers, and standard algorithms.
+- Prefer typed C++ alternatives such as `constexpr` , inline functions, constructors, standard containers, and standard
+  algorithms.
 
 ### Tests
 
 - Define success criteria before editing C++ code.
 - For a C++ bug fix, identify the failing behavior and the smallest verification command before modifying files.
 - For new C++ behavior, identify the expected observable result before modifying files.
-- After modifying C++ code, run the smallest relevant build, unit test, formatter, linter, static-analysis, sanitizer, or runtime check available in the project.
-- When the project declares a C++ standard, verify with the project's configured standard flags or build target instead of compiling under an unrelated dialect.
+- After modifying C++ code, run the smallest relevant build, unit test, formatter, linter, static-analysis, sanitizer,
+  or runtime check available in the project.
+- When the project declares a C++ standard, verify with the project's configured standard flags or build target instead
+  of compiling under an unrelated dialect.
 - Keep successful C++ builds warning-free under the project's strict warning configuration.
 - Understand each warning and fix the code rather than suppressing warnings without a documented justification.
-- Prefer automated checks integrated into the build or CI so formatting, linting, static analysis, tests, and sanitizer regressions are caught early.
-- If verification cannot be run, report exactly which C++ build, test, formatting, linting, static-analysis, sanitizer, or runtime checks were not run and why.
+- Prefer automated checks integrated into the build or CI so formatting, linting, static analysis, tests, and sanitizer
+  regressions are caught early.
+- If verification cannot be run, report exactly which C++ build, test, formatting, linting, static-analysis, sanitizer,
+  or runtime checks were not run and why.
 
 ### Idioms
 
@@ -186,18 +243,25 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Do not optimize C++ code speculatively or obscure intent for unmeasured performance assumptions.
 - Measure bottlenecks before adding performance-oriented complexity.
 - Keep functions focused on one clear logical operation.
-- Split functions that mix unrelated responsibilities, hidden I/O, formatting, validation, state mutation, or business logic.
-- Avoid duplicated C++ logic; extract a helper only when it has a clear purpose and does not add unnecessary abstraction.
+- Split functions that mix unrelated responsibilities, hidden I/O, formatting, validation, state mutation, or business
+  logic.
+- Avoid duplicated C++ logic; extract a helper only when it has a clear purpose and does not add unnecessary
+  abstraction.
 - Prefer standard library containers, algorithms, and typed language facilities over lower-level C-style constructs.
-- Preserve the project's established error-handling model, ownership idioms, naming, formatting, and file layout unless the user explicitly asks for a migration.
+- Preserve the project's established error-handling model, ownership idioms, naming, formatting, and file layout unless
+  the user explicitly asks for a migration.
 
 ### Other
 
-- Make surgical C++ changes only; do not refactor adjacent code, normalize unrelated formatting, or replace project conventions unless the requested change requires it.
-- Comment intent, invariants, constraints, ownership, concurrency assumptions, and non-obvious tradeoffs instead of restating obvious C++ syntax.
+- Make surgical C++ changes only; do not refactor adjacent code, normalize unrelated formatting, or replace project
+  conventions unless the requested change requires it.
+- Comment intent, invariants, constraints, ownership, concurrency assumptions, and non-obvious tradeoffs instead of
+  restating obvious C++ syntax.
 - Update comments when code changes invalidate the intent or assumptions they describe.
-- Apply Unreal Engine, CUDA, embedded, safety-critical, MISRA-like, organization-specific, or framework-specific C++ rules only when the target code belongs to that ecosystem or the project explicitly requires them.
-- Do not apply ecosystem-specific naming, exception, performance, memory, or safety policies to unrelated generic C++ code.
+- Apply Unreal Engine, CUDA, embedded, safety-critical, MISRA-like, organization-specific, or framework-specific C++
+  rules only when the target code belongs to that ecosystem or the project explicitly requires them.
+- Do not apply ecosystem-specific naming, exception, performance, memory, or safety policies to unrelated generic C++
+  code.
 
 ## C\#
 
@@ -359,60 +423,86 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 
 ### Naming
 
-- Use semantic `class` and `id` names that describe the content, role, or domain concept instead of visual appearance alone.
-- Prefer kebab-case for multi-word `class` and `id` values unless the repository already defines a stricter naming convention.
-- Give links, buttons, form controls, headings, and page titles meaningful text that remains understandable outside its visual context.
+- Use semantic `class` and `id` names that describe the content, role, or domain concept instead of visual appearance
+  alone.
+- Prefer kebab-case for multi-word `class` and `id` values unless the repository already defines a stricter naming
+  convention.
+- Give links, buttons, form controls, headings, and page titles meaningful text that remains understandable outside its
+  visual context.
 
 ### Formatting
 
 - Start every standalone HTML document with `<!doctype html>` to trigger standards or no-quirks rendering mode.
 - Do not use legacy HTML doctypes or XML declarations for normal HTML documents.
-- Add a valid `lang` attribute to the root `<html>` element, using the shortest accurate language value for the page content.
-- Include a meaningful `<title>` element in every standalone HTML document; the title must describe the page purpose, not only the project or application name.
-- Keep metadata, page title, linked resources, and document-level configuration inside `<head>`, and keep visible content inside `<body>`.
+- Add a valid `lang` attribute to the root `<html>` element, using the shortest accurate language value for the page
+  content.
+- Include a meaningful `<title>` element in every standalone HTML document; the title must describe the page purpose,
+  not only the project or application name.
+- Keep metadata, page title, linked resources, and document-level configuration inside `<head>` , and keep visible
+  content inside `<body>` .
 - Use lowercase for doctype declarations, element names, attribute names, and case-insensitive attribute values.
-- Quote attribute values consistently, and never omit quotes when the value contains spaces or could be parsed as multiple attributes.
+- Quote attribute values consistently, and never omit quotes when the value contains spaces or could be parsed as
+  multiple attributes.
 - For boolean attributes, write only the attribute name when the value is true.
-- Escape reserved characters such as `&`, `<`, `>`, `"`, and `'` when they would otherwise be parsed as markup or attribute syntax.
-- Keep attribute lists readable and consistent; avoid arbitrary spacing, mixed quotation styles, and mixed casing within the same document or project.
-- Structure text with headings, paragraphs, lists, and other content elements instead of using line breaks or visual styling to simulate document structure.
+- Escape reserved characters such as `&` , `<` , `>` , `"` , and `'` when they would otherwise be parsed as markup or
+  attribute syntax.
+- Keep attribute lists readable and consistent; avoid arbitrary spacing, mixed quotation styles, and mixed casing within
+  the same document or project.
+- Structure text with headings, paragraphs, lists, and other content elements instead of using line breaks or visual
+  styling to simulate document structure.
 - Use heading levels to represent the document outline, not merely to control visual size.
 
 ### Errors
 
-- Treat missing required document structure, such as `<!doctype html>`, `<html lang>`, `<head>`, `<title>`, or `<body>` in standalone documents, as a defect to fix before finalizing generated HTML.
-- Treat unlabeled interactive controls, missing form instructions, unclear error messages, and inaccessible validation feedback as defects.
+- Treat missing required document structure, such as `<!doctype html>` , `<html lang>` , `<head>` , `<title>` , or
+  `<body>` in standalone documents, as a defect to fix before finalizing generated HTML.
+- Treat unlabeled interactive controls, missing form instructions, unclear error messages, and inaccessible validation
+  feedback as defects.
 - When automatically detected input errors can occur, identify the invalid input and describe the error in text.
-- Treat malformed attribute syntax, unescaped reserved characters, invalid nesting, and duplicate IDs as defects to fix before presenting HTML as final.
+- Treat malformed attribute syntax, unescaped reserved characters, invalid nesting, and duplicate IDs as defects to fix
+  before presenting HTML as final.
 
 ### Safety
 
-- Prefer native HTML semantics over redundant ARIA; do not add roles that duplicate implicit semantics unless there is a specific compatibility reason.
-- Use native interactive elements such as `<button>`, `<a>`, `<input>`, `<select>`, and `<textarea>` instead of custom clickable `<div>` or `<span>` elements whenever they match the required behavior.
+- Prefer native HTML semantics over redundant ARIA; do not add roles that duplicate implicit semantics unless there is a
+  specific compatibility reason.
+- Use native interactive elements such as `<button>` , `<a>` , `<input>` , `<select>` , and `<textarea>` instead of
+  custom clickable `<div>` or `<span>` elements whenever they match the required behavior.
 - Ensure interactive functionality is keyboard-operable unless the function inherently depends on pointer movement.
-- Add useful `alt` text to informative images, and use empty `alt` text only for decorative images that should be ignored by assistive technologies.
+- Add useful `alt` text to informative images, and use empty `alt` text only for decorative images that should be
+  ignored by assistive technologies.
 - For data tables, use `<th>` for headers and add `scope` when it is needed to associate headers with rows or columns.
 - Add `<caption>` to data tables when a concise summary helps users understand the table.
 - Provide labels or instructions for form controls that require user input.
-- Use HTML attributes that expose input purpose when collecting user information and when the expected meaning can be programmatically determined.
-- Do not use color as the only way to convey information, indicate an action, request a response, or distinguish an element.
-- Warn users when a link opens a new window, opens a new tab, or points to a non-HTML resource, using visible text or an accessible equivalent.
+- Use HTML attributes that expose input purpose when collecting user information and when the expected meaning can be
+  programmatically determined.
+- Do not use color as the only way to convey information, indicate an action, request a response, or distinguish an
+  element.
+- Warn users when a link opens a new window, opens a new tab, or points to a non-HTML resource, using visible text or an
+  accessible equivalent.
 - Provide a skip link near the start of `<body>` when pages contain repeated navigation before the main content.
-- Do not convert accessible native HTML into custom markup unless the user explicitly requests a custom component and the accessibility behavior is reimplemented.
+- Do not convert accessible native HTML into custom markup unless the user explicitly requests a custom component and
+  the accessibility behavior is reimplemented.
 
 ### Tests
 
 - Before finalizing generated HTML, verify that every element has a clear structural or semantic purpose.
-- Before finalizing generated HTML, verify that generated interactive controls are keyboard-accessible, labeled, and understandable without visual context.
-- Validate standalone HTML for document structure, malformed markup, duplicate IDs, invalid nesting, and unescaped reserved characters when a validator or equivalent project check is available.
-- Review images, tables, forms, headings, links, buttons, source order, and repeated navigation for accessibility regressions.
-- When modifying existing HTML, verify that the change preserves the project's established formatting and naming conventions unless they conflict with accessibility, validity, or explicit user requirements.
+- Before finalizing generated HTML, verify that generated interactive controls are keyboard-accessible, labeled, and
+  understandable without visual context.
+- Validate standalone HTML for document structure, malformed markup, duplicate IDs, invalid nesting, and unescaped
+  reserved characters when a validator or equivalent project check is available.
+- Review images, tables, forms, headings, links, buttons, source order, and repeated navigation for accessibility
+  regressions.
+- When modifying existing HTML, verify that the change preserves the project's established formatting and naming
+  conventions unless they conflict with accessibility, validity, or explicit user requirements.
 
 ### Idioms
 
 - Use the correct HTML element for the intended meaning before considering generic `<div>` or `<span>` markup.
-- Use semantic layout elements such as `<header>`, `<nav>`, `<main>`, `<article>`, `<aside>`, and `<footer>` when their meaning matches the content.
-- Preserve a logical source order; do not rely on CSS layout to compensate for an HTML order that becomes confusing when read by assistive technologies.
+- Use semantic layout elements such as `<header>` , `<nav>` , `<main>` , `<article>` , `<aside>` , and `<footer>` when
+  their meaning matches the content.
+- Preserve a logical source order; do not rely on CSS layout to compensate for an HTML order that becomes confusing when
+  read by assistive technologies.
 - Generate the simplest valid HTML that satisfies the requested structure.
 - Do not add speculative components, styling hooks, ARIA roles, scripts, or metadata that the user did not request.
 
@@ -420,9 +510,12 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 
 - Avoid using `data-*` attributes when a standard semantic element or attribute already represents the same information.
 - Use `data-*` only for application-specific metadata that has no suitable native HTML representation.
-- Avoid `<base>` unless the project explicitly requires it; prefer explicit, stable paths for links and resources to reduce maintenance surprises.
-- Add resource `type` metadata when it clarifies non-obvious linked resources, such as alternate feeds or downloadable documents.
-- In HTML templating environments, separate HTML, CSS, and JavaScript into maintainable units when the platform supports includes or equivalent composition.
+- Avoid `<base>` unless the project explicitly requires it; prefer explicit, stable paths for links and resources to
+  reduce maintenance surprises.
+- Add resource `type` metadata when it clarifies non-obvious linked resources, such as alternate feeds or downloadable
+  documents.
+- In HTML templating environments, separate HTML, CSS, and JavaScript into maintainable units when the platform supports
+  includes or equivalent composition.
 - Treat HTML templating organization as a project organization concern, not as a universal HTML syntax requirement.
 
 ## CSS
@@ -430,31 +523,45 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 ### Naming
 
 - Use the project's existing CSS naming convention before introducing a new one.
-- If no project convention exists, use lowercase kebab-case for class names, custom properties, animation names, and other custom identifiers.
-- Use semantic class names that describe the component, role, state, or domain concept instead of visual appearance alone.
-- Avoid styling against generated, random, or framework-internal class names; use stable project-owned classes, attributes, or framework-supported hooks when a selector must outlive a render cycle.
-- Use CSS custom properties for repeated declaration values such as colors, spacing, font sizes, shadows, durations, z-indexes, and component-local measurements when reuse, theming, or safer maintenance is needed. Do not use `var()` in media or container query conditions unless the project's build tooling explicitly supports that pattern.
+- If no project convention exists, use lowercase kebab-case for class names, custom properties, animation names, and
+  other custom identifiers.
+- Use semantic class names that describe the component, role, state, or domain concept instead of visual appearance
+  alone.
+- Avoid styling against generated, random, or framework-internal class names; use stable project-owned classes,
+  attributes, or framework-supported hooks when a selector must outlive a render cycle.
+- Use CSS custom properties for repeated declaration values such as colors, spacing, font sizes, shadows, durations,
+  z-indexes, and component-local measurements when reuse, theming, or safer maintenance is needed. Do not use `var()` in
+  media or container query conditions unless the project's build tooling explicitly supports that pattern.
 
 ### Formatting
 
-- Match the existing project formatting, ordering, import structure, and organization before applying any generic CSS convention.
-- Use the project-configured formatter or linter when one exists, and do not introduce new CSS tooling unless the task explicitly allows tooling changes.
-- Organize styles into clear logical sections such as base styles, typography, layout, components, utilities, and overrides when the file size or project style justifies it.
+- Match the existing project formatting, ordering, import structure, and organization before applying any generic CSS
+  convention.
+- Use the project-configured formatter or linter when one exists, and do not introduce new CSS tooling unless the task
+  explicitly allows tooling changes.
+- Organize styles into clear logical sections such as base styles, typography, layout, components, utilities, and
+  overrides when the file size or project style justifies it.
 - Add section comments only when they help navigation; do not comment obvious declarations.
 - Keep related declarations together inside a rule, such as layout, box model, typography, color, and effects.
 - Put custom properties near the top of a declaration block when they are local to that rule.
 - Use shorthand properties only when every constituent value is intentional and the shorthand improves readability.
 - Do not mix shorthand and longhand properties for the same concern when that creates hidden overrides.
 - Preserve a predictable CSS import order when cascade order affects behavior; do not auto-sort CSS imports blindly.
-- Keep CSS code blocks syntactically valid and parseable; do not place pseudo-syntax, informal grammar, or invalid placeholders inside `css` fenced blocks.
+- Keep CSS code blocks syntactically valid and parseable; do not place pseudo-syntax, informal grammar, or invalid
+  placeholders inside `css` fenced blocks.
 
 ### Errors
 
-- Treat invalid CSS syntax, malformed selectors, unmatched braces, empty declaration blocks, and non-functional declarations as defects to fix before finalizing CSS.
-- Treat accidental duplicate declarations, repeated selectors, contradictory rules, and dead CSS as defects when they are introduced or exposed by the current change.
-- Do not use `!important` to escape ordinary specificity or cascade problems; first refactor selector specificity, cascade order, or component structure.
-- Use `!important` only when there is a documented and unavoidable reason, such as overriding a third-party rule that cannot be changed.
-- Do not use arbitrary hard-coded values only because they visually work; replace them with named tokens, relative units, or layout mechanisms when practical.
+- Treat invalid CSS syntax, malformed selectors, unmatched braces, empty declaration blocks, and non-functional
+  declarations as defects to fix before finalizing CSS.
+- Treat accidental duplicate declarations, repeated selectors, contradictory rules, and dead CSS as defects when they
+  are introduced or exposed by the current change.
+- Do not use `!important` to escape ordinary specificity or cascade problems; first refactor selector specificity,
+  cascade order, or component structure.
+- Use `!important` only when there is a documented and unavoidable reason, such as overriding a third-party rule that
+  cannot be changed.
+- Do not use arbitrary hard-coded values only because they visually work; replace them with named tokens, relative
+  units, or layout mechanisms when practical.
 - Add a short comment for unusual values when the reason cannot be expressed through naming, tokens, or structure.
 
 ### Safety
@@ -464,11 +571,16 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Keep selectors as simple as possible while still targeting the intended elements.
 - Avoid deeply nested, overly broad, or unnecessarily qualified selectors when a clear class selector is sufficient.
 - Use standard modern CSS only when it is supported by the project's declared browser baseline.
-- Avoid deprecated, obsolete, non-standard, or unnecessary vendor-prefixed features unless a compatibility fallback is explicitly required.
-- Do not place reusable styling in HTML `style` attributes; use CSS files, scoped CSS, components, or existing utility classes instead.
-- Use inline styles only for dynamic runtime values that cannot be represented cleanly elsewhere, and make that exception explicit.
-- Do not introduce Sass, Less, BEM, SMACSS, utility-first CSS, CSS Modules, or another methodology unless the project already uses it or the user explicitly requests it.
-- When a framework supports scoped component styles, use scoped styles for component-specific CSS and reserve global CSS for true global concerns.
+- Avoid deprecated, obsolete, non-standard, or unnecessary vendor-prefixed features unless a compatibility fallback is
+  explicitly required.
+- Do not place reusable styling in HTML `style` attributes; use CSS files, scoped CSS, components, or existing utility
+  classes instead.
+- Use inline styles only for dynamic runtime values that cannot be represented cleanly elsewhere, and make that
+  exception explicit.
+- Do not introduce Sass, Less, BEM, SMACSS, utility-first CSS, CSS Modules, or another methodology unless the project
+  already uses it or the user explicitly requests it.
+- When a framework supports scoped component styles, use scoped styles for component-specific CSS and reserve global CSS
+  for true global concerns.
 
 ### Tests
 
@@ -476,17 +588,21 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Verify that selectors are no more specific than necessary and that no unnecessary `!important` declaration was added.
 - Verify that no dead, duplicated, empty, or contradictory CSS remains in the touched scope.
 - Verify that CSS import order has not been changed in a way that unintentionally affects cascade behavior.
-- Verify responsive behavior for the affected layout ranges when CSS changes media queries, container queries, layout, sizing, or visibility.
-- Run the project's CSS formatter, linter, build, visual regression checks, or browser checks when they are available and relevant to the change.
+- Verify responsive behavior for the affected layout ranges when CSS changes media queries, container queries, layout,
+  sizing, or visibility.
+- Run the project's CSS formatter, linter, build, visual regression checks, or browser checks when they are available
+  and relevant to the change.
 - When framework-specific CSS rules are applied, verify that the target framework or styling system is actually in use.
 
 ### Idioms
 
 - Use the simplest CSS layout model that fits the requirement.
 - Prefer Flexbox and CSS Grid for modern layout instead of float-based or table-based layout hacks.
-- Write responsive CSS intentionally, using the project's established approach such as mobile-first styling when applicable.
+- Write responsive CSS intentionally, using the project's established approach such as mobile-first styling when
+  applicable.
 - Keep media queries and container queries scoped to real layout changes instead of arbitrary visual patching.
-- Plan broad or complex CSS before writing it by identifying base styles, layout styles, component styles, overrides, and reusable patterns.
+- Plan broad or complex CSS before writing it by identifying base styles, layout styles, component styles, overrides,
+  and reusable patterns.
 - Avoid CSS that repeatedly overrides or cancels earlier declarations.
 - If the project uses Tailwind or another utility-first system, prefer existing utilities before writing ad-hoc CSS.
 - Do not mix utility-first styling and custom CSS in a way that duplicates the same styling responsibility.
@@ -494,10 +610,13 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 ### Other
 
 - Prefer project-specific CSS standards first.
-- If the project has no CSS convention, apply the smallest consistent rule set needed to keep stylesheets readable, testable, and maintainable.
-- Prefer official, maintained, and directly applicable CSS documentation over generic blog posts, forums, social media discussions, or video content.
+- If the project has no CSS convention, apply the smallest consistent rule set needed to keep stylesheets readable,
+  testable, and maintainable.
+- Prefer official, maintained, and directly applicable CSS documentation over generic blog posts, forums, social media
+  discussions, or video content.
 - Apply framework-specific CSS guidance only when the project context confirms that the framework is in use.
-- When modifying existing CSS, change only the rules required by the requested behavior and avoid unrelated selector, naming, or file-organization refactors.
+- When modifying existing CSS, change only the rules required by the requested behavior and avoid unrelated selector,
+  naming, or file-organization refactors.
 
 ## SQL
 
@@ -505,7 +624,8 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 
 - Use descriptive and stable names for tables, columns, CTEs, views, and aliases.
 - Prefer identifiers that describe the business meaning of the data rather than implementation details.
-- Avoid vague names, unexplained abbreviations, Hungarian prefixes such as `tbl_`, and identifiers that collide with reserved SQL keywords.
+- Avoid vague names, unexplained abbreviations, Hungarian prefixes such as `tbl_` , and identifiers that collide with
+  reserved SQL keywords.
 - When a query references multiple tables, assign meaningful aliases and qualify selected columns with those aliases.
 - Do not rely on unqualified column names in joins, because they can become ambiguous or break when schemas evolve.
 
@@ -514,14 +634,19 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Write SQL so that another engineer can understand the intent without reconstructing hidden assumptions.
 - Prefer explicit, readable SQL over clever or overly compact SQL.
 - Use one formatting convention consistently across the repository.
-- If no repository convention exists, use uppercase SQL keywords, lowercase `snake_case` identifiers, consistent indentation, and one logical expression per line for complex queries.
+- If no repository convention exists, use uppercase SQL keywords, lowercase `snake_case` identifiers, consistent
+  indentation, and one logical expression per line for complex queries.
 - Do not mix casing, alias styles, indentation styles, or comma conventions inside the same file.
 - Use explicit `JOIN ... ON` clauses instead of implicit joins in the `WHERE` clause.
-- Keep join predicates in `ON` clauses and filtering predicates in `WHERE` clauses, unless a specific outer-join semantic requires otherwise.
-- Do not use `SELECT *` in production SQL that returns a result set; explicitly list the columns required by the caller, report, migration, or validation step.
+- Keep join predicates in `ON` clauses and filtering predicates in `WHERE` clauses, unless a specific outer-join
+  semantic requires otherwise.
+- Do not use `SELECT *` in production SQL that returns a result set; explicitly list the columns required by the caller,
+  report, migration, or validation step.
 - Use `SELECT *` only for exploration, and only with an explicit row limit.
-- Inside `EXISTS`, prefer a constant projection such as `SELECT 1` unless the project or target database has a documented convention.
-- Add comments when they explain business rules, non-obvious filters, data-quality workarounds, performance tradeoffs, or intentional deviations from normal conventions.
+- Inside `EXISTS` , prefer a constant projection such as `SELECT 1` unless the project or target database has a
+  documented convention.
+- Add comments when they explain business rules, non-obvious filters, data-quality workarounds, performance tradeoffs,
+  or intentional deviations from normal conventions.
 - Do not comment syntax that the SQL already expresses plainly.
 - Keep SQL comments current when query logic changes.
 
@@ -530,7 +655,8 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 - Handle `NULL` explicitly with `IS NULL`, `IS NOT NULL`, and `COALESCE` where appropriate.
 - Do not compare nullable values as if `NULL` were an ordinary value.
 - Keep nullable logic visible instead of hiding it inside unclear expressions.
-- In grouped queries, include every non-aggregated selected column in the `GROUP BY` clause unless the target database provides a documented and intentional functional-dependency rule.
+- In grouped queries, include every non-aggregated selected column in the `GROUP BY` clause unless the target database
+  provides a documented and intentional functional-dependency rule.
 - Do not rely on permissive database behavior that returns arbitrary non-grouped values.
 - Do not add `DISTINCT` merely to remove unexpected duplicates.
 - Investigate and fix the join condition, grouping level, or source data issue when duplicates are unexpected.
@@ -539,10 +665,12 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 
 - Use query parameters for user-controlled values.
 - Do not construct SQL by concatenating raw user input.
-- Use primary keys, foreign keys, unique constraints, `NOT NULL`, and `CHECK` constraints when they express durable data integrity rules.
+- Use primary keys, foreign keys, unique constraints, `NOT NULL` , and `CHECK` constraints when they express durable
+  data integrity rules.
 - Do not leave critical integrity rules only in application code when the database can enforce them reliably.
 - Choose SQL data types that match the domain.
-- Avoid floating-point types for exact financial values; use exact numeric types such as `NUMERIC` or `DECIMAL` when precision matters.
+- Avoid floating-point types for exact financial values; use exact numeric types such as `NUMERIC` or `DECIMAL` when
+  precision matters.
 - Wrap related changes in a transaction when they must succeed or fail together.
 - Keep transactions as short as possible.
 - Do not wait for user interaction while a transaction is open.
@@ -550,20 +678,27 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 ### Tests
 
 - For slow, expensive, business-critical, or production-impacting SQL, inspect the execution plan instead of guessing.
-- Verify whether performance-sensitive queries scan too much data, use expected indexes, sort unnecessarily, or perform expensive joins.
-- When result order matters to a caller, report, export, pagination workflow, or deterministic test, make that order explicit with `ORDER BY`.
+- Verify whether performance-sensitive queries scan too much data, use expected indexes, sort unnecessarily, or perform
+  expensive joins.
+- When result order matters to a caller, report, export, pagination workflow, or deterministic test, make that order
+  explicit with `ORDER BY` .
 - Do not add `ORDER BY` when result order is irrelevant.
-- Validate schema changes against the intended primary keys, foreign keys, uniqueness, nullability, check constraints, data types, indexes, and transaction behavior.
+- Validate schema changes against the intended primary keys, foreign keys, uniqueness, nullability, check constraints,
+  data types, indexes, and transaction behavior.
 
 ### Idioms
 
-- Apply selective filters as early as possible when doing so preserves query semantics, especially before aggregation, joins, CTE reuse, or subquery processing.
-- Do not move filters across outer joins, aggregations, or window calculations unless the result set remains intentionally unchanged.
+- Apply selective filters as early as possible when doing so preserves query semantics, especially before aggregation,
+  joins, CTE reuse, or subquery processing.
+- Do not move filters across outer joins, aggregations, or window calculations unless the result set remains
+  intentionally unchanged.
 - Use `WHERE` for row-level filters and reserve `HAVING` for aggregate filters.
-- Keep predicates index-friendly by avoiding functions, arithmetic, concatenation, or `CASE` expressions around indexed columns in `WHERE` predicates when an equivalent direct predicate is possible.
+- Keep predicates index-friendly by avoiding functions, arithmetic, concatenation, or `CASE` expressions around indexed
+  columns in `WHERE` predicates when an equivalent direct predicate is possible.
 - Prefer range predicates and explicit Boolean logic that allow the optimizer to use indexes.
 - Use `=` for exact matches and reserve `LIKE` for pattern matching.
-- Avoid leading wildcards such as `LIKE '%term'` or `LIKE '%term%'` unless the performance cost is acceptable and documented.
+- Avoid leading wildcards such as `LIKE '%term'` or `LIKE '%term%'` unless the performance cost is acceptable and
+  documented.
 - Use `EXISTS` instead of `COUNT(*)` when the requirement is only to check whether at least one matching row exists.
 - Use `UNION ALL` when duplicates are acceptable or already impossible.
 - Use `UNION` only when deduplication is required and the cost is justified.
@@ -575,7 +710,8 @@ Use the operational definitions in `CODING_RULES.md` for qualitative phrases suc
 ### Other
 
 - Prefer standard SQL when portability matters.
-- Use vendor-specific functions, hints, syntax, or extensions only when they are required, documented, and isolated enough to be changed later.
+- Use vendor-specific functions, hints, syntax, or extensions only when they are required, documented, and isolated
+  enough to be changed later.
 - Treat SQL as code and store DDL, DML, migrations, seed scripts, and repeatable maintenance scripts in version control.
 - Do not rely on undocumented manual production changes.
 
@@ -900,29 +1036,35 @@ Oracle PL/SQL rule.
 
 ## Microsoft SQL Server Transact-SQL
 
-Apply this section to Microsoft SQL Server Transact-SQL code in addition to the generic `SQL` section when the target language or database dialect is T-SQL. When both sections address the same topic, prefer the more specific T-SQL rule.
+Apply this section to Microsoft SQL Server Transact-SQL code in addition to the generic `SQL` section when the target
+language or database dialect is T-SQL. When both sections address the same topic, prefer the more specific T-SQL rule.
 
 ### Naming
 
-- Before generating T-SQL, identify the exact target platform: SQL Server, Azure SQL Database, Azure SQL Managed Instance, Azure Synapse Analytics, Fabric SQL, or another Microsoft SQL platform.
+- Before generating T-SQL, identify the exact target platform: SQL Server, Azure SQL Database, Azure SQL Managed
+  Instance, Azure Synapse Analytics, Fabric SQL, or another Microsoft SQL platform.
 - Do not assume that every T-SQL feature is available on every Microsoft SQL platform.
-- State the target SQL Server product, deployment model, and version when syntax, behavior, compatibility level, or feature availability matters.
+- State the target SQL Server product, deployment model, and version when syntax, behavior, compatibility level, or
+  feature availability matters.
 - Use schema-qualified object names such as `dbo.customer` whenever possible.
 - Do not rely on the caller's default schema for production database objects.
 - Do not use the `sp_` prefix for user-defined stored procedures.
 - Use stable, descriptive object, procedure, parameter, variable, temporary table, and alias names.
-- Follow the repository convention for identifier casing; if no local convention exists, keep T-SQL keywords uppercase and identifiers consistently cased.
+- Follow the repository convention for identifier casing; if no local convention exists, keep T-SQL keywords uppercase
+  and identifiers consistently cased.
 - Prefix Unicode string literals with `N`, such as `N'value'`, when the literal contains or may contain Unicode text.
 
 ### Formatting
 
 - Terminate T-SQL statements with semicolons consistently.
 - Always terminate `MERGE` statements with a semicolon.
-- Write T-SQL so that the target platform, object names, filtering logic, ordering logic, and transaction boundaries are visible to a reviewer.
+- Write T-SQL so that the target platform, object names, filtering logic, ordering logic, and transaction boundaries are
+  visible to a reviewer.
 - Use explicit column lists in production `SELECT` statements instead of `SELECT *`.
 - Return only the rows and columns required by the caller, report, export, validation, or data-change operation.
 - Use `ORDER BY` whenever result order matters.
-- Do not rely on storage order, clustered index order, insertion order, or execution-plan side effects for result ordering.
+- Do not rely on storage order, clustered index order, insertion order, or execution-plan side effects for result
+  ordering.
 - Do not use ordinal positions such as `ORDER BY 1` or `ORDER BY 2`; use explicit column names or aliases.
 - Use `TOP (...)` with parentheses.
 - Pair `TOP (...)` with `ORDER BY` when deterministic row selection is required.
@@ -932,7 +1074,8 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 - Put `SET NOCOUNT ON;` at the start of stored procedures unless the caller intentionally depends on row-count messages.
 - Declare procedure-sensitive `SET` options explicitly at the start of the procedure when the logic depends on them.
 - Explicitly define `NULL` or `NOT NULL` for temporary table columns instead of relying on session defaults.
-- Keep T-SQL hints, session options, transaction settings, and version-specific syntax local to the statement, procedure, or migration that requires them.
+- Keep T-SQL hints, session options, transaction settings, and version-specific syntax local to the statement,
+  procedure, or migration that requires them.
 
 ### Errors
 
@@ -945,7 +1088,8 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 - Use `SET XACT_ABORT ON;` when a runtime error must terminate and roll back the full transaction.
 - Keep transactions as short as possible to reduce locking, blocking, and deadlock risk.
 - Do not wait for user interaction, external approval, or long-running non-database work while a transaction is open.
-- When generated T-SQL can fail because of missing objects, permissions, invalid input, duplicate data, or unexpected cardinality, make the failure path explicit.
+- When generated T-SQL can fail because of missing objects, permissions, invalid input, duplicate data, or unexpected
+  cardinality, make the failure path explicit.
 
 ### Safety
 
@@ -956,50 +1100,72 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 - Use `QUOTENAME()` for dynamic identifiers when identifier generation is unavoidable and the input length is suitable.
 - Use quote-doubling with `REPLACE()` for dynamic string literals when dynamic SQL cannot be avoided.
 - Do not use dynamic SQL for static statements that can be written safely as ordinary parameterized T-SQL.
-- Apply least privilege when generating grants, ownership chains, procedure execution patterns, or access-control examples.
+- Apply least privilege when generating grants, ownership chains, procedure execution patterns, or access-control
+  examples.
 - Do not generate SQL that broadens permissions beyond the minimum required by the requested behavior.
 - Avoid exposing sensitive columns by default in generated queries, views, stored procedures, exports, and diagnostics.
-- Prefer designs compatible with column-level protection, row-level security, auditing, and least-privilege access when sensitive data is involved.
-- Use query hints, table hints, index hints, locking hints, and `OPTION (...)` only as a last resort for a documented optimizer, locking, or regression problem.
+- Prefer designs compatible with column-level protection, row-level security, auditing, and least-privilege access when
+  sensitive data is involved.
+- Use query hints, table hints, index hints, locking hints, and `OPTION (...)` only as a last resort for a documented
+  optimizer, locking, or regression problem.
 - Do not add `NOLOCK` or other isolation-affecting hints as a default performance shortcut.
-- Document every required hint with the observed problem, target SQL Server version or platform, expected effect, and regression risk.
+- Document every required hint with the observed problem, target SQL Server version or platform, expected effect, and
+  regression risk.
 - Use explicit transactions for multi-step data changes that must succeed or fail together.
-- Ask for clarification before generating destructive operations when object names, target environment, filter criteria, transaction scope, or permission impact are ambiguous.
+- Ask for clarification before generating destructive operations when object names, target environment, filter criteria,
+  transaction scope, or permission impact are ambiguous.
 
 ### Tests
 
-- For non-trivial generated T-SQL, state how correctness should be verified: expected row counts, deterministic ordering, affected rows, rollback behavior, permission boundaries, or error paths.
+- For non-trivial generated T-SQL, state how correctness should be verified: expected row counts, deterministic
+  ordering, affected rows, rollback behavior, permission boundaries, or error paths.
 - For performance-sensitive T-SQL, inspect the execution plan instead of guessing.
 - Verify that predicates can use expected indexes when performance depends on index usage.
-- Verify that generated result sets are deterministic when used for reports, exports, tests, paging, or `TOP (...)` operations.
-- Test stored procedures with named parameters, missing or invalid inputs, `NULL` inputs, and expected error paths when those paths are affected.
-- Test transaction logic for success, failure, rollback, and uncommittable transaction behavior when generated code uses explicit transactions.
-- Test dynamic SQL with safe values, invalid values, boundary lengths, and attempted injection strings when dynamic SQL is generated.
-- Test `MERGE` behavior with matched rows, unmatched source rows, unmatched target rows, duplicates, and batching assumptions when `MERGE` is generated.
-- When version-specific syntax or platform-specific behavior is used, verify it against the declared SQL Server product, version, and compatibility level.
+- Verify that generated result sets are deterministic when used for reports, exports, tests, paging, or `TOP (...)`
+  operations.
+- Test stored procedures with named parameters, missing or invalid inputs, `NULL` inputs, and expected error paths when
+  those paths are affected.
+- Test transaction logic for success, failure, rollback, and uncommittable transaction behavior when generated code uses
+  explicit transactions.
+- Test dynamic SQL with safe values, invalid values, boundary lengths, and attempted injection strings when dynamic SQL
+  is generated.
+- Test `MERGE` behavior with matched rows, unmatched source rows, unmatched target rows, duplicates, and batching
+  assumptions when `MERGE` is generated.
+- When version-specific syntax or platform-specific behavior is used, verify it against the declared SQL Server product,
+  version, and compatibility level.
 
 ### Idioms
 
 - Prefer the smallest correct T-SQL solution that satisfies the requested behavior.
-- Do not add stored procedures, dynamic SQL, temporary tables, hints, transactions, `MERGE`, or abstractions unless they are required by the task.
-- Avoid wrapping indexed columns in functions, arithmetic, casts, concatenation, or `CASE` expressions inside `WHERE` or `JOIN` predicates when an equivalent sargable predicate is possible.
-- Avoid scalar function calls over large result sets unless the design explicitly requires them and the performance cost is acceptable.
+- Do not add stored procedures, dynamic SQL, temporary tables, hints, transactions, `MERGE` , or abstractions unless
+  they are required by the task.
+- Avoid wrapping indexed columns in functions, arithmetic, casts, concatenation, or `CASE` expressions inside `WHERE` or
+  `JOIN` predicates when an equivalent sargable predicate is possible.
+- Avoid scalar function calls over large result sets unless the design explicitly requires them and the performance cost
+  is acceptable.
 - Use `UNION ALL` unless duplicate elimination is required.
 - Use `MERGE` only when it is simpler and safer than separate `INSERT`, `UPDATE`, and `DELETE` statements.
-- Prefer explicit `INSERT`, `UPDATE`, or `DELETE` statements for simple source-to-target changes when they are clearer or safer than `MERGE`.
+- Prefer explicit `INSERT` , `UPDATE` , or `DELETE` statements for simple source-to-target changes when they are clearer
+  or safer than `MERGE` .
 - Keep `MERGE ON` conditions strictly focused on target-source matching.
 - Do not move target filtering logic into a `MERGE ON` clause to force performance behavior.
-- Do not use `TOP` inside `MERGE` for deterministic batching unless successive batches are explicitly controlled and documented.
+- Do not use `TOP` inside `MERGE` for deterministic batching unless successive batches are explicitly controlled and
+  documented.
 - Do not generalize SQL Server version-specific behavior to all Microsoft SQL platforms.
-- Flag unsafe ambiguity instead of guessing when missing information affects data modification, security, permissions, object names, target SQL platform, transaction scope, or destructive operations.
+- Flag unsafe ambiguity instead of guessing when missing information affects data modification, security, permissions,
+  object names, target SQL platform, transaction scope, or destructive operations.
 
 ### Other
 
 - Prefer official Microsoft Learn documentation as the primary source for Microsoft SQL Server Transact-SQL behavior.
-- When T-SQL guidance conflicts, prioritize maintained official Microsoft documentation over blogs, forums, videos, PDFs, examples, or secondary summaries.
-- Treat Microsoft SQL Server Transact-SQL as a SQL dialect with product-specific behavior, not as interchangeable generic SQL.
-- Isolate vendor-specific syntax, hints, platform assumptions, and compatibility-level dependencies so they can be reviewed or changed later.
-- State version or platform constraints explicitly for features that apply only to specific SQL Server versions, Azure SQL variants, Synapse, Fabric SQL, or compatibility levels.
+- When T-SQL guidance conflicts, prioritize maintained official Microsoft documentation over blogs, forums, videos,
+  PDFs, examples, or secondary summaries.
+- Treat Microsoft SQL Server Transact-SQL as a SQL dialect with product-specific behavior, not as interchangeable
+  generic SQL.
+- Isolate vendor-specific syntax, hints, platform assumptions, and compatibility-level dependencies so they can be
+  reviewed or changed later.
+- State version or platform constraints explicitly for features that apply only to specific SQL Server versions, Azure
+  SQL variants, Synapse, Fabric SQL, or compatibility levels.
 - Do not claim that generated T-SQL is portable to other SQL databases unless portability was intentionally checked.
 
 ## Go
@@ -1012,18 +1178,24 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 - Keep package names short, lowercase, single-word, and descriptive.
 - Do not use underscores, mixed caps, vague names, or redundant package prefixes in package names.
 - Prefer singular package names when the package represents one cohesive concept.
-- Avoid repeating package, receiver, parameter, or return type names in function and method names; use the call site as the readability test.
-- Do not prefix ordinary getter methods with `Get`; prefer `Owner()` over `GetOwner()` and reserve `SetOwner()` for setters that mutate state.
-- Name one-method interfaces after behavior using the conventional `-er` form when it matches established Go usage, such as `Reader`, `Writer`, or `Formatter`.
+- Avoid repeating package, receiver, parameter, or return type names in function and method names; use the call site as
+  the readability test.
+- Do not prefix ordinary getter methods with `Get` ; prefer `Owner()` over `GetOwner()` and reserve `SetOwner()` for
+  setters that mutate state.
+- Name one-method interfaces after behavior using the conventional `-er` form when it matches established Go usage, such
+  as `Reader` , `Writer` , or `Formatter` .
 
 ### Formatting
 
 - Format Go code with `gofmt` or `go fmt` before presenting or committing it.
-- Do not manually align code, comments, struct fields, imports, or whitespace against `gofmt`; let the standard formatter decide.
-- Use Go modules as the default project unit, with one root module by default unless a clear architectural reason justifies multiple modules.
+- Do not manually align code, comments, struct fields, imports, or whitespace against `gofmt` ; let the standard
+  formatter decide.
+- Use Go modules as the default project unit, with one root module by default unless a clear architectural reason
+  justifies multiple modules.
 - Use `package main` only for executable commands; library code must use domain-specific package names.
 - Organize Go packages by cohesive responsibility rather than by technical layer alone.
-- Avoid catch-all packages such as `util`, `common`, or `helper` unless the package name is narrowly qualified and meaningful.
+- Avoid catch-all packages such as `util` , `common` , or `helper` unless the package name is narrowly qualified and
+  meaningful.
 
 ### Errors
 
@@ -1032,39 +1204,56 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 - Prefer linear guard clauses and let the successful path continue down the page.
 - Avoid unnecessary `else` blocks after `return`, `break`, `continue`, or `goto`.
 - Do not ignore returned errors unless the reason is explicit, intentional, and local to the call site.
-- At package boundaries, add caller-level context to foreign errors such as the operation, identifier, path, or dependency involved.
+- At package boundaries, add caller-level context to foreign errors such as the operation, identifier, path, or
+  dependency involved.
 - Inside the same package, prefer returning the original error when the caller already has enough local context.
-- When adding error context, describe the action being attempted with concise phrases such as `loading config`, `fetching user`, or `reserving stock`.
+- When adding error context, describe the action being attempted with concise phrases such as `loading config` ,
+  `fetching user` , or `reserving stock` .
 - Avoid noisy error prefixes such as `failed to`, `cannot`, or `error while` when a concise action phrase is clearer.
 - Do not repeat details already present in the wrapped error; add higher-level intent instead.
 - Do not make callers, dashboards, or alerts depend on exact error message strings.
-- When code must branch on an error, expose a sentinel error checked with `errors.Is` or a typed error checked with `errors.As`.
-- Wrap errors with `%w` only when callers should be able to inspect the underlying error with `errors.Is` or `errors.As`.
+- When code must branch on an error, expose a sentinel error checked with `errors.Is` or a typed error checked with
+  `errors.As` .
+- Wrap errors with `%w` only when callers should be able to inspect the underlying error with `errors.Is` or `errors.As`
+  .
 - Treat `%w` as part of the package API contract because it exposes the wrapped error to callers.
-- When the underlying error should not become part of the public contract, return contextual errors without exposing implementation details.
-- Use `%v` instead of `%w` when the human-readable message is useful but the underlying storage, driver, RPC, third-party, or dependency error must remain private.
-- At system or dependency boundaries, translate implementation-specific errors into package-owned sentinel errors or custom error types.
-- Make callers branch on the package domain error vocabulary, not on accidental details of the current storage, client, or dependency implementation.
+- When the underlying error should not become part of the public contract, return contextual errors without exposing
+  implementation details.
+- Use `%v` instead of `%w` when the human-readable message is useful but the underlying storage, driver, RPC,
+  third-party, or dependency error must remain private.
+- At system or dependency boundaries, translate implementation-specific errors into package-owned sentinel errors or
+  custom error types.
+- Make callers branch on the package domain error vocabulary, not on accidental details of the current storage, client,
+  or dependency implementation.
 - Use `errors.Is` and `errors.As` for wrapped error inspection; do not compare wrapped errors directly.
 - Log an error or return it, but do not do both in the same layer.
 - Return recoverable errors upward and let the terminal decision layer log an unhandled error once.
-- At outer handlers, check `context.Canceled` and `context.DeadlineExceeded` before treating an error as an application failure.
-- Use `panic` and `recover` sparingly; recover only inside deferred functions and only at deliberate failure-containment boundaries.
+- At outer handlers, check `context.Canceled` and `context.DeadlineExceeded` before treating an error as an application
+  failure.
+- Use `panic` and `recover` sparingly; recover only inside deferred functions and only at deliberate failure-containment
+  boundaries.
 
 ### Safety
 
-- Pass `context.Context` explicitly as the first parameter when a function needs deadlines, cancellation, or request-scoped values.
-- Do not store contexts inside structs, do not pass `nil` contexts, and use `context.TODO()` only when the correct context is genuinely unknown.
-- Always call the cancellation function returned by `context.WithCancel`, `context.WithDeadline`, or `context.WithTimeout`; use `defer cancel()` when appropriate.
+- Pass `context.Context` explicitly as the first parameter when a function needs deadlines, cancellation, or
+  request-scoped values.
+- Do not store contexts inside structs, do not pass `nil` contexts, and use `context.TODO()` only when the correct
+  context is genuinely unknown.
+- Always call the cancellation function returned by `context.WithCancel` , `context.WithDeadline` , or
+  `context.WithTimeout` ; use `defer cancel()` when appropriate.
 - Use `defer` immediately after successful resource acquisition when cleanup must happen regardless of the return path.
 - Remember that `defer` is function-scoped, not block-scoped.
-- Prefer channels when they make ownership and sequencing clearer; prefer mutexes when they are simpler for protecting shared state.
-- Prevent goroutine leaks by defining a clear cancellation or completion path through context cancellation, channel closure, or another explicit signal.
+- Prefer channels when they make ownership and sequencing clearer; prefer mutexes when they are simpler for protecting
+  shared state.
+- Prevent goroutine leaks by defining a clear cancellation or completion path through context cancellation, channel
+  closure, or another explicit signal.
 - Do not start a goroutine that can fail without providing an observable error path.
-- For concurrent work that can fail, use an explicit error collection mechanism such as `errgroup` or a buffered error channel.
+- For concurrent work that can fail, use an explicit error collection mechanism such as `errgroup` or a buffered error
+  channel.
 - Log, signal, or deliberately escalate goroutine errors instead of allowing them to disappear silently.
 - Be careful with loop variables captured by closures or goroutines, especially when targeting Go versions before 1.22.
-- For Go 1.22 and later, do not apply pre-1.22 loop-variable workarounds blindly; check the project `go.mod` before applying version-dependent rules.
+- For Go 1.22 and later, do not apply pre-1.22 loop-variable workarounds blindly; check the project `go.mod` before
+  applying version-dependent rules.
 
 ### Tests
 
@@ -1074,12 +1263,16 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 - Use table-driven tests for multiple input/output cases when they keep the test logic clearer.
 - Use subtests with `t.Run` when cases need names, filtering, parallelism, or isolated setup.
 - Keep tests deterministic unless nondeterminism is the behavior under test.
-- Avoid hidden test dependencies on wall-clock timing, map iteration order, global mutable state, external services, or uncontrolled goroutine scheduling.
-- Test failure paths that branch on sentinel errors, typed errors, wrapped errors, cancellation, or dependency-boundary translation.
+- Avoid hidden test dependencies on wall-clock timing, map iteration order, global mutable state, external services, or
+  uncontrolled goroutine scheduling.
+- Test failure paths that branch on sentinel errors, typed errors, wrapped errors, cancellation, or dependency-boundary
+  translation.
 - Do not assert exact error message strings unless the message text is the explicit behavior under test.
 - Use `go vet` as a static-analysis safety check, not as proof of correctness.
 - Run `go test -race` when tests exercise concurrent paths or when a change affects concurrency-sensitive code.
-- After a Go code change, run the smallest meaningful verification set first, usually formatting only touched files or packages, `go test` for affected packages, `go vet` when useful, and `go test -race` when justified by the codebase and task.
+- After a Go code change, run the smallest meaningful verification set first, usually formatting only touched files or
+  packages, `go test` for affected packages, `go vet` when useful, and `go test -race` when justified by the codebase
+  and task.
 
 ### Idioms
 
@@ -1107,10 +1300,13 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 ### Runtime and Types
 
 - Respect the minimum PHP version declared by `composer.json`, CI, runtime configuration, or project documentation.
-- If the minimum PHP version is not discoverable and syntax compatibility matters, ask before using version-specific syntax or APIs.
+- If the minimum PHP version is not discoverable and syntax compatibility matters, ask before using version-specific
+  syntax or APIs.
 - Declare `strict_types=1` when consistent with the project, and apply it consistently within the touched PHP scope.
-- Use typed properties, parameters, and return types when supported by the target PHP version and consistent with the surrounding code.
-- Use modern PHP features such as constructor property promotion, enums, `match`, and `readonly` only when they improve clarity and are supported by the project runtime.
+- Use typed properties, parameters, and return types when supported by the target PHP version and consistent with the
+  surrounding code.
+- Use modern PHP features such as constructor property promotion, enums, `match` , and `readonly` only when they improve
+  clarity and are supported by the project runtime.
 - Use strict comparisons with `===` and `!==` unless loose comparison is required by the domain.
 
 ### Errors
@@ -1121,17 +1317,24 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 
 ### Input, Output, and Security
 
-- Treat request parameters, cookies, sessions, uploaded files, downloaded files, request bodies, and third-party responses as untrusted until validated.
-- Validate external input at the boundary before using it in application logic; do not rely on client-side checks or previous workflow steps.
-- Escape output for the target context, especially HTML, JavaScript, shell commands, SQL, XML, and similar executable contexts.
-- Use the repository's database abstraction with parameter binding for SQL queries; when writing raw PDO, use prepared statements with bound parameters.
+- Treat request parameters, cookies, sessions, uploaded files, downloaded files, request bodies, and third-party
+  responses as untrusted until validated.
+- Validate external input at the boundary before using it in application logic; do not rely on client-side checks or
+  previous workflow steps.
+- Escape output for the target context, especially HTML, JavaScript, shell commands, SQL, XML, and similar executable
+  contexts.
+- Use the repository's database abstraction with parameter binding for SQL queries; when writing raw PDO, use prepared
+  statements with bound parameters.
 - Never concatenate untrusted input into SQL, and still validate writes against business rules.
 - Use `password_hash()` and `password_verify()` for password storage; do not design custom password hashing schemes.
 - Do not implement custom cryptography for production use; use reviewed libraries or platform APIs.
-- Use `filter_var()` with `FILTER_VALIDATE_EMAIL` for ordinary email validation unless the project has a documented and tested alternative.
-- Confirm email requirements before relying on `FILTER_VALIDATE_EMAIL` for internationalized domains or nonstandard but valid address forms.
+- Use `filter_var()` with `FILTER_VALIDATE_EMAIL` for ordinary email validation unless the project has a documented and
+  tested alternative.
+- Confirm email requirements before relying on `FILTER_VALIDATE_EMAIL` for internationalized domains or nonstandard but
+  valid address forms.
 - Do not sanitize HTML with regular expressions; use contextual escaping or a dedicated sanitizer such as HTML Purifier.
-- Do not hardcode secrets in PHP source files or committed PHP configuration; load them through the project's secure configuration mechanism.
+- Do not hardcode secrets in PHP source files or committed PHP configuration; load them through the project's secure
+  configuration mechanism.
 
 ### Dependencies and Autoloading
 
@@ -1139,24 +1342,29 @@ Apply this section to Microsoft SQL Server Transact-SQL code in addition to the 
 - Keep namespaces consistent with the project's Composer autoloading configuration.
 - Avoid adding new manual `require` or `include` chains for class loading when Composer autoloading is available.
 - For applications, preserve or update `composer.lock` when changing Composer dependencies.
-- Do not run broad dependency updates unless the task asks for them; prefer the smallest Composer change that satisfies the request.
+- Do not run broad dependency updates unless the task asks for them; prefer the smallest Composer change that satisfies
+  the request.
 
 ### Text and Dates
 
-- Use UTF-8 consistently across PHP, the database, and the browser; use `utf8mb4` for MySQL connections and schema configuration.
+- Use UTF-8 consistently across PHP, the database, and the browser; use `utf8mb4` for MySQL connections and schema
+  configuration.
 - Use `mb_*` functions when character boundaries matter in Unicode strings.
-- Use `DateTimeImmutable` or `DateTime` for date and time logic that requires comparison, timezone conversion, or mutation.
+- Use `DateTimeImmutable` or `DateTime` for date and time logic that requires comparison, timezone conversion, or
+  mutation.
 
 ### Tests and Checks
 
 - When changing PHP behavior, add or update tests in the existing PHP test framework when practical.
-- Run the relevant PHP verification command when available, such as `php -l`, PHPUnit, Pest, PHPStan, Psalm, PHP_CodeSniffer, PHP-CS-Fixer, or a project script.
+- Run the relevant PHP verification command when available, such as `php -l` , PHPUnit, Pest, PHPStan, Psalm,
+  PHP_CodeSniffer, PHP-CS-Fixer, or a project script.
 
 ### Idioms
 
 - Namespace project classes unless the surrounding PHP code intentionally uses another convention.
 - Avoid adding new global state; use the project's existing class, configuration, or function structure.
-- In template-oriented PHP, avoid adding new database queries directly to view templates; use the existing controller, model, repository, or service layer.
+- In template-oriented PHP, avoid adding new database queries directly to view templates; use the existing controller,
+  model, repository, or service layer.
 
 ## Laravel
 
@@ -1327,8 +1535,10 @@ rule for framework code.
 ### Formatting
 
 - Encode Java source files in UTF-8 and do not introduce non-standard whitespace characters.
-- Prefer one top-level Java type per source file, and make the `.java` file name match the case-sensitive public top-level type when one exists.
-- Keep Java source files structurally ordered: license or copyright block, package declaration, imports, then the top-level type declaration.
+- Prefer one top-level Java type per source file, and make the `.java` file name match the case-sensitive public
+  top-level type when one exists.
+- Keep Java source files structurally ordered: license or copyright block, package declaration, imports, then the
+  top-level type declaration.
 - Do not use wildcard imports.
 - Use explicit imports only, and keep static imports separated from non-static imports.
 - Keep overloaded methods and constructors contiguous.
@@ -1342,7 +1552,8 @@ rule for framework code.
 
 - Keep checked and unchecked exception usage consistent with the project.
 - Never ignore caught exceptions silently.
-- Handle caught exceptions by logging, rethrowing, returning a meaningful fallback, or documenting why ignoring the exception is safe.
+- Handle caught exceptions by logging, rethrowing, returning a meaningful fallback, or documenting why ignoring the
+  exception is safe.
 - Catch the most specific exception type that the code can handle meaningfully.
 - Do not catch broad exceptions unless the handling is intentional and specific.
 - Use `try-with-resources` for resources that implement `AutoCloseable`.
@@ -1368,12 +1579,15 @@ rule for framework code.
 - Use the project's Java test framework for behavior that must not regress.
 - Prefer unit tests for local Java logic and integration tests for Java component boundaries.
 - Use Java test method names or display names that communicate the behavior under test and the expected outcome.
-- Run the smallest meaningful verification set after a Java change, covering compilation, tests, formatting, imports, exception handling, dependency impact, and behavior preservation.
-- Use Maven, Gradle, or the project's Java dependency tooling when changing dependencies, and run tests before accepting dependency changes.
+- Run the smallest meaningful verification set after a Java change, covering compilation, tests, formatting, imports,
+  exception handling, dependency impact, and behavior preservation.
+- Use Maven, Gradle, or the project's Java dependency tooling when changing dependencies, and run tests before accepting
+  dependency changes.
 
 ### Idioms
 
-- Use `switch` expressions or statements when supported by the project's configured Java version and when they make multi-branch selection clearer than repeated `if else` chains.
+- Use `switch` expressions or statements when supported by the project's configured Java version and when they make
+  multi-branch selection clearer than repeated `if else` chains.
 - Do not replace simple conditions with `switch` unless it improves readability.
 - Document intentional `switch` fall-through with a local comment at the fall-through point.
 - Prefer collections over arrays when dynamic size, generics, or collection operations are needed.
@@ -1394,7 +1608,8 @@ rule for framework code.
 - Add a Java interface or abstract class only when the current Java code has a concrete, repeated need for it.
 - Do not generalize Spring, Maven, Gradle, Google Cloud, IDE-specific, or framework-specific guidance to all Java code.
 - Apply framework-specific guidance only when the project context uses that framework or tool.
-- When Java guidance conflicts, prefer maintained, official, or project-local standards over archived or vendor-blog guidance.
+- When Java guidance conflicts, prefer maintained, official, or project-local standards over archived or vendor-blog
+  guidance.
 
 ## Java Properties Files
 
@@ -1412,26 +1627,33 @@ rule for framework code.
 - Convert property values to typed values explicitly in application code after loading and validation.
 - Use one consistent assignment style in each generated file, preferably `key=value`.
 - Do not mix `key=value`, `key = value`, `key:value`, and whitespace-separated forms in the same file.
-- Use comments starting with `#` or `!` only to clarify purpose, units, accepted values, default behavior, or operational warnings.
+- Use comments starting with `#` or `!` only to clarify purpose, units, accepted values, default behavior, or
+  operational warnings.
 - Do not use large blocks of commented-out alternatives as the primary configuration mechanism.
 - Document non-obvious or mandatory properties close to the property they describe.
 - Preserve intentional leading, trailing, and embedded whitespace in property values.
 - Choose the file encoding deliberately and document non-default encoding expectations.
-- For classic `java.util.Properties` compatibility, avoid raw characters outside ISO-8859-1 unless the loading code explicitly uses an encoding-aware path.
+- For classic `java.util.Properties` compatibility, avoid raw characters outside ISO-8859-1 unless the loading code
+  explicitly uses an encoding-aware path.
 - Escape syntax-sensitive characters only when required by the properties format or the selected parser.
-- Pay special attention to `#`, `!`, `=`, `:`, backslashes, leading spaces, tabs, logical newlines, and Unicode escape sequences.
+- Pay special attention to `#` , `!` , `=` , `:` , backslashes, leading spaces, tabs, logical newlines, and Unicode
+  escape sequences.
 - Use escaped `\n` for logical newlines inside values unless physical multiline continuation is explicitly intended.
 - Use line continuation only when it improves readability and the target parser supports it.
-- When using continuation lines, ensure the trailing backslash and continuation indentation do not change the expected value.
-- Do not escape single or double quotes unless the consuming framework, message formatter, or localization tool requires it.
+- When using continuation lines, ensure the trailing backslash and continuation indentation do not change the expected
+  value.
+- Do not escape single or double quotes unless the consuming framework, message formatter, or localization tool requires
+  it.
 
 ### Errors
 
 - Treat missing mandatory properties as configuration errors instead of silently substituting unsafe defaults.
 - Use `getProperty(key, defaultValue)` only when the default value is semantically valid and safe.
 - Do not use Java default property lists to hide incomplete or invalid configuration.
-- Validate and report invalid typed conversions for integers, booleans, durations, URLs, paths, enums, and similar typed values.
-- Do not duplicate property keys unless the selected runtime explicitly documents duplicate-key or repeated-key behavior.
+- Validate and report invalid typed conversions for integers, booleans, durations, URLs, paths, enums, and similar typed
+  values.
+- Do not duplicate property keys unless the selected runtime explicitly documents duplicate-key or repeated-key
+  behavior.
 - For plain `java.util.Properties`, do not rely on duplicate keys as a list mechanism.
 
 ### Safety
@@ -1440,13 +1662,17 @@ rule for framework code.
 - Represent secrets as placeholders or runtime-injected values and document the expected secure source.
 - Do not generalize Spring Boot behavior to plain Java properties files.
 - Apply Spring Boot-specific rules only when the target project explicitly uses Spring or Spring Boot.
-- Do not use Apache Commons Configuration features unless the target project explicitly uses Apache Commons Configuration.
-- Treat `include`, `includeOptional`, delimiter-based lists, repeated keys as lists, and builder-based saving as parser-specific behavior.
-- When using Apache Commons Configuration lists, configure delimiter handling explicitly instead of assuming comma-separated values are split automatically.
+- Do not use Apache Commons Configuration features unless the target project explicitly uses Apache Commons
+  Configuration.
+- Treat `include` , `includeOptional` , delimiter-based lists, repeated keys as lists, and builder-based saving as
+  parser-specific behavior.
+- When using Apache Commons Configuration lists, configure delimiter handling explicitly instead of assuming
+  comma-separated values are split automatically.
 
 ### Tests
 
-- Validate generated or modified properties files for syntax, duplicate keys, encoding, missing mandatory values, and unintentionally unescaped syntax-sensitive characters.
+- Validate generated or modified properties files for syntax, duplicate keys, encoding, missing mandatory values, and
+  unintentionally unescaped syntax-sensitive characters.
 - Test application-level conversion and validation for every property value that becomes a typed value.
 - Test missing mandatory properties and invalid values on affected configuration paths.
 - Test localization properties for missing keys, placeholder consistency, syntax, encoding, and unescaped characters.
@@ -1454,20 +1680,26 @@ rule for framework code.
 
 ### Idioms
 
-- Use `getProperty()` for normal reads from `java.util.Properties`; do not use inherited `Hashtable.get()` for ordinary property lookup.
-- Use `setProperty()` for normal writes to `java.util.Properties`; do not use inherited `put()` or `putAll()` for ordinary property updates.
+- Use `getProperty()` for normal reads from `java.util.Properties` ; do not use inherited `Hashtable.get()` for ordinary
+  property lookup.
+- Use `setProperty()` for normal writes to `java.util.Properties` ; do not use inherited `put()` or `putAll()` for
+  ordinary property updates.
 - Use `store()` or `storeToXML()` when serializing a `Properties` object unless a custom layout must be preserved.
 - Use XML properties only when XML format, XML tooling, or explicit XML encoding behavior is required.
 - Load and save persisted properties from stable, well-known locations.
-- Use Java default property lists only for real fallback layers that are intentionally overridden by application-specific values.
+- Use Java default property lists only for real fallback layers that are intentionally overridden by
+  application-specific values.
 - Use the placeholder convention expected by the consuming formatter for localized values.
 - Use numbered or ICU-style placeholders only when the consuming parser explicitly supports that convention.
 
 ### Other
 
-- For Spring Boot projects, keep shared values in `application.properties` and environment-specific values in profile-specific files such as `application-dev.properties`, `application-test.properties`, and `application-prod.properties`.
+- For Spring Boot projects, keep shared values in `application.properties` and environment-specific values in
+  profile-specific files such as `application-dev.properties` , `application-test.properties` , and
+  `application-prod.properties` .
 - Keep one language or locale per localization properties file.
-- Keep Spring Boot, Apache Commons Configuration, and localization rules conditional to avoid applying framework-specific behavior to plain Java properties files.
+- Keep Spring Boot, Apache Commons Configuration, and localization rules conditional to avoid applying
+  framework-specific behavior to plain Java properties files.
 
 ## TypeScript
 
@@ -1601,7 +1833,8 @@ rule for framework code.
 - Use clear variable, function, class, and module names that describe observable behavior or domain meaning.
 - Avoid reusing one variable for different semantic meanings.
 - Use function names that describe the action performed or the value returned.
-- Avoid boolean flag parameters when they create multiple hidden code paths; split the behavior into separate functions instead.
+- Avoid boolean flag parameters when they create multiple hidden code paths; split the behavior into separate functions
+  instead.
 - Keep callback and inline function names or parameters clear enough that the caller intent remains visible.
 
 ### Formatting
@@ -1619,7 +1852,8 @@ rule for framework code.
 
 - Always handle rejected promises.
 - Do not intentionally ignore a promise unless the reason is documented and safe.
-- Use `try` / `catch` around awaited operations when the function can recover, add context, translate the error, or perform required cleanup.
+- Use `try` / `catch` around awaited operations when the function can recover, add context, translate the error, or
+  perform required cleanup.
 - Do not swallow errors silently.
 - Throw `Error` objects or project-standard error subclasses, not strings or arbitrary values.
 - Preserve the original error context when wrapping errors.
@@ -1635,16 +1869,21 @@ rule for framework code.
 - Validate input at application boundaries before using it in business logic.
 - Normalize external input types at system boundaries before using them internally.
 - Use explicit parsing for numbers, booleans, dates, and JSON-derived values.
-- Use sink-specific escaping, encoding, validation, or parameterized APIs before sending data to HTML, URLs, SQL, shell commands, logs, or other sensitive sinks.
+- Use sink-specific escaping, encoding, validation, or parameterized APIs before sending data to HTML, URLs, SQL, shell
+  commands, logs, or other sensitive sinks.
 - Never build executable code from user-controlled strings.
-- Avoid `eval`, `Function`, and string-based dynamic execution unless there is a documented, reviewed, and unavoidable reason.
+- Avoid `eval` , `Function` , and string-based dynamic execution unless there is a documented, reviewed, and unavoidable
+  reason.
 - Validate JSON shape before trusting parsed content.
 - Protect against prototype pollution when merging or deserializing untrusted objects.
 - Avoid mutating function parameters unless mutation is the explicit purpose of the function.
 - Do not expose mutable internal state directly from modules or classes.
-- Do not use objects as dictionaries for untrusted keys without guarding against inherited properties and prototype pollution.
-- Keep browser-only APIs such as `window`, `document`, `localStorage`, and DOM APIs out of Node.js code unless the runtime explicitly provides them.
-- Keep Node.js APIs such as `fs`, `path`, `process`, and server-side modules out of browser code unless a bundler or polyfill strategy is explicitly defined.
+- Do not use objects as dictionaries for untrusted keys without guarding against inherited properties and prototype
+  pollution.
+- Keep browser-only APIs such as `window` , `document` , `localStorage` , and DOM APIs out of Node.js code unless the
+  runtime explicitly provides them.
+- Keep Node.js APIs such as `fs` , `path` , `process` , and server-side modules out of browser code unless a bundler or
+  polyfill strategy is explicitly defined.
 
 ### Tests
 
@@ -1654,7 +1893,8 @@ rule for framework code.
 - Keep test fixtures small and explicit.
 - Avoid snapshot tests for logic-heavy code unless the snapshot is stable and easy to review.
 - Do not mock standard JavaScript language behavior; mock external systems and unstable boundaries instead.
-- After a JavaScript change, verify the affected runtime behavior, promise rejection handling, module loading, input coercion, and browser or Node.js boundary assumptions.
+- After a JavaScript change, verify the affected runtime behavior, promise rejection handling, module loading, input
+  coercion, and browser or Node.js boundary assumptions.
 
 ### Idioms
 
@@ -1670,7 +1910,8 @@ rule for framework code.
 - Do not compare complex objects by reference unless reference identity is the intended behavior.
 - Prefer `async` / `await` for promise-based asynchronous flows when it improves readability.
 - Avoid deeply nested promise chains; flatten the control flow or extract helper functions.
-- Keep concurrent operations explicit with `Promise.all`, `Promise.allSettled`, or sequential `await`, depending on failure semantics.
+- Keep concurrent operations explicit with `Promise.all` , `Promise.allSettled` , or sequential `await` , depending on
+  failure semantics.
 - Organize reusable code into modules with explicit imports and exports.
 - Avoid hidden global dependencies between files.
 - Prefer named exports for shared utilities when multiple functions are exported from the same module.
@@ -1689,11 +1930,14 @@ rule for framework code.
 
 ### Other
 
-- Always identify the target JavaScript runtime before generating code: browser, Node.js, embedded platform, or mixed runtime.
+- Always identify the target JavaScript runtime before generating code: browser, Node.js, embedded platform, or mixed
+  runtime.
 - Prefer standard JavaScript features documented by MDN before introducing third-party dependencies.
-- Do not generalize framework-specific practices to JavaScript as a language rule unless the target project explicitly uses that framework.
+- Do not generalize framework-specific practices to JavaScript as a language rule unless the target project explicitly
+  uses that framework.
 - Do not add a dependency for functionality that can be implemented clearly with standard JavaScript in a few lines.
-- Do not add framework, bundler, transpiler, linter, formatter, or test-runner configuration unless explicitly requested or required by the existing project.
+- Do not add framework, bundler, transpiler, linter, formatter, or test-runner configuration unless explicitly requested
+  or required by the existing project.
 - Start with readable JavaScript, then optimize only when there is a measured bottleneck or a known runtime constraint.
 - Avoid unnecessary work inside loops, render cycles, event handlers, and frequently called callbacks.
 - Cache repeated expensive computations only when the cache lifecycle is clear.
@@ -1713,67 +1957,102 @@ rule for framework code.
 
 ### Formatting
 
-- Start Bash scripts with an explicit Bash shebang. Use the project standard when one exists; otherwise prefer `#!/usr/bin/env bash` for user-space portability or `#!/bin/bash` for controlled system environments.
-- Do not use Bash-only syntax under `#!/bin/sh`; arrays, `[[ ... ]]`, `local`, and `${BASH_SOURCE[@]}` require a Bash shebang.
-- Preserve the existing Bash dialect, shebang style, strict-mode usage, and function layout when editing existing scripts.
-- For new Bash files without a project style, use readable shell indentation, short lines, and consistent command layout.
-- For user-facing Bash scripts, keep usage or help text in one reusable block when that avoids duplicated output for `-h`, `--help`, and invalid options.
-- Add a function header comment only when a Bash function's purpose, globals, arguments, output, or return behavior is not obvious from the code.
+- Start Bash scripts with an explicit Bash shebang. Use the project standard when one exists; otherwise prefer
+  `#!/usr/bin/env bash` for user-space portability or `#!/bin/bash` for controlled system environments.
+- Do not use Bash-only syntax under `#!/bin/sh` ; arrays, `[[ ... ]]` , `local` , and `${BASH_SOURCE[@]}` require a Bash
+  shebang.
+- Preserve the existing Bash dialect, shebang style, strict-mode usage, and function layout when editing existing
+  scripts.
+- For new Bash files without a project style, use readable shell indentation, short lines, and consistent command
+  layout.
+- For user-facing Bash scripts, keep usage or help text in one reusable block when that avoids duplicated output for
+  `-h` , `--help` , and invalid options.
+- Add a function header comment only when a Bash function's purpose, globals, arguments, output, or return behavior is
+  not obvious from the code.
 
 ### Errors
 
 - Check command failures explicitly when continuing after an error is valid.
-- Do not rely on strict mode alone; handle expected failures with explicit control flow such as `if ! command; then ... fi`, a documented fallback, or a justified `|| true`.
+- Do not rely on strict mode alone; handle expected failures with explicit control flow such as
+  `if ! command; then ... fi`, a documented fallback, or a justified `|| true`.
 - Send diagnostics, warnings, and errors to STDERR; reserve STDOUT for normal script output.
-- For recurring operational Bash scripts, route diagnostics through a small logging function when that improves consistency or troubleshooting; keep one-off scripts simple.
-- For Bash diagnostics or logging, use `printf` or a logging helper instead of bare `echo` when message formatting, timestamps, or STDERR routing matter.
-- Preserve command substitution status when it matters by separating `local` declaration from assignment, for example `local value` followed by `value="$(command)"`.
-- Fail early with clear error messages when required arguments, files, directories, commands, or environment variables are missing or invalid.
+- For recurring operational Bash scripts, route diagnostics through a small logging function when that improves
+  consistency or troubleshooting; keep one-off scripts simple.
+- For Bash diagnostics or logging, use `printf` or a logging helper instead of bare `echo` when message formatting,
+  timestamps, or STDERR routing matter.
+- Preserve command substitution status when it matters by separating `local` declaration from assignment, for example
+  `local value` followed by `value="$(command)"` .
+- Fail early with clear error messages when required arguments, files, directories, commands, or environment variables
+  are missing or invalid.
 
 ### Safety
 
 - Use Bash only when Bash is the declared target; treat Bash and POSIX shell as distinct languages.
-- Respect the target Bash version; avoid Bash 4+ features such as `readarray`, `mapfile`, or associative arrays unless the target runtime supports them.
-- Keep Bash scripts limited to small utilities, glue code, wrappers, automation, and command orchestration; recommend a higher-level language when logic, data processing, or long-term maintenance becomes complex.
-- For new non-trivial Bash scripts, use `set -euo pipefail` after checking that the script behaves correctly under those modes. When editing existing scripts, preserve existing strict-mode behavior unless the change requires it and representative checks pass.
+- Respect the target Bash version; avoid Bash 4+ features such as `readarray` , `mapfile` , or associative arrays unless
+  the target runtime supports them.
+- Keep Bash scripts limited to small utilities, glue code, wrappers, automation, and command orchestration; recommend a
+  higher-level language when logic, data processing, or long-term maintenance becomes complex.
+- For new non-trivial Bash scripts, use `set -euo pipefail` after checking that the script behaves correctly under those
+  modes. When editing existing scripts, preserve existing strict-mode behavior unless the change requires it and
+  representative checks pass.
 - Document any omitted or intentionally disabled strict-mode option.
-- Quote variable expansions by default, preferably as `"${var}"`, unless word splitting or glob expansion is deliberately required and justified.
-- Validate shell-facing inputs before they affect commands, paths, or destructive operations, including parsed options, positional arguments, environment variables, filenames, command output, and data read from standard input.
-- When a Bash script needs runtime configuration, read configurable values from parsed options, environment variables, or config files with explicit defaults and validation; do not add configurability that the task or script contract does not require.
-- Make rerunnable Bash jobs idempotent when they are intended for cron, CI retries, deployment, or maintenance; avoid adding state tracking only for speculative reuse.
+- Quote variable expansions by default, preferably as `"${var}"` , unless word splitting or glob expansion is
+  deliberately required and justified.
+- Validate shell-facing inputs before they affect commands, paths, or destructive operations, including parsed options,
+  positional arguments, environment variables, filenames, command output, and data read from standard input.
+- When a Bash script needs runtime configuration, read configurable values from parsed options, environment variables,
+  or config files with explicit defaults and validation; do not add configurability that the task or script contract
+  does not require.
+- Make rerunnable Bash jobs idempotent when they are intended for cron, CI retries, deployment, or maintenance; avoid
+  adding state tracking only for speculative reuse.
 - Use file locking for Bash scripts that must not run concurrently, and release locks through the script cleanup path.
-- Use arrays for dynamic command argument lists, then expand them with `"${array[@]}"`; do not store multiple command arguments in a single string.
-- Do not generate `eval` unless the user explicitly requests it and every evaluated input is strictly controlled; prefer arrays, case statements, direct invocation, or explicit parsing.
+- Use arrays for dynamic command argument lists, then expand them with `"${array[@]}"` ; do not store multiple command
+  arguments in a single string.
+- Do not generate `eval` unless the user explicitly requests it and every evaluated input is strictly controlled; prefer
+  arrays, case statements, direct invocation, or explicit parsing.
 - Never parse `ls` output to process files; use globs, `find`, Bash tests, or null-delimited processing.
-- Do not iterate over command output with `for var in $(...)` unless the output is explicitly controlled and whitespace-safe; prefer `while IFS= read -r`, `readarray` when supported by the target Bash version, or null-delimited `find -print0` processing.
+- Do not iterate over command output with `for var in $(...)` unless the output is explicitly controlled and
+  whitespace-safe; prefer `while IFS= read -r` , `readarray` when supported by the target Bash version, or
+  null-delimited `find -print0` processing.
 - Use `trap` for cleanup when scripts create temporary files, locks, or reversible state changes.
-- Create temporary files and directories with `mktemp`; do not use predictable names based on process IDs, timestamps, or hardcoded paths.
-- Prefer explicit path prefixes such as `./*` for globs in the current directory, especially before passing filenames to destructive commands.
-- Configure glob behavior intentionally when it affects correctness, such as enabling `nullglob` for empty matches or documenting any use of `set -f`.
-- Do not generate SUID or SGID shell scripts; recommend `sudo` or a safer privileged wrapper when elevated privileges are required.
-- Enable debug tracing only behind an explicit opt-in flag or environment variable; never enable `set -x` unconditionally in production scripts.
+- Create temporary files and directories with `mktemp` ; do not use predictable names based on process IDs, timestamps,
+  or hardcoded paths.
+- Prefer explicit path prefixes such as `./*` for globs in the current directory, especially before passing filenames to
+  destructive commands.
+- Configure glob behavior intentionally when it affects correctness, such as enabling `nullglob` for empty matches or
+  documenting any use of `set -f` .
+- Do not generate SUID or SGID shell scripts; recommend `sudo` or a safer privileged wrapper when elevated privileges
+  are required.
+- Enable debug tracing only behind an explicit opt-in flag or environment variable; never enable `set -x`
+  unconditionally in production scripts.
 
 ### Tests
 
 - Run `bash -n` before accepting generated Bash code.
-- Run ShellCheck when available, and fix or explicitly justify warnings introduced or exposed by the current change in the touched Bash scope.
-- For Bash scripts, exercise nonzero exit paths and missing argument, missing file, or missing command cases when they are affected by a change.
-- Verify scripts that use strict mode, traps, globs, temporary files, or argument forwarding with representative inputs before presenting them as final.
+- Run ShellCheck when available, and fix or explicitly justify warnings introduced or exposed by the current change in
+  the touched Bash scope.
+- For Bash scripts, exercise nonzero exit paths and missing argument, missing file, or missing command cases when they
+  are affected by a change.
+- Verify scripts that use strict mode, traps, globs, temporary files, or argument forwarding with representative inputs
+  before presenting them as final.
 
 ### Idioms
 
 - Use `[[ ... ]]` for Bash conditionals; use `[ ... ]` only when POSIX shell compatibility is required.
-- Use `[[ -z "${var:-}" ]]` and `[[ -n "${var:-}" ]]` when the variable may be unset; use `"${var}"` only when the variable is guaranteed to be set.
+- Use `[[ -z "${var:-}" ]]` and `[[ -n "${var:-}" ]]` when the variable may be unset; use `"${var}"` only when the
+  variable is guaranteed to be set.
 - Use arithmetic contexts such as `(( count > 0 ))` for numeric comparisons and arithmetic expressions.
 - Use `"$@"` when forwarding positional arguments; justify any use of `$*`.
 - Prefer `$(...)` over backticks for command substitution.
-- Use a `main` function for scripts that contain helper functions or meaningful control flow, and end non-library scripts with `main "$@"`.
+- Use a `main` function for scripts that contain helper functions or meaningful control flow, and end non-library
+  scripts with `main "$@"` .
 - Prefer functions over aliases inside scripts.
 - Prefer `printf` over `echo` for predictable output.
 
 ### Other
 
-- User-facing Bash scripts that accept options should support `-h` or `--help`, print usage information, and reject unknown options with a clear error.
+- User-facing Bash scripts that accept options should support `-h` or `--help` , print usage information, and reject
+  unknown options with a clear error.
 
 ## Python
 
@@ -1794,7 +2073,8 @@ rule for framework code.
 - Follow the repository's established Python style before applying generic Python style rules.
 - Follow PEP 8 when the repository has no stronger local convention.
 - Use 4 spaces per indentation level and never mix tabs and spaces for Python indentation.
-- Keep line length consistent with the project; if no project rule exists, default to 79 characters for code and 72 characters for long comments or docstrings.
+- Keep line length consistent with the project; if no project rule exists, default to 79 characters for code and 72
+  characters for long comments or docstrings.
 - Prefer implicit line continuation inside parentheses, brackets, and braces.
 - Avoid backslash continuations unless compatibility constraints require them.
 - Place imports at the top of the file after module comments and docstrings.
@@ -1816,15 +2096,19 @@ rule for framework code.
 
 - Avoid mutable default arguments.
 - Use `None` as the default sentinel when a default value must be created per call.
-- Use context managers for files, locks, network connections, transactions, and other managed resources when the object supports them.
-- Validate and sanitize untrusted input before it reaches file paths, shell commands, database queries, deserialization, or sensitive business logic.
+- Use context managers for files, locks, network connections, transactions, and other managed resources when the object
+  supports them.
+- Validate and sanitize untrusted input before it reaches file paths, shell commands, database queries, deserialization,
+  or sensitive business logic.
 - Use prepared statements or parameterized queries for database access.
 - Never build SQL queries by concatenating untrusted input.
 - Never hardcode secrets such as passwords, API keys, tokens, private URLs, or credentials.
-- Keep development and production behavior separate; debug output, verbose errors, and permissive settings must not leak into production runtime.
+- Keep development and production behavior separate; debug output, verbose errors, and permissive settings must not leak
+  into production runtime.
 - Prefer the Python standard library before adding a third-party dependency.
 - Justify every new Python dependency and keep dependency changes minimal.
-- Use the project's isolated Python environment when installing or running dependencies, such as `venv`, Poetry, uv, Conda, Docker, or the repository's documented workflow.
+- Use the project's isolated Python environment when installing or running dependencies, such as `venv` , Poetry, uv,
+  Conda, Docker, or the repository's documented workflow.
 - Check package names carefully before installation to reduce typo-squatting and dependency-confusion risk.
 - Respect the Python versions and dependency constraints declared by the project.
 - Do not upgrade Python or dependencies blindly when the project declares supported runtime targets.
@@ -1833,7 +2117,8 @@ rule for framework code.
 
 - Use the project's existing Python test framework and test layout before introducing any new testing convention.
 - When available and configured, run the relevant Python formatter, linter, type checker, tests, and coverage checks.
-- Use project-approved tools such as `pytest`, `unittest`, `ruff`, `black`, `mypy`, or `pyright` only when they are already part of the project or explicitly requested.
+- Use project-approved tools such as `pytest` , `unittest` , `ruff` , `black` , `mypy` , or `pyright` only when they are
+  already part of the project or explicitly requested.
 - If checks cannot be run, state exactly which Python checks were skipped and why.
 
 ### Idioms
@@ -1849,7 +2134,8 @@ rule for framework code.
 
 ### Other
 
-- Use docstrings for modules, public classes, and public functions when they are part of the public API or when project conventions require them.
+- Use docstrings for modules, public classes, and public functions when they are part of the public API or when project
+  conventions require them.
 - Keep docstrings concise, accurate, and aligned with the implemented behavior.
 - Treat undocumented interfaces as internal unless project documentation says otherwise.
 - Use a single leading underscore for non-public names.
@@ -1864,16 +2150,21 @@ rule for framework code.
 
 - Use `snake_case` for local variables and subroutines unless the project uses another convention.
 - Use mnemonic identifiers that reveal role and intent.
-- Avoid single-letter names except for established Perl conventions such as `$a` and `$b` in sort blocks or very small local scopes.
-- Prefer underscore-separated lexical variable names such as `$file_path` or `$retry_count` for longer local identifiers.
-- Use normal Perl module names that start with a capital letter unless the module is intentionally pragma-like or the project already uses another convention.
-- Use a leading underscore for private package variables or subroutines when it helps distinguish package internals from public API.
+- Avoid single-letter names except for established Perl conventions such as `$a` and `$b` in sort blocks or very small
+  local scopes.
+- Prefer underscore-separated lexical variable names such as `$file_path` or `$retry_count` for longer local
+  identifiers.
+- Use normal Perl module names that start with a capital letter unless the module is intentionally pragma-like or the
+  project already uses another convention.
+- Use a leading underscore for private package variables or subroutines when it helps distinguish package internals from
+  public API.
 
 ### Formatting
 
 - Enforce one coherent Perl layout style for the project.
 - Use `perltidy` when it is available and configured by the repository; do not reformat unrelated Perl files.
-- Prefer four-space indentation, spaces instead of tabs, one statement per line, whitespace around binary operators, and trailing commas in multiline lists.
+- Prefer four-space indentation, spaces instead of tabs, one statement per line, whitespace around binary operators, and
+  trailing commas in multiline lists.
 - Group related statements into readable paragraphs and separate unrelated code chunks with blank lines.
 - Prefer the clearest Perl construct over the shortest construct.
 - Avoid clever one-liners in maintained code when an expanded form is easier to read, test, debug, or maintain.
@@ -1895,19 +2186,23 @@ rule for framework code.
 
 ### Safety
 
-- Enable strictness and warnings in every maintained Perl source file with `use strict;` and `use warnings;`, unless legacy compatibility explicitly prevents it.
-- Use `use v5.36;` or newer as a strictness substitute only when the project explicitly supports that minimum Perl version.
+- Enable strictness and warnings in every maintained Perl source file with `use strict;` and `use warnings;` , unless
+  legacy compatibility explicitly prevents it.
+- Use `use v5.36;` or newer as a strictness substitute only when the project explicitly supports that minimum Perl
+  version.
 - Do not use `-w` or `$^W` as substitutes for lexical warnings because they can affect code outside the current file.
 - Limit every `no strict` or `no warnings` relaxation to the smallest possible scope and document why it is required.
 - Use `my` for lexical variables by default.
 - Avoid symbolic references unless a well-contained metaprogramming pattern requires them.
 - Prefer native Perl built-ins and modules over shelling out for ordinary file, text, or process operations.
-- Treat external input as untrusted before using it in file paths, shell commands, database queries, HTML output, or security-sensitive contexts.
+- Treat external input as untrusted before using it in file paths, shell commands, database queries, HTML output, or
+  security-sensitive contexts.
 - Validate, normalize, and constrain untrusted input at the boundary where it enters the program.
 - Use DBI placeholders for parameterized database queries.
 - Do not interpolate untrusted values into SQL.
 - Use allowlists for dynamic SQL identifiers when identifiers cannot be parameterized.
-- Use taint-aware patterns for legacy CGI or exposed scripts when the deployment model benefits from taint mode and explicit untainting.
+- Use taint-aware patterns for legacy CGI or exposed scripts when the deployment model benefits from taint mode and
+  explicit untainting.
 
 ### Tests
 
@@ -1916,7 +2211,8 @@ rule for framework code.
 - Declare an expected test plan when the number of tests is known.
 - Use dynamic test planning only when the test count genuinely depends on runtime data.
 - Use `Perl::Critic` and `Test::Perl::Critic` as configurable quality gates when the project uses them.
-- Treat Perl::Critic policies as project rules, not universal truth; configure them to match the repository style before enforcing them.
+- Treat Perl::Critic policies as project rules, not universal truth; configure them to match the repository style before
+  enforcing them.
 
 ### Idioms
 
@@ -1931,24 +2227,31 @@ rule for framework code.
 ### Other
 
 - Document public Perl modules, scripts, and interfaces with POD.
-- Include purpose, synopsis or usage, public subroutines or methods, diagnostics, configuration, dependencies, known limitations, author or contact, and license in POD when applicable.
+- Include purpose, synopsis or usage, public subroutines or methods, diagnostics, configuration, dependencies, known
+  limitations, author or contact, and license in POD when applicable.
 - Write documentation for common usage before edge cases.
 - Keep POD markup, terminology, structure, and tone consistent across the project.
-- Prefer named command-line options over fragile positional arguments when a script accepts multiple inputs, outputs, or modes.
+- Prefer named command-line options over fragile positional arguments when a script accepts multiple inputs, outputs, or
+  modes.
 - Provide both short and long option forms for user-facing scripts when it improves usability.
-- Support standard CLI conventions where relevant, including `-` for standard input or output and `--` as the end of options.
+- Support standard CLI conventions where relevant, including `-` for standard input or output and `--` as the end of
+  options.
 
 ## PowerShell
 
 ### Naming
 
-- Use approved PowerShell verbs from `Get-Verb` in `Verb-Noun` names for public commands, functions, and advanced functions.
-- Prefer specific singular nouns over generic nouns such as `Item`, `Object`, or `Data` unless the generic noun accurately describes the resource.
-- Use PascalCase for public functions, parameters, modules, classes, enums, attributes, public fields, and public properties.
+- Use approved PowerShell verbs from `Get-Verb` in `Verb-Noun` names for public commands, functions, and advanced
+  functions.
+- Prefer specific singular nouns over generic nouns such as `Item` , `Object` , or `Data` unless the generic noun
+  accurately describes the resource.
+- Use PascalCase for public functions, parameters, modules, classes, enums, attributes, public fields, and public
+  properties.
 - Use lowercase for PowerShell keywords and operators.
 - Use full command names instead of aliases in maintained scripts.
 - Use full parameter names instead of positional shorthand in maintained scripts.
-- Prefer established parameter names such as `Path`, `LiteralPath`, `Name`, `InputObject`, `Credential`, `Force`, and `PassThru` when they match the command behavior.
+- Prefer established parameter names such as `Path` , `LiteralPath` , `Name` , `InputObject` , `Credential` , `Force` ,
+  and `PassThru` when they match the command behavior.
 - Use `Path` when wildcard expansion is intended and `LiteralPath` when the input must be interpreted exactly.
 
 ### Formatting
@@ -1974,7 +2277,8 @@ rule for framework code.
 ### Safety
 
 - Never hard-code credentials, tokens, passwords, or other secrets in scripts, repositories, logs, or command history.
-- Accept credentials through a `[System.Management.Automation.PSCredential]` parameter when a reusable command needs credentials.
+- Accept credentials through a `[System.Management.Automation.PSCredential]` parameter when a reusable command needs
+  credentials.
 - Use `SecureString` only for sensitive values and avoid plaintext conversion except at the final required API boundary.
 - Treat execution policies as operational controls, not security boundaries.
 - Prefer signed scripts in controlled environments when organizational policy requires controlled script execution.
@@ -1985,7 +2289,8 @@ rule for framework code.
 
 - Validate generated or modified PowerShell with PowerShell-aware tooling when available.
 - Run or recommend `PSScriptAnalyzer`, formatting checks, and minimal execution tests when the environment allows it.
-- Test pipeline input, validation attributes, error paths, and state-changing commands when they are affected by a change.
+- Test pipeline input, validation attributes, error paths, and state-changing commands when they are affected by a
+  change.
 - Do not claim a PowerShell rule is functionally required when it is only stylistic or taste-based.
 
 ### Idioms
@@ -1994,7 +2299,8 @@ rule for framework code.
 - Output objects to the pipeline from reusable tools instead of formatted text.
 - Do not use `return` as the normal output mechanism for reusable functions.
 - Add `[OutputType()]` to reusable public functions when they return objects.
-- Do not use `Write-Host` for reusable script output unless the command is intentionally display-only or host-interactive.
+- Do not use `Write-Host` for reusable script output unless the command is intentionally display-only or
+  host-interactive.
 - Use `Write-Verbose`, `Write-Debug`, and `Write-Warning` for optional detail, diagnostics, and warnings.
 - Keep each public command output stream coherent; do not interleave unrelated strings, status text, and objects.
 - Support `-PassThru` for state-changing commands when returning the changed object should be optional.
@@ -2008,8 +2314,10 @@ rule for framework code.
 
 ### Other
 
-- Add PowerShell module structure, logging frameworks, configuration systems, or remoting support only when required by the task or existing project context.
-- Treat framework-specific guidance for PowerShell Universal, MSP/RMM tools, enterprise hardening, or hosting platforms as contextual unless the project explicitly uses those environments.
+- Add PowerShell module structure, logging frameworks, configuration systems, or remoting support only when required by
+  the task or existing project context.
+- Treat framework-specific guidance for PowerShell Universal, MSP/RMM tools, enterprise hardening, or hosting platforms
+  as contextual unless the project explicitly uses those environments.
 - Stream large inputs instead of loading everything into memory when incremental processing is feasible.
 
 ## Windows Batch
@@ -2019,19 +2327,24 @@ rule for framework code.
 - Prefer `.cmd` for new Windows NT-based command scripts unless the project convention requires `.bat`.
 - Keep `.bat` only for compatibility, legacy behavior, or consistency with existing project files.
 - Avoid spaces in Windows Batch script filenames.
-- Avoid script names that collide with built-in commands, common executables, or commands expected to be found through `PATH`.
+- Avoid script names that collide with built-in commands, common executables, or commands expected to be found through
+  `PATH` .
 - Use `%~nx0` or `%~n0` when a script must print its own name in usage, help, or diagnostic messages.
 - Use local variable names that cannot be confused with system, global, or dynamic environment variables.
-- Do not overwrite system, global, or dynamic variables such as `%TEMP%`, `%TMP%`, `%DATE%`, `%TIME%`, `%RANDOM%`, `%ERRORLEVEL%`, `%CD%`, `%PATHEXT%`, or `%COMSPEC%`.
+- Do not overwrite system, global, or dynamic variables such as `%TEMP%` , `%TMP%` , `%DATE%` , `%TIME%` , `%RANDOM%` ,
+  `%ERRORLEVEL%` , `%CD%` , `%PATHEXT%` , or `%COMSPEC%` .
 - Use clear constant-style variable names for documented exit codes.
 
 ### Formatting
 
 - Start user-facing Windows Batch scripts with `@ECHO OFF`.
-- Start non-trivial scripts with `SETLOCAL ENABLEEXTENSIONS` to limit environment side effects and enable command processor extensions.
+- Start non-trivial scripts with `SETLOCAL ENABLEEXTENSIONS` to limit environment side effects and enable command
+  processor extensions.
 - Enable delayed expansion only when runtime variable expansion inside loops or parenthesized blocks is required.
-- Avoid delayed expansion when processing values that may contain exclamation marks unless the script deliberately handles them.
-- Keep functional script code ASCII-only unless the script explicitly configures and documents code page or Unicode handling.
+- Avoid delayed expansion when processing values that may contain exclamation marks unless the script deliberately
+  handles them.
+- Keep functional script code ASCII-only unless the script explicitly configures and documents code page or Unicode
+  handling.
 - Write one command per line by default.
 - Avoid excessive `&` command chaining.
 - Avoid caret line continuations unless they clearly improve readability.
@@ -2051,8 +2364,10 @@ rule for framework code.
 - For fail-fast behavior, use `command || EXIT /B <code>` or an equivalent checked branch.
 - Prefer `EXIT /B` inside scripts and subroutines.
 - Do not use plain `EXIT` unless the intention is to close the command processor.
-- When checking general failure, prefer explicit non-zero checks over assumptions that every failure code is greater than or equal to `1`.
-- Use `IF ERRORLEVEL n` with descending thresholds when testing ranges; use `%ERRORLEVEL% NEQ 0` when an exact non-zero check is required.
+- When checking general failure, prefer explicit non-zero checks over assumptions that every failure code is greater
+  than or equal to `1` .
+- Use `IF ERRORLEVEL n` with descending thresholds when testing ranges; use `%ERRORLEVEL% NEQ 0` when an exact non-zero
+  check is required.
 - Write diagnostics and errors to STDERR when normal STDOUT may be consumed by another command.
 - Fail clearly when required arguments, files, commands, directories, environment variables, or privileges are missing.
 - Do not redirect errors to `NUL` when those errors affect control flow or troubleshooting.
@@ -2072,7 +2387,8 @@ rule for framework code.
 - Handle empty user input explicitly.
 - Validate numeric input before using it in `SET /A` expressions.
 - Treat user input, environment variables, command output, and file paths as untrusted until validated.
-- Sanitize or constrain paths before passing them to destructive commands such as `DEL`, `RD`, `RMDIR`, or `ROBOCOPY /MIR`.
+- Sanitize or constrain paths before passing them to destructive commands such as `DEL` , `RD` , `RMDIR` , or
+  `ROBOCOPY /MIR` .
 - Do not store credentials, tokens, passwords, API keys, or other secrets in Windows Batch files.
 - Do not make automation scripts depend on `PAUSE`.
 - Reserve `PAUSE` for manual or demonstration scripts.
@@ -2083,14 +2399,20 @@ rule for framework code.
 ### Tests
 
 - Run Windows Batch scripts from an existing Command Prompt during development so errors and output remain visible.
-- For generated or modified scripts, provide a representative `cmd.exe` verification command when execution is practical.
-- Exercise the supported help or usage option, such as `/?`, `/h`, `-h`, or `--help`, when that path is affected by a change.
-- Exercise missing argument, invalid argument, missing file, and failure-path behavior when those paths are affected by a change.
-- Verify scripts that use delayed expansion, parenthesized blocks, redirection, argument forwarding, destructive file operations, or subroutines with representative inputs.
+- For generated or modified scripts, provide a representative `cmd.exe` verification command when execution is
+  practical.
+- Exercise the supported help or usage option, such as `/?` , `/h` , `-h` , or `--help` , when that path is affected by
+  a change.
+- Exercise missing argument, invalid argument, missing file, and failure-path behavior when those paths are affected by
+  a change.
+- Verify scripts that use delayed expansion, parenthesized blocks, redirection, argument forwarding, destructive file
+  operations, or subroutines with representative inputs.
 - Verify that expected STDOUT, STDERR, log output, and exit codes match the script contract.
 - For automation scripts, test execution without interactive prompts.
-- For scripts that may need troubleshooting, verify that log files are initialized, overwritten, appended, or timestamped according to the intended retention behavior.
-- Do not claim a Windows Batch script is production-ready unless quoting, argument validation, error handling, exit codes, and verification steps have been addressed.
+- For scripts that may need troubleshooting, verify that log files are initialized, overwritten, appended, or
+  timestamped according to the intended retention behavior.
+- Do not claim a Windows Batch script is production-ready unless quoting, argument validation, error handling, exit
+  codes, and verification steps have been addressed.
 
 ### Idioms
 
@@ -2099,7 +2421,8 @@ rule for framework code.
 - Use `%*` when forwarding all original arguments.
 - Use `SHIFT` when processing more than nine arguments.
 - Use `%~1` to remove surrounding quotes from an argument.
-- Use `%~f1`, `%~d1`, `%~p1`, `%~n1`, `%~x1`, or related modifiers when path components must be extracted from an argument.
+- Use `%~f1` , `%~d1` , `%~p1` , `%~n1` , `%~x1` , or related modifiers when path components must be extracted from an
+  argument.
 - Use `IF NOT DEFINED var` when checking whether a variable is unset.
 - Quote both sides of string comparisons when variables may be empty.
 - Use direct quoted comparisons only when comparing actual string values.
@@ -2108,7 +2431,8 @@ rule for framework code.
 - Use `IF EXIST` and `IF NOT EXIST` for filesystem checks.
 - Use `FOR` for iterating files, directories, values, ranges, and command output.
 - Inside batch files, use `%%I` loop variables, not `%I`.
-- Use `FOR /F` deliberately when parsing command output or file lines, and document delimiter or token choices when they are not obvious.
+- Use `FOR /F` deliberately when parsing command output or file lines, and document delimiter or token choices when they
+  are not obvious.
 - Use delayed expansion with `!VAR!` when variables must update at execution time inside parenthesized blocks.
 - Use `SET /A` only for arithmetic or numeric assignments.
 - Use labels plus `CALL :subroutine` only for reusable subroutines.
@@ -2125,12 +2449,15 @@ rule for framework code.
 
 ### Other
 
-- Use Windows Batch for simple Windows automation, command orchestration, file operations, scheduled task wrappers, and low-dependency tasks.
-- Prefer PowerShell or another more suitable language for complex logic, typed data handling, object pipelines, REST APIs, or larger maintainability needs.
+- Use Windows Batch for simple Windows automation, command orchestration, file operations, scheduled task wrappers, and
+  low-dependency tasks.
+- Prefer PowerShell or another more suitable language for complex logic, typed data handling, object pipelines, REST
+  APIs, or larger maintainability needs.
 - Prefer simple, explicit Batch control flow over clever command processor tricks.
 - Keep labels and `CALL :subroutine` blocks focused on one clear script responsibility.
 - Keep user-facing messages concise, actionable, and consistent.
-- Do not generalize rules from Azure Batch, Python integration, GUI automation, POSIX shell, Bash, WSL, or other non-Command-Prompt ecosystems unless they are directly applicable to Windows Batch scripting.
+- Do not generalize rules from Azure Batch, Python integration, GUI automation, POSIX shell, Bash, WSL, or other
+  non-Command-Prompt ecosystems unless they are directly applicable to Windows Batch scripting.
 
 ## PCBoard Programming Language
 
@@ -2156,14 +2483,17 @@ rule for framework code.
 - Use parentheses in non-trivial arithmetic, string, or boolean expressions to make precedence explicit.
 - Keep generated examples minimal, complete, and compilable.
 - Do not place pseudo-code inside PPL code blocks unless it is clearly marked as pseudo-code.
-- Document the intended PCBoard and PPLC versions when generated code depends on version-sensitive syntax, functions, or behavior.
+- Document the intended PCBoard and PPLC versions when generated code depends on version-sensitive syntax, functions, or
+  behavior.
 
 ### Errors
 
 - Treat PPLC compiler errors as blocking; do not deliver or install a PPE when compilation fails.
 - Treat PPLC compiler warnings as defects unless a warning is intentionally accepted and documented.
-- When compiling through automation, check PPLC exit status and diagnostics, and distinguish clean success, warnings, missing inputs, missing files, and fatal failures when the compiler exposes enough information.
-- After file operations such as `FOPEN`, `FCREATE`, `FAPPEND`, `FGET`, or `FPUT`, check `FERR(channel)` when failure could affect correctness.
+- When compiling through automation, check PPLC exit status and diagnostics, and distinguish clean success, warnings,
+  missing inputs, missing files, and fatal failures when the compiler exposes enough information.
+- After file operations such as `FOPEN` , `FCREATE` , `FAPPEND` , `FGET` , or `FPUT` , check `FERR(channel)` when
+  failure could affect correctness.
 - Close every opened file channel explicitly with `FCLOSE` before returning from the routine that opened it.
 - Keep file channel usage within the documented `0` through `7` range.
 - Avoid complex channel reuse; a routine that opens a channel should normally close the same channel before returning.
@@ -2173,23 +2503,29 @@ rule for framework code.
 ### Safety
 
 - Treat user input, file contents, modem input, display text, and PCBoard environment data as untrusted until validated.
-- Use typed input statements, explicit input lengths, valid character masks, and appropriate flags when collecting user input.
+- Use typed input statements, explicit input lengths, valid character masks, and appropriate flags when collecting user
+  input.
 - Do not accept unrestricted strings when a narrower input format is known.
 - Hide passwords and confidential values with `ECHODOTS` or an equivalent supported input flag.
 - Do not echo secrets in clear text to the remote or local display.
-- Strip PCBoard display or color control sequences, such as `@X` codes, before writing user-facing strings to plain logs when those codes are not meaningful.
+- Strip PCBoard display or color control sequences, such as `@X` codes, before writing user-facing strings to plain logs
+  when those codes are not meaningful.
 - Use `STRIPATX()` when PCBoard color/control code removal is required.
-- Do not pass user-controlled text into execution paths, PPE launch paths, or display-control contexts that can interpret PCBoard control sequences.
-- Enforce the required PCBoard command security level at installation time through `CMD.LST` or the conference-specific command list.
+- Do not pass user-controlled text into execution paths, PPE launch paths, or display-control contexts that can
+  interpret PCBoard control sequences.
+- Enforce the required PCBoard command security level at installation time through `CMD.LST` or the conference-specific
+  command list.
 - Check runtime authorization before executing privileged actions when authorization affects correctness or security.
 - For long output, use `STARTDISP` with the appropriate mode and periodically check `ABORT()`.
 - When output is aborted, stop printing and call `RESETDISP` before continuing with later display logic.
 
 ### Tests
 
-- For any non-trivial PPL change, follow the full lifecycle: write `.PPS`, compile with PPLC, install the generated `.PPE`, then test it in the intended PCBoard context.
+- For any non-trivial PPL change, follow the full lifecycle: write `.PPS` , compile with PPLC, install the generated
+  `.PPE` , then test it in the intended PCBoard context.
 - Do not treat successful compilation alone as sufficient validation.
-- Test the PPE at the exact intended integration point, such as command, script questionnaire, `PCBTEXT` prompt, display file, or menu replacement.
+- Test the PPE at the exact intended integration point, such as command, script questionnaire, `PCBTEXT` prompt, display
+  file, or menu replacement.
 - Test file-operation success and failure paths when the PPE opens, creates, appends, reads, or writes files.
 - Test user abort behavior for long displays that use `STARTDISP`, `ABORT()`, and `RESETDISP`.
 - Test input validation, length limits, masks, and confidential-input behavior when the PPE accepts user input.
@@ -2198,10 +2534,12 @@ rule for framework code.
 
 ### Idioms
 
-- Treat PCBoard Programming Language as a PCBoard-specific compiled scripting language, not as generic BASIC, batch, or Pascal.
+- Treat PCBoard Programming Language as a PCBoard-specific compiled scripting language, not as generic BASIC, batch, or
+  Pascal.
 - Prefer PCBoard-native PPEs that customize one clear PCBoard integration point.
 - Keep PPEs small, focused, and tied to their intended PCBoard runtime context.
-- Match the PPE design to its installation context instead of mixing command, questionnaire, prompt, display-file, and menu responsibilities.
+- Match the PPE design to its installation context instead of mixing command, questionnaire, prompt, display-file, and
+  menu responsibilities.
 - Prefer structured control flow with `IF`/`ELSEIF`/`ELSE`/`ENDIF`, `WHILE`/`ENDWHILE`, and `FOR`/`NEXT`.
 - Reserve `GOTO` for exceptional exits, such as leaving deeply nested logic after a critical error.
 - Use `GOSUB` and `RETURN` for repeated logic, and ensure every `GOSUB` path reaches a matching `RETURN`.
@@ -2211,8 +2549,10 @@ rule for framework code.
 ### Other
 
 - State the operational assumptions for every generated PPL/PPE deliverable.
-- Include the assumed PCBoard version, PPLC version if known, installation point, expected file paths, required security level, file channels used, and ANSI/color-code expectations.
-- Do not introduce modern abstractions, dependency managers, package layouts, unit-test frameworks, or security models that are not supported by the DOS/PCBoard/PPL environment.
+- Include the assumed PCBoard version, PPLC version if known, installation point, expected file paths, required security
+  level, file channels used, and ANSI/color-code expectations.
+- Do not introduce modern abstractions, dependency managers, package layouts, unit-test frameworks, or security models
+  that are not supported by the DOS/PCBoard/PPL environment.
 - Explain modern safety concerns separately instead of pretending the original runtime supports modern controls.
 - Use secondary sources only for historical or ecosystem context, not as the basis for unsupported technical rules.
 
@@ -2616,25 +2956,35 @@ rule for framework code.
 
 ### Naming
 
-- Use idiomatic Rust naming consistently: `snake_case` for functions, methods, variables, and modules; `UpperCamelCase` for types, traits, and enum variants; and `SCREAMING_SNAKE_CASE` for constants and statics.
+- Use idiomatic Rust naming consistently: `snake_case` for functions, methods, variables, and modules; `UpperCamelCase`
+  for types, traits, and enum variants; and `SCREAMING_SNAKE_CASE` for constants and statics.
 - Follow Rust API naming conventions for conversions, getters, iterator methods, and Cargo feature names.
-- Choose names that make call sites predictable and do not encode implementation details that callers should not depend on.
-- Use `const` items for repeated values, domain-significant values, thresholds, and limits; use `static` only when a stable memory location or intentional global state is required.
-- Document non-obvious Rust constants and magic values with the invariant or domain reason they represent, not with a restatement of their value.
+- Choose names that make call sites predictable and do not encode implementation details that callers should not depend
+  on.
+- Use `const` items for repeated values, domain-significant values, thresholds, and limits; use `static` only when a
+  stable memory location or intentional global state is required.
+- Document non-obvious Rust constants and magic values with the invariant or domain reason they represent, not with a
+  restatement of their value.
 - Name Rust tests after the behavior they protect instead of naming them only after issue numbers or bug IDs.
 
 ### Formatting
 
 - Format Rust code with `cargo fmt` or `rustfmt` before presenting or committing it.
-- Keep function signatures explicit: declare parameter types and prefer narrow signatures that expose the real contract of the function.
-- Prefer immutable bindings by default; add `mut` only when reassignment is intentional and clearer than creating a new binding.
+- Keep function signatures explicit: declare parameter types and prefer narrow signatures that expose the real contract
+  of the function.
+- Prefer immutable bindings by default; add `mut` only when reassignment is intentional and clearer than creating a new
+  binding.
 - Use shadowing when transforming a value into a new immutable value, especially when the type changes.
-- Use Rust expression semantics intentionally: do not add a semicolon to the final expression when the value must be returned.
+- Use Rust expression semantics intentionally: do not add a semicolon to the final expression when the value must be
+  returned.
 - Prefer implicit final-expression returns for simple functions, and use `return` only when early exit improves clarity.
-- Keep Rust comments focused on ownership invariants, safety reasoning, platform behavior, public API contracts, or business rules that the type system and names cannot express.
+- Keep Rust comments focused on ownership invariants, safety reasoning, platform behavior, public API contracts, or
+  business rules that the type system and names cannot express.
 - Do not write comments that merely restate obvious Rust syntax or repeat identifier names.
-- When modifying existing Rust code, change only the lines required by the requested behavior and preserve the local style.
-- Remove only unused imports, variables, functions, feature gates, or Cargo dependencies made unused by the current Rust change.
+- When modifying existing Rust code, change only the lines required by the requested behavior and preserve the local
+  style.
+- Remove only unused imports, variables, functions, feature gates, or Cargo dependencies made unused by the current Rust
+  change.
 
 ### Errors
 
@@ -2647,43 +2997,55 @@ rule for framework code.
 - Use `panic!` for tests, unrecoverable programming bugs, violated invariants, or impossible states.
 - Do not use `panic!` as a normal upstream error channel.
 - For libraries, expose meaningful error types that provide useful `Display` output and implement the expected traits.
-- For applications, broader executable-boundary error wrappers are acceptable when callers are not expected to branch on library-level error variants.
-- Do not make callers depend on formatting details of human-readable error messages when a typed error would be more stable.
+- For applications, broader executable-boundary error wrappers are acceptable when callers are not expected to branch on
+  library-level error variants.
+- Do not make callers depend on formatting details of human-readable error messages when a typed error would be more
+  stable.
 
 ### Safety
 
 - Design Rust code around ownership and borrowing instead of working around the borrow checker.
 - Keep scopes tight so borrows expire as soon as possible.
 - Avoid unnecessary `clone()` calls when borrowing, moving, or restructuring ownership is clearer and sufficient.
-- Prefer strong domain types such as newtypes, enums, and structs over ambiguous `bool`, `Option`, string, or numeric parameters.
+- Prefer strong domain types such as newtypes, enums, and structs over ambiguous `bool` , `Option` , string, or numeric
+  parameters.
 - Return values directly instead of mutating caller-provided out-parameters.
 - Use tuples, structs, enums, or custom result types when multiple values must be returned.
-- Do not expose dependency-specific types in public APIs unless the dependency is intentionally part of the public contract.
+- Do not expose dependency-specific types in public APIs unless the dependency is intentionally part of the public
+  contract.
 - Prefer stable domain types at API boundaries when the dependency is an implementation detail.
 - Avoid surprising operator overloads.
 - Implement `Deref` only for smart-pointer-like types where dereference behavior is expected by callers.
-- Derive or implement `Debug`, `Clone`, `Copy`, `Eq`, `PartialEq`, `Ord`, `PartialOrd`, `Hash`, `Default`, and `Display` only when their semantics are correct for the type.
+- Derive or implement `Debug` , `Clone` , `Copy` , `Eq` , `PartialEq` , `Ord` , `PartialOrd` , `Hash` , `Default` , and
+  `Display` only when their semantics are correct for the type.
 - Ensure all public types implement `Debug` unless there is a specific documented reason not to.
-- If a public type contains secrets or sensitive data, implement `Debug` manually and verify that sensitive values are redacted.
+- If a public type contains secrets or sensitive data, implement `Debug` manually and verify that sensitive values are
+  redacted.
 - Prefer structured logging with named fields when the logging API supports it.
 - Never log plain secrets, personal data, tokens, or sensitive file paths.
 - Avoid `unsafe` code by default.
-- Use `unsafe` only for a valid reason such as FFI, platform calls, low-level abstractions, or measured performance work.
+- Use `unsafe` only for a valid reason such as FFI, platform calls, low-level abstractions, or measured performance
+  work.
 - Do not use `unsafe` to bypass lifetimes, `Send` bounds, or ordinary type-system constraints.
-- Every unsafe block or unsafe abstraction must include plain-text safety reasoning that states the invariants the code relies on.
+- Every unsafe block or unsafe abstraction must include plain-text safety reasoning that states the invariants the code
+  relies on.
 - If an abstraction cannot be soundly encapsulated as safe Rust, expose an unsafe API instead of pretending it is safe.
 
 ### Tests
 
 - Use `cargo fmt`, `cargo clippy`, `cargo test`, and compiler lints as standard Rust verification gates.
-- Run the narrowest meaningful Rust verification command first, then broaden checks when the change can affect shared behavior.
-- Use `cargo audit`, `cargo hack`, `cargo udeps`, or Miri when those tools are available and dependency risk, feature combinations, unused dependencies, or unsafe-code assumptions are relevant.
-- Prefer `#[expect(..., reason = "...")]` over broad `#[allow(...)]` in handwritten code when the project's Rust toolchain supports it.
+- Run the narrowest meaningful Rust verification command first, then broaden checks when the change can affect shared
+  behavior.
+- Use `cargo audit` , `cargo hack` , `cargo udeps` , or Miri when those tools are available and dependency risk, feature
+  combinations, unused dependencies, or unsafe-code assumptions are relevant.
+- Prefer `#[expect(..., reason = "...")]` over broad `#[allow(...)]` in handwritten code when the project's Rust
+  toolchain supports it.
 - Reserve broad `#[allow(...)]` usage for generated code, macros, or cases where `expect` is not appropriate.
 - Write unit tests, doc tests, and integration tests according to the behavior being protected.
 - Keep Rust tests minimal, reproducible, clearly named, and focused on observable behavior.
 - Test recoverable error paths, invalid inputs, boundary cases, and invariants that callers rely on.
-- Do not accept flaky tests as normal; make tests deterministic or document any platform-specific ignore or requirement directive.
+- Do not accept flaky tests as normal; make tests deterministic or document any platform-specific ignore or requirement
+  directive.
 - Remove unrelated syntax, unused features, distracting setup, and non-critical failures from tests.
 - Reference issue numbers in test comments when useful, but keep the test name semantic.
 - Validate unsafe code with focused tests, adversarial cases where relevant, and Miri when applicable.
@@ -2695,28 +3057,38 @@ rule for framework code.
 - Prefer idiomatic Rust APIs, strong types, clear ownership, and testable boundaries.
 - Use static inherent constructors such as `Type::new()` for normal construction.
 - Implement `Default` only when there is a clear and unsurprising default state.
-- Use a builder when construction requires many optional parameters, ordered configuration, or validation before instantiation.
-- Do not introduce a builder for simple values that can be constructed clearly with `new`, struct literals, or `Default`.
+- Use a builder when construction requires many optional parameters, ordered configuration, or validation before
+  instantiation.
+- Do not introduce a builder for simple values that can be constructed clearly with `new` , struct literals, or
+  `Default` .
 - Keep conversions on the most specific type involved.
-- Use iterator conventions consistently: expose `iter`, `iter_mut`, and `into_iter` where they match the collection behavior.
+- Use iterator conventions consistently: expose `iter` , `iter_mut` , and `into_iter` where they match the collection
+  behavior.
 - Implement `FromIterator` and `Extend` for collection types when that behavior is natural.
-- Keep Cargo features additive: features should add capabilities without disabling existing behavior or creating incompatible combinations.
+- Keep Cargo features additive: features should add capabilities without disabling existing behavior or creating
+  incompatible combinations.
 - Validate important Cargo feature combinations when the project exposes multiple features.
 - Do not optimize by guesswork; identify hot paths, measure them, and document performance-sensitive decisions.
-- In performance-sensitive code, watch for repeated string allocation, redundant cloning, repeated hashing, and avoidable collection growth.
+- In performance-sensitive code, watch for repeated string allocation, redundant cloning, repeated hashing, and
+  avoidable collection growth.
 - Optimize allocation, cloning, hashing, or collection growth only when measurement shows the path matters.
 - Design long-running CPU-heavy async work to yield or batch work so it does not starve unrelated tasks.
 - Use runtime-specific async budget APIs only when the selected runtime supports them and the need is clear.
 
 ### Other
 
-- Document crate-level behavior, modules, public items, examples, errors, panics, and safety requirements for public APIs.
+- Document crate-level behavior, modules, public items, examples, errors, panics, and safety requirements for public
+  APIs.
 - Prefer directly usable documentation examples and use `?` instead of `unwrap()` in normal examples.
-- Keep `Cargo.toml` metadata complete for published libraries, including description, license, repository, documentation, keywords, and categories when applicable.
+- Keep `Cargo.toml` metadata complete for published libraries, including description, license, repository,
+  documentation, keywords, and categories when applicable.
 - Avoid wildcard dependency versions.
-- Treat Cargo features, public error types, public dependency types, and trait implementations as part of the public API contract when they affect downstream users.
-- Favor idiomatic Rust APIs, strong types, rustdoc examples, explicit unsafe invariants, and Cargo-based verification gates.
-- Do not introduce new Rust abstractions, builders, feature flags, dependencies, unsafe code, or performance optimizations unless they solve the requested Rust problem.
+- Treat Cargo features, public error types, public dependency types, and trait implementations as part of the public API
+  contract when they affect downstream users.
+- Favor idiomatic Rust APIs, strong types, rustdoc examples, explicit unsafe invariants, and Cargo-based verification
+  gates.
+- Do not introduce new Rust abstractions, builders, feature flags, dependencies, unsafe code, or performance
+  optimizations unless they solve the requested Rust problem.
 
 ## Docker Files
 
