@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.31.0
+
+References | Description | Author(s)
+--- | --- | ---
+79220df | Enforce Markdown lint rules | asphyx
+
 ## v1.30.1
 
 References | Description | Author(s)
