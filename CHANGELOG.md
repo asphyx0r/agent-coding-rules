@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.31.2
+
+References | Description | Author(s)
+--- | --- | ---
+800c736 | Clarify documentation rule scope | asphyx
+
 ## v1.31.1
 
 References | Description | Author(s)
