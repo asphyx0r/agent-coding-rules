@@ -15,6 +15,8 @@ Practical behavior and code-quality rules for AI coding agents.
   scripting, database, container, legacy, and release-description formats.
 - Covers documentation, README, changelog, commit, release, versioning, privacy,
   repository-readiness, and Git tag workflows.
+- Hardens commit rules with Conventional Commits defaults, commitlint-aware
+  validation, breaking-change footer handling, and commit-message hook guidance.
 - Includes review checklists and verification expectations so generated changes
   can be checked before delivery.
 
@@ -30,8 +32,9 @@ configuration:
   coding rules.
 - `DOCUMENTATION_RULES.md`: Controls documentation quality and consistency,
   including README and changelog rules.
-- `COMMIT_RULES.md`: Controls repository readiness, privacy checks, and commit
-  message quality before commits.
+- `COMMIT_RULES.md`: Controls repository readiness, privacy checks,
+  Conventional Commits formatting, commitlint validation, and commit message
+  quality before commits.
 - `RELEASE_RULES.md`: Controls SemVer version selection, Git tag creation, and
   release readiness.
 - `CHANGELOG.md`: Lists tagged release history.
@@ -127,6 +130,13 @@ an exhaustive source map for every supported language or framework.
 - Microsoft GW-BASIC Interpreter User's Guide and User's Reference (1986)
 - [Preslav Rachev, The 10 Go Error Handling Commandments](https://preslav.me/2026/05/19/10-golang-error-handling-commandments)
 - [Semantic Versioning 2.0.0](https://semver.org/)
+- [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/)
+- [commitlint documentation](https://commitlint.js.org/)
+- [commitlint CLI reference](https://commitlint.js.org/reference/cli.html)
+- [commitlint rules reference](https://commitlint.js.org/reference/rules.html)
+- [commitlint configuration reference](https://commitlint.js.org/reference/configuration.html)
+- [commitlint local setup guide](https://commitlint.js.org/guides/local-setup.html)
+- [commitlint AI agents guide](https://commitlint.js.org/guides/ai-agents.html)
 - [RFC 2119 - Key words for use in RFCs to Indicate Requirement Levels](https://www.rfc-editor.org/rfc/rfc2119)
 - [ISO/IEC JTC1/SC22/WG14 - C](https://www.open-std.org/jtc1/sc22/wg14/)
 - [ISO/IEC 9899:1990 - Programming languages - C](https://www.iso.org/standard/17782.html)
