@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.35.1
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| f1516da | docs: harden commit rules | asphyx |
+
 ## v1.35.0
 
 | References | Description | Author(s) |
