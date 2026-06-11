@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.36.0
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| feaef0e | docs: add tool validation rules | asphyx |
+
 ## v1.35.1
 
 | References | Description | Author(s) |
