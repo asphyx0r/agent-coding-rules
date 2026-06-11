@@ -13,6 +13,9 @@ Practical behavior and code-quality rules for AI coding agents.
   refactoring, and review.
 - Adds language-, dialect-, and framework-specific rules for web, systems,
   scripting, database, container, legacy, and release-description formats.
+- Adds command-oriented validation expectations for SQL, Python, and
+  PowerShell through SQLFluff, Ruff, and PSScriptAnalyzer when those tools are
+  already available.
 - Covers documentation, README, changelog, commit, release, versioning, privacy,
   repository-readiness, and Git tag workflows.
 - Hardens commit rules with Conventional Commits defaults, commitlint-aware
@@ -117,6 +120,11 @@ yamllint .markdownlint-cli2.yaml
 The Markdown lint command also parses `.markdownlint-cli2.yaml`; use
 `yamllint` for YAML style checks when it is available.
 
+`LANGUAGE_RULES.md` also defines language-specific validation expectations for
+SQLFluff, Ruff, and PSScriptAnalyzer. Use the target project's existing tool
+configuration and report any fallback validation when those tools are not
+available.
+
 ## Sources
 
 This list records cited references used while developing the rules; it is not
@@ -129,6 +137,9 @@ an exhaustive source map for every supported language or framework.
   (1993, Clark Development Co., Inc.)
 - Microsoft GW-BASIC Interpreter User's Guide and User's Reference (1986)
 - [Preslav Rachev, The 10 Go Error Handling Commandments](https://preslav.me/2026/05/19/10-golang-error-handling-commandments)
+- [SQLFluff documentation](https://docs.sqlfluff.com/)
+- [Ruff documentation](https://docs.astral.sh/ruff/)
+- [Microsoft Learn - PSScriptAnalyzer module](https://learn.microsoft.com/powershell/utility-modules/psscriptanalyzer/overview)
 - [Semantic Versioning 2.0.0](https://semver.org/)
 - [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/)
 - [commitlint documentation](https://commitlint.js.org/)
