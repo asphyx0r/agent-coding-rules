@@ -18,8 +18,10 @@ Practical behavior and code-quality rules for AI coding agents.
   already available.
 - Covers documentation, README, changelog, commit, release, versioning, privacy,
   repository-readiness, and Git tag workflows.
-- Hardens commit rules with Conventional Commits defaults, commitlint-aware
-  validation, breaking-change footer handling, and commit-message hook guidance.
+- Hardens commit rules with automated secret scanning that prefers Betterleaks
+  and falls back to Gitleaks, plus manual privacy review, Conventional Commits
+  defaults, commitlint-aware validation, breaking-change footer handling, and
+  commit-message hook guidance.
 - Includes review checklists and verification expectations so generated changes
   can be checked before delivery.
 
@@ -35,9 +37,9 @@ configuration:
   coding rules.
 - `DOCUMENTATION_RULES.md`: Controls documentation quality and consistency,
   including README and changelog rules.
-- `COMMIT_RULES.md`: Controls repository readiness, privacy checks,
-  Conventional Commits formatting, commitlint validation, and commit message
-  quality before commits.
+- `COMMIT_RULES.md`: Controls repository readiness, automated secret scanning,
+  privacy checks, Conventional Commits formatting, commitlint validation, and
+  commit message quality before commits.
 - `RELEASE_RULES.md`: Controls SemVer version selection, Git tag creation, and
   release readiness.
 - `CHANGELOG.md`: Lists tagged release history.
