@@ -45,6 +45,41 @@ Apply these rules before creating any commit.
 
 - Do not create the commit until every file included in the commit has passed
   this privacy review.
+
+### Gitleaks Secret Scan
+
+- Before creating the commit, try to scan the staged content with Gitleaks when
+  `gitleaks` is installed and accessible to the agent.
+- Use `gitleaks protect --staged --redact --no-banner` as the primary Gitleaks
+  check for content that is staged for commit.
+- When modified or untracked files outside the index must also be validated,
+  scan each relevant path with
+  `gitleaks detect --no-git --source <path> --redact --no-banner`.
+- Use the repository's Gitleaks configuration when one exists and is readable by
+  Gitleaks.
+- If no repository Gitleaks configuration exists, explicitly warn the user,
+  then use Gitleaks' default configuration together with the manual privacy
+  review in this section.
+- If Gitleaks is not installed, is not accessible, or cannot use either the
+  repository configuration or its default configuration, explicitly warn the
+  user and perform a fallback privacy review instead of blocking the commit only
+  because Gitleaks could not run.
+- The fallback privacy review must inspect every file being validated in full
+  and run a conservative text search for secrets, private keys, tokens,
+  passwords, private URLs, credentials, and real environment-specific values.
+- If Gitleaks reports a leak, block the commit, notify the user with redacted
+  Gitleaks output, and do not treat a fallback review as a way to override the
+  Gitleaks finding.
+- If Gitleaks returns an error or warning that prevents validating a file,
+  report the useful error details to the user, run the fallback privacy review
+  for the affected file, and ask the user before committing if uncertainty
+  remains.
+- The absence of Gitleaks or a repository Gitleaks configuration does not block
+  the commit by itself. Confirmed sensitive data or unresolved uncertainty about
+  sensitive data must block the commit.
+
+### Manual Privacy Review
+
 - Never commit a `.env` file containing real environment values, secrets,
   credentials, private URLs, tokens, passwords, or API keys.
 - Commit only `.env` templates that contain placeholders or documented example
