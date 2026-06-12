@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.36.1
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 94006bb | docs: update README commit rules | asphyx |
+| 0b7bd51 | docs: prefer Betterleaks for secret scans | asphyx |
+| 546886c | docs: add `gitleaks` commit checks | asphyx |
+
 ## v1.36.0
 
 | References | Description | Author(s) |
