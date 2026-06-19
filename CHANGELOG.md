@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.37.0
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 901f6f7 | feat: add default commitlint config | asphyx |
+
 ## v1.36.1
 
 | References | Description | Author(s) |
