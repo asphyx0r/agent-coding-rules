@@ -43,6 +43,8 @@ configuration:
 - `RELEASE_RULES.md`: Controls SemVer version selection, Git tag creation, and
   release readiness.
 - `CHANGELOG.md`: Lists tagged release history.
+- `commitlint.config.cjs`: Provides a default commitlint configuration for
+  Conventional Commits validation.
 - `.markdownlint-cli2.yaml`: Configures repository Markdown lint rules.
 - `.gitattributes`: Defines repository text-file line-ending normalization.
 
@@ -91,12 +93,13 @@ git clone https://github.com/asphyx0r/agent-coding-rules.git .agent-coding-rules
 cp .agent-coding-rules/AGENTS.md .
 cp .agent-coding-rules/*_RULES.md .
 cp .agent-coding-rules/.markdownlint-cli2.yaml .
+cp .agent-coding-rules/commitlint.config.cjs .
 cp .agent-coding-rules/LICENSE.txt .
 ```
 
 Copying `LICENSE.txt` preserves the MIT license notice for reused files, and
-copying `.markdownlint-cli2.yaml` preserves the repository's Markdown lint
-configuration.
+copying `.markdownlint-cli2.yaml` and `commitlint.config.cjs` preserves the
+repository's Markdown and commit message lint configuration.
 
 ## Usage
 
@@ -106,6 +109,13 @@ configuration.
 - Keep project-specific instructions in your local `AGENTS.md` when needed.
 
 ## Validation
+
+Validate the commitlint configuration and a commit message file:
+
+```bash
+commitlint --print-config json --config commitlint.config.cjs
+commitlint --edit path/to/commit-message --config commitlint.config.cjs
+```
 
 Run Markdown lint against all Markdown files:
 
