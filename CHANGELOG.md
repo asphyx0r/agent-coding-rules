@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.38.2
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 4c42782 | chore: add minimal gitignore | asphyx |
+| eec5de2 | docs: document local validation policy | asphyx |
+| e771d16 | docs: align validation tooling | asphyx |
+| ae60604 | docs: document toolchain install | asphyx |
+
 ## v1.38.1
 
 | References | Description | Author(s) |

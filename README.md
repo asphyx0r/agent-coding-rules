@@ -50,10 +50,13 @@ configuration:
 - `RELEASE_RULES.md`: Controls SemVer version selection, Git tag creation, and
   release readiness.
 - `CHANGELOG.md`: Lists tagged release history.
+- `TODO.md`: Tracks follow-up work that should remain outside the current
+  change scope.
 - `commitlint.config.cjs`: Provides a default commitlint configuration for
   Conventional Commits validation.
 - `.markdownlint-cli2.yaml`: Configures repository Markdown lint rules.
 - `.gitattributes`: Defines repository text-file line-ending normalization.
+- `.gitignore`: Excludes OS metadata and editor temporary files.
 
 ## Supported Languages, Frameworks, and Artifact Formats
 
