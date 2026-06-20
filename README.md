@@ -125,6 +125,13 @@ Provide these commands before running validation:
 - `commitlint`
 - `markdownlint-cli2`
 - `yamllint`
+- `bash`
+- `shfmt`
+- `shellcheck`
+- `actionlint`
+- `sqlfluff`
+- `ruff`
+- `Invoke-ScriptAnalyzer`
 - `gitleaks`
 - `betterleaks` when staged secret scans are required and the tool is available
 
@@ -166,9 +173,9 @@ The Markdown lint command also parses `.markdownlint-cli2.yaml`; use
 `yamllint` for YAML style checks when it is available.
 
 `LANGUAGE_RULES.md` also defines language-specific validation expectations for
-GitHub Actions workflows, SQL, Python, and PowerShell. Use the target project's
-existing tool configuration and report any fallback validation when those tools
-are not available.
+Bash, GitHub Actions workflows, YAML, SQL, Python, and PowerShell. Use the
+target project's existing tool configuration and report any fallback validation
+when those tools are not available.
 
 ## Sources
 
