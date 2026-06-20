@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.38.1
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 170dccc | fix: align validation docs and config | asphyx |
+| 00e66f5 | docs: include gitattributes install step | asphyx |
+| b9676df | fix: harden commitlint rules | asphyx |
+
 ## v1.38.0
 
 | References | Description | Author(s) |
