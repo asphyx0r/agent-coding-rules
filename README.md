@@ -118,6 +118,16 @@ Markdown lint, and commit message lint configuration.
 - Review generated changes against the applicable rule files.
 - Keep project-specific instructions in your local `AGENTS.md` when needed.
 
+## Tooling
+
+Provide these commands before running validation:
+
+- `commitlint`
+- `markdownlint-cli2`
+- `yamllint`
+- `gitleaks`
+- `betterleaks` when staged secret scans are required and the tool is available
+
 ## Validation
 
 Validate the commitlint configuration and a commit message file:
