@@ -13,9 +13,16 @@ Practical behavior and code-quality rules for AI coding agents.
   refactoring, and review.
 - Adds language-, dialect-, and framework-specific rules for web, systems,
   scripting, database, container, legacy, and release-description formats.
-- Adds command-oriented validation expectations for SQL, Python, and
-  PowerShell through SQLFluff, Ruff, and PSScriptAnalyzer when those tools are
-  already available.
+- Adds GitHub Actions workflow rules for trigger scope, job structure,
+  permissions, cache and artifact handling, pinned third-party actions,
+  untrusted input, privileged triggers, and runner selection.
+- Clarifies that GitHub Actions workflow rules apply only to
+  `.github/workflows/*.yml` and `.github/workflows/*.yaml`, in addition to the
+  generic YAML rules, with the GitHub Actions-specific rule taking precedence
+  when both sections overlap.
+- Adds command-oriented validation expectations for GitHub Actions workflows,
+  SQL, Python, and PowerShell through actionlint, SQLFluff, Ruff, and
+  PSScriptAnalyzer when those tools are already available.
 - Covers documentation, README, changelog, commit, release, versioning, privacy,
   repository-readiness, and Git tag workflows.
 - Hardens commit rules with automated secret scanning that prefers Betterleaks
@@ -80,6 +87,7 @@ configuration:
 - Warez Release NFO File
 - Windows Batch
 - YAML
+- YAML for GitHub Actions
 - YAML for Kubernetes
 
 ## Installation
@@ -117,6 +125,17 @@ commitlint --print-config json --config commitlint.config.cjs
 commitlint --edit path/to/commit-message --config commitlint.config.cjs
 ```
 
+Validate GitHub Actions workflows when `actionlint` is available:
+
+```bash
+actionlint
+```
+
+When `actionlint` is unavailable, validate affected workflow YAML with
+`yamllint`, a YAML parser, or an equivalent repository tool, then manually
+review workflow syntax, triggers, jobs, expressions, reusable workflow calls,
+action inputs, runner labels, and visible secret handling.
+
 Run Markdown lint against all Markdown files:
 
 ```bash
@@ -133,9 +152,9 @@ The Markdown lint command also parses `.markdownlint-cli2.yaml`; use
 `yamllint` for YAML style checks when it is available.
 
 `LANGUAGE_RULES.md` also defines language-specific validation expectations for
-SQLFluff, Ruff, and PSScriptAnalyzer. Use the target project's existing tool
-configuration and report any fallback validation when those tools are not
-available.
+GitHub Actions workflows, SQL, Python, and PowerShell. Use the target project's
+existing tool configuration and report any fallback validation when those tools
+are not available.
 
 ## Sources
 
@@ -187,6 +206,16 @@ an exhaustive source map for every supported language or framework.
 - [Good Practices for Writing Rust Libraries](https://pascalhertleif.de/artikel/good-practices-for-writing-rust-libraries/)
 - [Docker Documentation](https://docs.docker.com/)
 - [Google TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html)
+- [GitHub Actions workflows documentation](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows)
+- [GitHub Actions workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+- [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
+- [GitHub Actions GITHUB_TOKEN authentication](https://docs.github.com/en/actions/tutorials/authenticate-with-github_token)
+- [GitHub Actions dependency caching](https://docs.github.com/en/actions/concepts/workflows-and-actions/dependency-caching)
+- [GitHub Actions workflow artifacts](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflow-artifacts)
+- [GitHub Actions using secrets](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets)
+- [GitHub Actions OpenID Connect](https://docs.github.com/en/actions/concepts/security/openid-connect)
+- [GitHub Actions self-hosted runners](https://docs.github.com/en/actions/concepts/runners/self-hosted-runners)
+- [rhysd/actionlint](https://github.com/rhysd/actionlint)
 - [FILE_ID.DIZ Frequently Asked Questions](https://www.roysac.com/file_iddesc.html)
 - [YAML 1.2.2 Specification](https://yaml.org/spec/1.2.2/)
 - [yamllint documentation](https://yamllint.readthedocs.io/en/stable/)
