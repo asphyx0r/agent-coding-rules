@@ -11,6 +11,7 @@ module.exports = {
     "body-leading-blank": [2, "always"],
     "body-max-line-length": [2, "always", 72],
     "footer-leading-blank": [2, "always"],
+    "footer-max-line-length": [2, "always", 72],
     "header-max-length": [2, "always", 50],
     "header-trim": [2, "always"],
     "scope-case": [2, "always", "lower-case"],
