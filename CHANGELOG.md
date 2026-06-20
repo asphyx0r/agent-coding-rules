@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.38.0
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 1ef620d | feat: add GitHub Actions rules | asphyx |
+
 ## v1.37.0
 
 | References | Description | Author(s) |
