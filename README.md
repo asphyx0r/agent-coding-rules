@@ -128,6 +128,8 @@ Provide these commands before running validation:
 - `gitleaks`
 - `betterleaks` when staged secret scans are required and the tool is available
 
+Auto-install all tools via [latest release](https://github.com/asphyx0r/coding-agent-toolchain/releases/latest).
+
 ## Validation
 
 Validate the commitlint configuration and a commit message file:
