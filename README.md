@@ -177,6 +177,9 @@ Bash, GitHub Actions workflows, YAML, SQL, Python, and PowerShell. Use the
 target project's existing tool configuration and report any fallback validation
 when those tools are not available.
 
+This repository does not currently provide a CI workflow. Local validation is
+mandatory before commits and tags; see `TODO.md` for the planned CI follow-up.
+
 ## Sources
 
 This list records cited references used while developing the rules; it is not
