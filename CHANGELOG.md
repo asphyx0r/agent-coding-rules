@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.38.3
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| e38a801 | fix: enforce commit footer length | asphyx |
+
 ## v1.38.2
 
 | References | Description | Author(s) |
