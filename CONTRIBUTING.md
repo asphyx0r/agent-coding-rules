@@ -18,6 +18,7 @@ markdownlint-cli2 "**/*.md"
 yamllint .markdownlint-cli2.yaml .github/workflows/ci.yml
 node --check commitlint.config.cjs
 commitlint --print-config json --config commitlint.config.cjs
+actionlint
 betterleaks git --no-banner --redact
 ```
 
