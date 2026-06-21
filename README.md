@@ -190,6 +190,19 @@ mandatory before commits and tags; see `TODO.md` for the planned CI follow-up.
 This list records cited references used while developing the rules; it is not
 an exhaustive source map for every supported language or framework.
 
+Use this source map to connect reference groups to rule areas:
+
+- Agent behavior and coding quality: agent-rule examples, Clean Code,
+  and RFC 2119 terminology.
+- Commit and release process: SemVer, Conventional Commits, and
+  commitlint documentation.
+- Language and framework rules: official or primary ecosystem references
+  listed below for each supported target.
+- Legacy and specialized formats: PCBoard, GW-BASIC, and warez release
+  references.
+- Security, CI/CD, and configuration: GitHub Actions, Docker, YAML,
+  PyYAML, and Kubernetes references.
+
 - [Karpathy agent rules](https://github.com/multica-ai/andrej-karpathy-skills)
 - Robert C. Martin, "Clean Code: A Handbook of Agile Software Craftsmanship" (978-0132350884)
 - Martin Paul Eve, "Warez: The Infrastructure and Aesthetics of Piracy" (978-1-68571-036-1)
