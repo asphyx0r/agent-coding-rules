@@ -30,6 +30,7 @@ jobs:
 
       - name: Install validation tools
         env:
+          # coding-agent-toolchain v1.4.1
           TOOLCHAIN_COMMIT: 2770daacbe75168cc340293704209b28230313aa
           TOOLCHAIN_URL: https://github.com/asphyx0r/coding-agent-toolchain.git
         run: |
