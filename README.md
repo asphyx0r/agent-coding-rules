@@ -187,6 +187,12 @@ mandatory before commits and tags; see `TODO.md` for the planned CI follow-up.
 This list records cited references used while developing the rules; it is not
 an exhaustive source map for every supported language or framework.
 
+This source map includes external URLs. Local Markdown linting checks syntax and
+repository-local references, but it does not prove that remote HTTP targets are
+reachable. When an audit authorizes external validation, run a network-enabled
+link check for the URLs in this section and update only links confirmed as
+broken or redirected.
+
 Use this source map to connect reference groups to rule areas:
 
 - Agent behavior and coding quality: agent-rule examples, Clean Code,
