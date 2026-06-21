@@ -185,6 +185,10 @@ When `actionlint` is unavailable, validate affected workflow YAML with
 review workflow syntax, triggers, jobs, expressions, reusable workflow calls,
 action inputs, runner labels, and visible secret handling.
 
+External HTTP link checks are optional network-enabled validation. Run them
+only when an audit or maintenance task explicitly authorizes external
+validation; local and CI checks do not prove remote URLs are reachable.
+
 `LANGUAGE_RULES.md` also defines language-specific validation expectations for
 Bash, GitHub Actions workflows, YAML, SQL, Python, and PowerShell. Use the
 target project's existing tool configuration and report any fallback validation
