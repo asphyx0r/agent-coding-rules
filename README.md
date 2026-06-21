@@ -138,7 +138,8 @@ Provide these commands before running validation:
 - `gitleaks`
 - `betterleaks` when staged secret scans are required and the tool is available
 
-Auto-install all tools via [latest release](https://github.com/asphyx0r/coding-agent-toolchain/releases/latest).
+Auto-install all tools via
+[coding-agent-toolchain v1.4.1](https://github.com/asphyx0r/coding-agent-toolchain/releases/tag/v1.4.1).
 
 ## Validation
 

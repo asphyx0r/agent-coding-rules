@@ -15,7 +15,7 @@ Recommended correction:
   `workflow_dispatch`.
 - Set `permissions: contents: read`.
 - Add a job with a timeout.
-- Install the tools through the `coding-agent-toolchain` release.
+- Install the tools through the `coding-agent-toolchain` v1.4.1 release.
 - Run only the checks already relevant to this repository:
   - `markdownlint-cli2 "**/*.md"`
   - `yamllint .markdownlint-cli2.yaml`
