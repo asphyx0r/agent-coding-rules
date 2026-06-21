@@ -50,6 +50,7 @@ configuration:
 - `RELEASE_RULES.md`: Controls SemVer version selection, Git tag creation, and
   release readiness.
 - `CHANGELOG.md`: Lists tagged release history.
+- `CONTRIBUTING.md`: Provides scoped contribution and validation guidance.
 - `TODO.md`: Tracks follow-up work when pending items should remain outside the
   current change scope.
 - `SOURCES.md`: Maps reference groups and cited source links.
