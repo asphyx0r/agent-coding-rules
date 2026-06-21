@@ -7,15 +7,14 @@ workflows that could cause unintended repository changes.
 
 ## Reporting a Vulnerability
 
-No dedicated private security contact is currently documented for this
-repository.
+Use GitHub Security Advisories or GitHub private vulnerability reporting as the
+preferred private channel for sensitive security reports when that channel is
+available for this repository.
 
 Do not publish real secrets, credentials, private URLs, exploit details, or
 sensitive reproduction data in public issues, pull requests, or comments. If the
-repository's GitHub security advisory feature or another maintainer-approved
-private channel is available, use that private channel first. If no private
-channel is available, open a public issue with a high-level, non-sensitive
-summary and ask maintainers where to send details.
+private GitHub reporting channel is unavailable, open a public issue with a
+high-level, non-sensitive summary and ask maintainers where to send details.
 
 ## What to Include
 
