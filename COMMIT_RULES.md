@@ -229,7 +229,7 @@ Apply these rules before creating any commit.
 ### Safety
 
 - Before generating the final commit message, inspect the resolved commitlint
-  configuration with `npx commitlint --print-config json` when commitlint is
+  configuration with `commitlint --print-config json` when commitlint is
   available in the repository.
 - Treat the resolved commitlint configuration as the repository contract for
   types, scopes, parser presets, length limits, breaking-change policy, and
@@ -257,11 +257,11 @@ Apply these rules before creating any commit.
 - Validate the final candidate commit message with commitlint before running
   `git commit` when commitlint is available or required by the repository.
 - For single-line messages, validation by piping the exact message to
-  `npx commitlint` is acceptable when the shell command preserves the message
+  `commitlint` is acceptable when the shell command preserves the message
   byte-for-byte.
 - For multi-line messages or messages containing shell-sensitive characters,
   write the candidate message to a temporary file and validate that file with
-  `npx commitlint --edit <path>` or a repository-defined equivalent.
+  `commitlint --edit <path>` or a repository-defined equivalent.
 - Use a `commit-msg` hook for local commit message validation when configuring
   local commit validation. Do not rely on a `pre-commit` hook for commit message
   linting.
