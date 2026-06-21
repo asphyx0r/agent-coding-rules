@@ -100,6 +100,9 @@ The example below uses POSIX shell commands:
 The default installation intentionally follows the default branch of the repository
 so it installs the latest rule set.
 
+These commands intentionally overwrite and replace existing files with the same
+names. Treat the copied files as default base files to adapt after installation.
+
 ```bash
 mkdir -p /home/user/project-name
 cd /home/user/project-name
