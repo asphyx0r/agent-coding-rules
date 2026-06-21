@@ -23,6 +23,7 @@ jobs:
           REPOSITORY_URL: ${{ github.server_url }}/${{ github.repository }}
           TARGET_REF: ${{ github.ref }}
         run: |
+          set -euo pipefail
           git init .
           git remote add origin "$REPOSITORY_URL"
           git fetch --no-tags --depth=1 origin "$TARGET_REF"
@@ -34,6 +35,7 @@ jobs:
           TOOLCHAIN_COMMIT: 2770daacbe75168cc340293704209b28230313aa
           TOOLCHAIN_URL: https://github.com/asphyx0r/coding-agent-toolchain.git
         run: |
+          set -euo pipefail
           TOOLCHAIN_DIR="$RUNNER_TEMP/coding-agent-toolchain"
           git init "$TOOLCHAIN_DIR"
           git -C "$TOOLCHAIN_DIR" remote add origin "$TOOLCHAIN_URL"
@@ -45,6 +47,7 @@ jobs:
 
       - name: Run validation
         run: |
+          set -euo pipefail
           markdownlint-cli2 "**/*.md"
           yamllint .markdownlint-cli2.yaml .github/workflows/ci.yml
           node --check commitlint.config.cjs
