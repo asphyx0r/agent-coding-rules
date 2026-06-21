@@ -104,15 +104,16 @@ git clone https://github.com/asphyx0r/agent-coding-rules.git .agent-coding-rules
 cp .agent-coding-rules/AGENTS.md .
 cp .agent-coding-rules/*_RULES.md .
 cp .agent-coding-rules/.gitattributes .
+cp .agent-coding-rules/.gitignore .
 cp .agent-coding-rules/.markdownlint-cli2.yaml .
 cp .agent-coding-rules/commitlint.config.cjs .
 cp .agent-coding-rules/LICENSE.txt .
 ```
 
 Copying `LICENSE.txt` preserves the MIT license notice for reused files, and
-copying `.gitattributes`, `.markdownlint-cli2.yaml`, and
+copying `.gitattributes`, `.gitignore`, `.markdownlint-cli2.yaml`, and
 `commitlint.config.cjs` preserves the repository's text normalization,
-Markdown lint, and commit message lint configuration.
+ignored-file patterns, Markdown lint, and commit message lint configuration.
 
 ## Usage
 
