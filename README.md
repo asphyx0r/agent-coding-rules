@@ -49,6 +49,9 @@ configuration:
   commit message quality before commits.
 - `RELEASE_RULES.md`: Controls SemVer version selection, Git tag creation, and
   release readiness.
+- `SECURITY.md`: Explains how to report security-relevant concerns without
+  exposing sensitive details.
+- `SUPPORT.md`: Describes how to ask for help or report non-sensitive questions.
 - `CHANGELOG.md`: Lists tagged release history.
 - `CONTRIBUTING.md`: Provides scoped contribution and validation guidance.
 - `TODO.md`: Tracks follow-up work when pending items should remain outside the
