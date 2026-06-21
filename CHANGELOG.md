@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.38.4
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 5715108 | docs: add link validation guidance | asphyx |
+| 8a4b768 | docs: align validation checklist | asphyx |
+| fc92216 | docs: map source references | asphyx |
+| 4454d4d | docs: include gitignore install | asphyx |
+| 4b17c64 | docs: pin toolchain release | asphyx |
+| fd40b9b | docs: normalize todo language | asphyx |
+
 ## v1.38.3
 
 | References | Description | Author(s) |
