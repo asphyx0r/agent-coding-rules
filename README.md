@@ -135,6 +135,7 @@ Provide these commands before running validation:
 - `commitlint`
 - `markdownlint-cli2`
 - `yamllint`
+- `node`
 - `bash`
 - `shfmt`
 - `shellcheck`
