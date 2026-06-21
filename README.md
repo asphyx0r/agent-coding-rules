@@ -97,6 +97,9 @@ configuration:
 
 The example below uses POSIX shell commands:
 
+The default installation intentionally follows the default branch of the repository
+so it installs the latest rule set.
+
 ```bash
 mkdir -p /home/user/project-name
 cd /home/user/project-name
