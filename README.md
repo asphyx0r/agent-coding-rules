@@ -50,8 +50,8 @@ configuration:
 - `RELEASE_RULES.md`: Controls SemVer version selection, Git tag creation, and
   release readiness.
 - `CHANGELOG.md`: Lists tagged release history.
-- `TODO.md`: Tracks follow-up work that should remain outside the current
-  change scope.
+- `TODO.md`: Tracks follow-up work when pending items should remain outside the
+  current change scope.
 - `commitlint.config.cjs`: Provides a default commitlint configuration for
   Conventional Commits validation.
 - `.markdownlint-cli2.yaml`: Configures repository Markdown lint rules.
@@ -179,8 +179,8 @@ Bash, GitHub Actions workflows, YAML, SQL, Python, and PowerShell. Use the
 target project's existing tool configuration and report any fallback validation
 when those tools are not available.
 
-This repository does not currently provide a CI workflow. Local validation is
-mandatory before commits and tags; see `TODO.md` for the planned CI follow-up.
+This repository provides a CI workflow for the documented validation checklist.
+Local validation remains mandatory before commits and tags.
 
 ## Sources
 
