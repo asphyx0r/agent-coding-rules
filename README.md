@@ -144,10 +144,22 @@ Auto-install all tools via
 
 ## Validation
 
-Validate the commitlint configuration and a commit message file:
+Run the local validation checklist before commits and tags:
 
 ```bash
+markdownlint-cli2 "**/*.md"
+yamllint .markdownlint-cli2.yaml
+node --check commitlint.config.cjs
 commitlint --print-config json --config commitlint.config.cjs
+betterleaks git --no-banner --redact
+```
+
+When Betterleaks is unavailable, use a CI-compatible Gitleaks scan or an
+equivalent read-only secret scanner.
+
+Validate commit messages with the resolved commitlint configuration:
+
+```bash
 commitlint --edit path/to/commit-message --config commitlint.config.cjs
 ```
 
@@ -161,21 +173,6 @@ When `actionlint` is unavailable, validate affected workflow YAML with
 `yamllint`, a YAML parser, or an equivalent repository tool, then manually
 review workflow syntax, triggers, jobs, expressions, reusable workflow calls,
 action inputs, runner labels, and visible secret handling.
-
-Run Markdown lint against all Markdown files:
-
-```bash
-markdownlint-cli2 "**/*.md"
-```
-
-If `yamllint` is available, validate the Markdown lint configuration:
-
-```bash
-yamllint .markdownlint-cli2.yaml
-```
-
-The Markdown lint command also parses `.markdownlint-cli2.yaml`; use
-`yamllint` for YAML style checks when it is available.
 
 `LANGUAGE_RULES.md` also defines language-specific validation expectations for
 Bash, GitHub Actions workflows, YAML, SQL, Python, and PowerShell. Use the
