@@ -164,6 +164,7 @@ documented toolchain release when that installer is used.
 Run the local repository validation checklist before commits and tags:
 
 ```bash
+git fsck --full
 markdownlint-cli2 "**/*.md"
 yamllint .markdownlint-cli2.yaml .github/workflows/ci.yml
 node --check commitlint.config.cjs
