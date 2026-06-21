@@ -52,8 +52,10 @@ configuration:
 - `CHANGELOG.md`: Lists tagged release history.
 - `TODO.md`: Tracks follow-up work when pending items should remain outside the
   current change scope.
+- `SOURCES.md`: Maps reference groups and cited source links.
 - `commitlint.config.cjs`: Provides a default commitlint configuration for
   Conventional Commits validation.
+- `.github/workflows/ci.yml`: Runs the documented validation checklist in CI.
 - `.markdownlint-cli2.yaml`: Configures repository Markdown lint rules.
 - `.gitattributes`: Defines repository text-file line-ending normalization.
 - `.gitignore`: Excludes OS metadata and editor temporary files.
