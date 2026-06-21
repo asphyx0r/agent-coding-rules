@@ -144,7 +144,7 @@ Auto-install all tools via
 
 ## Validation
 
-Run the local validation checklist before commits and tags:
+Run the local repository validation checklist before commits and tags:
 
 ```bash
 markdownlint-cli2 "**/*.md"
@@ -154,8 +154,15 @@ commitlint --print-config json --config commitlint.config.cjs
 betterleaks git --no-banner --redact
 ```
 
-When Betterleaks is unavailable, use a CI-compatible Gitleaks scan or an
-equivalent read-only secret scanner.
+This repository scan supports local validation and CI. Before creating a commit,
+also scan the staged content required by `COMMIT_RULES.md`:
+
+```bash
+betterleaks git --staged --redact --no-banner
+```
+
+When Betterleaks is unavailable, use a matching Gitleaks fallback for the
+repository or staged-content scan being performed.
 
 Validate commit messages with the resolved commitlint configuration:
 
