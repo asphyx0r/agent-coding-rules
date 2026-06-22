@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.38.5
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 5aa1eb6 | docs: clarify private security reporting | asphyx |
+| c7d2ee5 | chore: add local `gitleaks` config | asphyx |
+| ed93600 | ci: align repository integrity checks | asphyx |
+| a7b6518 | ci: enable bash strict mode | asphyx |
+| d09b56e | docs: document private security reports | asphyx |
+| 5a96e5f | docs: align validation readiness | asphyx |
+| 9af98f5 | ci: pin workflow runner version | asphyx |
+| cfb9506 | docs: add support and security guidance | asphyx |
+| 4978a35 | docs: include actionlint in checks | asphyx |
+| 70bb072 | docs: avoid npx commitlint default | asphyx |
+| c8db524 | docs: add contribution guide | asphyx |
+| d02dd75 | ci: document toolchain pin | asphyx |
+| 119d416 | docs: complete file inventory | asphyx |
+| 5483301 | docs: list node tooling | asphyx |
+| e4c2fb1 | docs: align `yaml` validation | asphyx |
+| 4fb61b1 | docs: warn about install overwrite | asphyx |
+| ad5f4c3 | docs: clarify latest installation | asphyx |
+| 0d965a7 | docs: clarify external link validation | asphyx |
+| 9eae4f6 | docs: document toolchain version scope | asphyx |
+| 1441fc2 | docs: move source map out of README | asphyx |
+| 9d23063 | docs: align staged secret scan command | asphyx |
+| 797da81 | ci: add repository validation workflow | asphyx |
+
 ## v1.38.4
 
 | References | Description | Author(s) |
