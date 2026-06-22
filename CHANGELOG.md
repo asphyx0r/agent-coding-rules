@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.38.6
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 5af7309 | ci: run toolchain installer with bash | asphyx |
+
 ## v1.38.5
 
 | References | Description | Author(s) |
