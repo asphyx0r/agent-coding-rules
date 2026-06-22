@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.38.8
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| b085f6e | ci: expose go bin for validation | asphyx |
+
 ## v1.38.7
 
 | References | Description | Author(s) |
