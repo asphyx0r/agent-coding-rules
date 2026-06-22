@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.38.9
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| d5c56d5 | docs: clean install docs and license path | asphyx |
+
 ## v1.38.8
 
 | References | Description | Author(s) |
