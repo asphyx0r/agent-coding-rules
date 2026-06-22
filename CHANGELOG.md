@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.38.7
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| cc55f92 | ci: pin actionlint setup in workflow | asphyx |
+
 ## v1.38.6
 
 | References | Description | Author(s) |
