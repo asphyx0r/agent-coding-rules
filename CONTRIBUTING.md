@@ -14,6 +14,7 @@ validation configuration. Use this guide when preparing repository changes.
 Run the repository validation checklist before requesting review:
 
 ```bash
+git fsck --full
 markdownlint-cli2 "**/*.md"
 yamllint .markdownlint-cli2.yaml .github/workflows/ci.yml
 node --check commitlint.config.cjs
