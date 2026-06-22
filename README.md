@@ -59,6 +59,8 @@ configuration:
 - `SOURCES.md`: Maps reference groups and cited source links.
 - `commitlint.config.cjs`: Provides a default commitlint configuration for
   Conventional Commits validation.
+- `.gitleaks.toml`: Extends the built-in Gitleaks secret scanning rules
+  for repository-local scanner configuration.
 - `.github/workflows/ci.yml`: Runs the documented validation checklist in CI.
 - `.markdownlint-cli2.yaml`: Configures repository Markdown lint rules.
 - `.gitattributes`: Defines repository text-file line-ending normalization.
@@ -118,14 +120,16 @@ cp .agent-coding-rules/*_RULES.md .
 cp .agent-coding-rules/.gitattributes .
 cp .agent-coding-rules/.gitignore .
 cp .agent-coding-rules/.markdownlint-cli2.yaml .
+cp .agent-coding-rules/.gitleaks.toml .
 cp .agent-coding-rules/commitlint.config.cjs .
 cp .agent-coding-rules/LICENSE.txt .
 ```
 
 Copying `LICENSE.txt` preserves the MIT license notice for reused files, and
-copying `.gitattributes`, `.gitignore`, `.markdownlint-cli2.yaml`, and
-`commitlint.config.cjs` preserves the repository's text normalization,
-ignored-file patterns, Markdown lint, and commit message lint configuration.
+copying `.gitattributes`, `.gitignore`, `.markdownlint-cli2.yaml`,
+`.gitleaks.toml`, and `commitlint.config.cjs` preserves the repository's
+text normalization, ignored-file patterns, Markdown lint, secret scanning,
+and commit message lint configuration.
 
 ## Usage
 
@@ -157,7 +161,9 @@ Auto-install all tools via
 
 This repository does not pin validation tool versions in a package manifest.
 Local command versions come from the installed environment, or from the
-documented toolchain release when that installer is used.
+documented toolchain release when that installer is used. The repository-local
+`.gitleaks.toml` extends the built-in Gitleaks rules without disabling
+default secret detection.
 
 ## Validation
 

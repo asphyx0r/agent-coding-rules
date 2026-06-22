@@ -1,0 +1,4 @@
+title = "agent-coding-rules Gitleaks configuration"
+
+[extend]
+useDefault = true
