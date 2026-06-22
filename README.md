@@ -13,13 +13,6 @@ Practical behavior and code-quality rules for AI coding agents.
   refactoring, and review.
 - Adds language-, dialect-, and framework-specific rules for web, systems,
   scripting, database, container, legacy, and release-description formats.
-- Adds GitHub Actions workflow rules for trigger scope, job structure,
-  permissions, cache and artifact handling, pinned third-party actions,
-  untrusted input, privileged triggers, and runner selection.
-- Clarifies that GitHub Actions workflow rules apply only to
-  `.github/workflows/*.yml` and `.github/workflows/*.yaml`, in addition to the
-  generic YAML rules, with the GitHub Actions-specific rule taking precedence
-  when both sections overlap.
 - Adds command-oriented validation expectations for GitHub Actions workflows,
   SQL, Python, and PowerShell through actionlint, SQLFluff, Ruff, and
   PSScriptAnalyzer when those tools are already available.
@@ -117,19 +110,10 @@ cd /home/user/project-name
 git clone https://github.com/asphyx0r/agent-coding-rules.git .agent-coding-rules
 cp .agent-coding-rules/AGENTS.md .
 cp .agent-coding-rules/*_RULES.md .
-cp .agent-coding-rules/.gitattributes .
-cp .agent-coding-rules/.gitignore .
 cp .agent-coding-rules/.markdownlint-cli2.yaml .
 cp .agent-coding-rules/.gitleaks.toml .
 cp .agent-coding-rules/commitlint.config.cjs .
-cp .agent-coding-rules/LICENSE.txt .
 ```
-
-Copying `LICENSE.txt` preserves the MIT license notice for reused files, and
-copying `.gitattributes`, `.gitignore`, `.markdownlint-cli2.yaml`,
-`.gitleaks.toml`, and `commitlint.config.cjs` preserves the repository's
-text normalization, ignored-file patterns, Markdown lint, secret scanning,
-and commit message lint configuration.
 
 ## Usage
 
@@ -225,4 +209,4 @@ Detailed reference groups and cited source links are maintained in
 
 ## License
 
-[MIT](LICENSE.txt)
+[MIT](LICENSE)
