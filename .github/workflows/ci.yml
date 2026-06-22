@@ -45,6 +45,7 @@ jobs:
           export PATH="$HOME/go/bin:$PATH"
           bash "$TOOLCHAIN_DIR/scripts/install-tools.sh" \
             -c "$TOOLCHAIN_DIR/config/tools.yaml"
+          echo "$HOME/go/bin" >> "$GITHUB_PATH"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - name: Run validation
