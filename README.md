@@ -110,6 +110,8 @@ cd /home/user/project-name
 git clone https://github.com/asphyx0r/agent-coding-rules.git .agent-coding-rules
 cp .agent-coding-rules/AGENTS.md .
 cp .agent-coding-rules/*_RULES.md .
+cp .agent-coding-rules/.gitattributes .
+cp .agent-coding-rules/.gitignore .
 cp .agent-coding-rules/.markdownlint-cli2.yaml .
 cp .agent-coding-rules/.gitleaks.toml .
 cp .agent-coding-rules/commitlint.config.cjs .
