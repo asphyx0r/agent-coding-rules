@@ -146,9 +146,12 @@ Provide these commands before running validation:
 Auto-install all tools via
 [coding-agent-toolchain v1.4.1](https://github.com/asphyx0r/coding-agent-toolchain/releases/tag/v1.4.1).
 
-This repository does not pin validation tool versions in a package manifest.
-Local command versions come from the installed environment, or from the
-documented toolchain release when that installer is used. The repository-local
+This repository intentionally does not pin validation tool versions in a
+package manifest. Local command versions come from the installed environment,
+or from the documented toolchain release when that installer is used. CI pins
+the toolchain source revision in `.github/workflows/ci.yml` so repository
+validation uses a reviewed tool installer instead of local machine state. The
+repository-local
 `.gitleaks.toml` extends the built-in Gitleaks rules without disabling
 default secret detection.
 
