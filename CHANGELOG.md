@@ -6,10 +6,10 @@ All notable changes to this project will be documented in this file.
 
 | References | Description | Author(s) |
 | --- | --- | --- |
-| a075752 | `docs(readme): clarify tool pinning` | asphyx |
-| bcc6b34 | `fix(git): ignore local tool artifacts` | asphyx |
-| d3a1fa2 | `fix(readme): install git config files` | asphyx |
-| df7339f | `fix(commit): enforce commit scopes` | asphyx |
+| a075752 | docs(readme): clarify tool pinning | asphyx |
+| bcc6b34 | fix(`git`): ignore local tool artifacts | asphyx |
+| d3a1fa2 | fix(readme): install `git` config files | asphyx |
+| df7339f | fix(commit): enforce commit scopes | asphyx |
 
 ## v1.38.9
 
