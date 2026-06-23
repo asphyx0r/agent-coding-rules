@@ -13,3 +13,12 @@ Desktop.ini
 *.swo
 *~
 .history/
+# Local validation tool artifacts
+node_modules/
+.venv/
+.venv*/
+.cache/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+coverage/
