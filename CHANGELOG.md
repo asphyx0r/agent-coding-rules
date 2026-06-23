@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.38.11
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 7139f65 | fix(changelog): unwrap v1.38.10 titles | asphyx |
+| 0677192 | fix(changelog): order v1.38.10 entries | asphyx |
+
 ## v1.38.10
 
 | References | Description | Author(s) |
