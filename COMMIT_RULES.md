@@ -146,9 +146,9 @@ Apply these rules before creating any commit.
   higher-priority project instruction, repository-specific `.gitmessage`,
   resolved commitlint configuration, or explicit documented project convention
   requires a different format.
-- Write the header as `type[optional scope][optional !]: description` when
-  Conventional Commits are used. The `type` and `description` are required;
-  the `scope` and `!` marker are optional.
+- Write the header as `type(scope)[optional !]: description` when
+  Conventional Commits are used in this repository. The `type`, `scope`, and
+  `description` are required; the `!` marker is optional.
 - Use `feat` only when the commit adds a user-visible or project-visible
   feature to the application, library, repository, or tooling.
 - Use `fix` only when the commit corrects a bug, broken behavior, invalid
@@ -161,6 +161,9 @@ Apply these rules before creating any commit.
 - Do not invent a commit type when the repository defines an explicit
   `type-enum`. Choose one of the configured types or ask the user when no
   configured type fits the staged change set.
+- Do not invent a commit scope when the repository defines an explicit
+  `scope-enum`. Choose one of the configured scopes or ask the user when no
+  configured scope fits the staged change set.
 - Add a scope only when it identifies a meaningful repository area, such as a
   package, module, application, documentation area, configuration area, tooling
   area, or CI component.
@@ -307,9 +310,9 @@ Apply these rules before creating any commit.
   when they do not represent the staged changes:
 
   ```text
-  feat(parser): add array parsing
-  fix(server): send cors headers
-  docs: correct changelog typo
-  refactor(api): simplify request validation
-  feat(api)!: remove deprecated endpoint
+  feat(language): add array parsing
+  fix(ci): send validation output
+  docs(changelog): correct release typo
+  refactor(validation): simplify checks
+  feat(commit)!: require commit scopes
   ```
