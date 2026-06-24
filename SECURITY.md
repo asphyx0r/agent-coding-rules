@@ -8,14 +8,13 @@ workflows that could cause unintended repository changes.
 ## Reporting a Vulnerability
 
 Use GitHub private vulnerability reporting through GitHub Security Advisories
-as the verified private channel for sensitive security reports in this
-repository.
+when that private reporting channel is available for this repository.
 
 Do not publish real secrets, credentials, private URLs, exploit details, or
 sensitive reproduction data in public issues, pull requests, or comments. If
-that private GitHub reporting channel is unavailable in a fork or mirror, open
-a public issue with a high-level, non-sensitive summary and ask maintainers
-where to send details.
+sensitive reproduction data in public issues, pull requests, or comments. If a
+private reporting channel is unavailable, open a public issue with only a
+high-level, non-sensitive summary and ask maintainers where to send details.
 
 ## What to Include
 
