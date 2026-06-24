@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.38.12
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| d356278 | fix(validation): document lint ignores | asphyx |
+| 8ce627b | fix(ci): document actionlint pin | asphyx |
+| 934b888 | fix(validation): clarify local tools | asphyx |
+| 2e76b73 | fix(security): clarify private reports | asphyx |
+
 ## v1.38.11
 
 | References | Description | Author(s) |
