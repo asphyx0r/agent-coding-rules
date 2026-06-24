@@ -96,6 +96,8 @@ config:
   MD051:
     ignore_case: false
     ignored_pattern: ""
+  # MD052 and MD053 ignore placeholder-style labels used in rule examples.
+  # Keep these narrow; do not use them to hide real broken links.
   MD052:
     ignored_labels:
       - x
