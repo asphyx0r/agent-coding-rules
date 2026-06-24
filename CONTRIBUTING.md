@@ -11,6 +11,11 @@ validation configuration. Use this guide when preparing repository changes.
 
 ## Validation
 
+For reproducible local validation, install the tools through the
+coding-agent-toolchain release documented in README.md. If local tool
+versions differ from CI, treat CI as the final validation source and include
+local tool versions when reporting validation failures.
+
 Run the repository validation checklist before requesting review:
 
 ```bash

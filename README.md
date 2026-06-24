@@ -146,6 +146,11 @@ Provide these commands before running validation:
 Auto-install all tools via
 [coding-agent-toolchain v1.4.1](https://github.com/asphyx0r/coding-agent-toolchain/releases/tag/v1.4.1).
 
+Use that documented toolchain release when you need local validation to
+reproduce CI. If locally installed tool versions differ from the CI toolchain,
+treat CI as the final validation source and include local tool versions when
+reporting failures.
+
 This repository intentionally does not pin validation tool versions in a
 package manifest. Local command versions come from the installed environment,
 or from the documented toolchain release when that installer is used. CI pins
