@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.38.13
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 3366c1c | fix(security): clarify reporting guidance | asphyx |
+
 ## v1.38.12
 
 | References | Description | Author(s) |
