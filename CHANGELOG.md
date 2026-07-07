@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.40.0
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 6611437 | feat(validation): expand local checks | asphyx |
+
 ## v1.39.0
 
 | References | Description | Author(s) |
