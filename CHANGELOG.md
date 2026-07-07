@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.39.0
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 8f53a04 | feat(validation): add Markdown pre-commit hook | asphyx |
+
 ## v1.38.13
 
 | References | Description | Author(s) |
