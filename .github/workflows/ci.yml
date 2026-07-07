@@ -20,14 +20,26 @@ jobs:
     steps:
       - name: Checkout repository
         env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          EVENT_NAME: ${{ github.event_name }}
+          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
           REPOSITORY_URL: ${{ github.server_url }}/${{ github.repository }}
           TARGET_REF: ${{ github.ref }}
         run: |
           set -euo pipefail
           git init .
           git remote add origin "$REPOSITORY_URL"
-          git fetch --no-tags --depth=1 origin "$TARGET_REF"
-          git checkout --detach FETCH_HEAD
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            pull_ref="refs/pull/$PULL_REQUEST_NUMBER/head"
+            pull_remote="refs/remotes/origin/pull/$PULL_REQUEST_NUMBER/head"
+            git fetch --no-tags --depth=100 origin \
+              "$BASE_SHA" \
+              "$pull_ref:$pull_remote"
+            git checkout --detach "$pull_remote"
+          else
+            git fetch --no-tags --depth=100 origin "$TARGET_REF"
+            git checkout --detach FETCH_HEAD
+          fi
 
       - name: Install validation tools
         env:
@@ -51,12 +63,41 @@ jobs:
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - name: Run validation
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          EVENT_NAME: ${{ github.event_name }}
+          ZERO_SHA: '0000000000000000000000000000000000000000'
         run: |
           set -euo pipefail
+          validate_commit_messages() {
+            local from_ref=''
+
+            if [[ "$EVENT_NAME" == "pull_request" && -n "$BASE_SHA" ]] &&
+              git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
+              from_ref="$BASE_SHA"
+            elif [[ -n "$BEFORE_SHA" && "$BEFORE_SHA" != "$ZERO_SHA" ]] &&
+              git cat-file -e "$BEFORE_SHA^{commit}" 2>/dev/null; then
+              from_ref="$BEFORE_SHA"
+            fi
+
+            if [[ -n "$from_ref" ]]; then
+              commitlint --from "$from_ref" --to HEAD \
+                --config commitlint.config.cjs
+            else
+              git log -1 --format=%B | commitlint --config commitlint.config.cjs
+            fi
+          }
+
           git fsck --full
           markdownlint-cli2 "**/*.md"
           yamllint .markdownlint-cli2.yaml .github/workflows/ci.yml
           node --check commitlint.config.cjs
           commitlint --print-config json --config commitlint.config.cjs
+          validate_commit_messages
+          bash -n .githooks/pre-commit
+          bash -n .githooks/commit-msg
+          shellcheck .githooks/pre-commit .githooks/commit-msg
+          shfmt -d -i 2 .githooks/pre-commit .githooks/commit-msg
           actionlint
           betterleaks git --no-banner --redact

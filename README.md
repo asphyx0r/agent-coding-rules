@@ -52,8 +52,10 @@ configuration:
 - `SOURCES.md`: Maps reference groups and cited source links.
 - `commitlint.config.cjs`: Provides a default commitlint configuration for
   Conventional Commits validation.
-- `.githooks/pre-commit`: Blocks commits with staged Markdown files unless all
-  repository Markdown files pass `markdownlint-cli2`.
+- `.githooks/pre-commit`: Blocks commits with staged Markdown or YAML files
+  unless their staged content passes `markdownlint-cli2` or `yamllint`.
+- `.githooks/commit-msg`: Blocks commits unless the commit message passes the
+  resolved `commitlint.config.cjs` Conventional Commits rules.
 - `.gitleaks.toml`: Extends the built-in Gitleaks secret scanning rules
   for repository-local scanner configuration.
 - `.github/workflows/ci.yml`: Runs the documented validation checklist in CI.
@@ -172,6 +174,10 @@ markdownlint-cli2 "**/*.md"
 yamllint .markdownlint-cli2.yaml .github/workflows/ci.yml
 node --check commitlint.config.cjs
 commitlint --print-config json --config commitlint.config.cjs
+bash -n .githooks/pre-commit
+bash -n .githooks/commit-msg
+shellcheck .githooks/pre-commit .githooks/commit-msg
+shfmt -d -i 2 .githooks/pre-commit .githooks/commit-msg
 actionlint
 betterleaks git --no-banner --redact
 ```
@@ -183,9 +189,10 @@ git config core.hooksPath .githooks
 ```
 
 Git does not activate versioned hooks automatically after cloning. The local
-`pre-commit` hook runs `markdownlint-cli2 "**/*.md"` before commits that include
-staged Markdown files. It complements CI and does not replace the full
-validation checklist before commits and tags.
+`pre-commit` hook validates staged Markdown and YAML content before commits.
+The local `commit-msg` hook validates commit messages with `commitlint` and the
+repository `commitlint.config.cjs` configuration. These hooks complement CI and
+do not replace the full validation checklist before commits and tags.
 
 This repository scan supports local validation and CI. Before creating a commit,
 also scan the staged content required by `COMMIT_RULES.md`:

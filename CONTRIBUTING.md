@@ -24,6 +24,10 @@ markdownlint-cli2 "**/*.md"
 yamllint .markdownlint-cli2.yaml .github/workflows/ci.yml
 node --check commitlint.config.cjs
 commitlint --print-config json --config commitlint.config.cjs
+bash -n .githooks/pre-commit
+bash -n .githooks/commit-msg
+shellcheck .githooks/pre-commit .githooks/commit-msg
+shfmt -d -i 2 .githooks/pre-commit .githooks/commit-msg
 actionlint
 betterleaks git --no-banner --redact
 ```
@@ -35,9 +39,11 @@ git config core.hooksPath .githooks
 ```
 
 Git does not activate versioned hooks automatically after cloning. The local
-`pre-commit` hook blocks commits with staged Markdown files unless
-`markdownlint-cli2 "**/*.md"` passes for the repository. This hook complements
-CI and does not replace the full validation checklist.
+`pre-commit` hook blocks commits with staged Markdown or YAML files unless their
+staged content passes `markdownlint-cli2` or `yamllint`. The local `commit-msg`
+hook blocks commits unless the message passes `commitlint` with the repository
+configuration. These hooks complement CI and do not replace the full validation
+checklist.
 
 Validate GitHub Actions changes with:
 

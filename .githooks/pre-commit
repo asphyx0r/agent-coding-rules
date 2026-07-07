@@ -1,31 +1,98 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+staged_tree_dir=''
+
+cleanup_staged_tree() {
+  if [[ -n "${staged_tree_dir}" && -d "${staged_tree_dir}" ]]; then
+    rm -rf -- "${staged_tree_dir}"
+  fi
+}
+
+require_command() {
+  local command_name="$1"
+  local file_type="$2"
+
+  if ! command -v "${command_name}" >/dev/null 2>&1; then
+    printf 'pre-commit: %s is required for staged %s files.\n' "${command_name}" "${file_type}" >&2
+    printf 'pre-commit: install %s or unstage the %s changes.\n' "${command_name}" "${file_type}" >&2
+    exit 1
+  fi
+}
+
+run_markdownlint() {
+  local staged_tree_root="$1"
+  shift
+
+  local -a staged_files=("$@")
+  local -a lint_paths=()
+  local file_path
+
+  for file_path in "${staged_files[@]}"; do
+    lint_paths+=("./${file_path}")
+  done
+
+  printf 'pre-commit: running markdownlint-cli2 on %d staged Markdown file(s).\n' "${#staged_files[@]}"
+  (cd "${staged_tree_root}" && markdownlint-cli2 "${lint_paths[@]}")
+}
+
+run_yamllint() {
+  local staged_tree_root="$1"
+  shift
+
+  local -a staged_files=("$@")
+  local -a lint_paths=()
+  local file_path
+
+  for file_path in "${staged_files[@]}"; do
+    lint_paths+=("./${file_path}")
+  done
+
+  printf 'pre-commit: running yamllint on %d staged YAML file(s).\n' "${#staged_files[@]}"
+  (cd "${staged_tree_root}" && yamllint "${lint_paths[@]}")
+}
+
 main() {
   local repo_root
-  local has_staged_markdown
+  local staged_file
+  local -a staged_markdown_files=()
+  local -a staged_yaml_files=()
 
   repo_root="$(git rev-parse --show-toplevel)"
   cd "${repo_root}"
 
-  has_staged_markdown=false
-  while IFS= read -r -d '' _markdown_file; do
-    has_staged_markdown=true
-    break
+  while IFS= read -r -d '' staged_file; do
+    staged_markdown_files+=("${staged_file}")
   done < <(git diff --cached --name-only -z --diff-filter=ACMR -- '*.md')
 
-  if [[ "${has_staged_markdown}" == "false" ]]; then
+  while IFS= read -r -d '' staged_file; do
+    staged_yaml_files+=("${staged_file}")
+  done < <(git diff --cached --name-only -z --diff-filter=ACMR -- '*.yaml' '*.yml')
+
+  if ((${#staged_markdown_files[@]} == 0 && ${#staged_yaml_files[@]} == 0)); then
     exit 0
   fi
 
-  if ! command -v markdownlint-cli2 >/dev/null 2>&1; then
-    printf '%s\n' "pre-commit: markdownlint-cli2 is required for staged Markdown files." >&2
-    printf '%s\n' "pre-commit: install markdownlint-cli2 or unstage the Markdown changes." >&2
-    exit 1
+  if ((${#staged_markdown_files[@]} > 0)); then
+    require_command markdownlint-cli2 Markdown
   fi
 
-  printf '%s\n' 'pre-commit: running markdownlint-cli2 "**/*.md" for staged Markdown files.'
-  markdownlint-cli2 "**/*.md"
+  if ((${#staged_yaml_files[@]} > 0)); then
+    require_command yamllint YAML
+  fi
+
+  staged_tree_dir="$(mktemp -d)"
+  trap cleanup_staged_tree EXIT
+
+  git checkout-index -a --prefix="${staged_tree_dir}/"
+
+  if ((${#staged_markdown_files[@]} > 0)); then
+    run_markdownlint "${staged_tree_dir}" "${staged_markdown_files[@]}"
+  fi
+
+  if ((${#staged_yaml_files[@]} > 0)); then
+    run_yamllint "${staged_tree_dir}" "${staged_yaml_files[@]}"
+  fi
 }
 
 main "$@"
