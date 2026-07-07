@@ -28,6 +28,17 @@ actionlint
 betterleaks git --no-banner --redact
 ```
 
+Enable the versioned local hooks in each checkout that should use them:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+Git does not activate versioned hooks automatically after cloning. The local
+`pre-commit` hook blocks commits with staged Markdown files unless
+`markdownlint-cli2 "**/*.md"` passes for the repository. This hook complements
+CI and does not replace the full validation checklist.
+
 Validate GitHub Actions changes with:
 
 ```bash

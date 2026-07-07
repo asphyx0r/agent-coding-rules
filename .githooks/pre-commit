@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+main() {
+  local repo_root
+  local has_staged_markdown
+
+  repo_root="$(git rev-parse --show-toplevel)"
+  cd "${repo_root}"
+
+  has_staged_markdown=false
+  while IFS= read -r -d '' _markdown_file; do
+    has_staged_markdown=true
+    break
+  done < <(git diff --cached --name-only -z --diff-filter=ACMR -- '*.md')
+
+  if [[ "${has_staged_markdown}" == "false" ]]; then
+    exit 0
+  fi
+
+  if ! command -v markdownlint-cli2 >/dev/null 2>&1; then
+    printf '%s\n' "pre-commit: markdownlint-cli2 is required for staged Markdown files." >&2
+    printf '%s\n' "pre-commit: install markdownlint-cli2 or unstage the Markdown changes." >&2
+    exit 1
+  fi
+
+  printf '%s\n' 'pre-commit: running markdownlint-cli2 "**/*.md" for staged Markdown files.'
+  markdownlint-cli2 "**/*.md"
+}
+
+main "$@"
