@@ -50,6 +50,8 @@ configuration:
 - `TODO.md`: Tracks follow-up work when pending items should remain outside the
   current change scope.
 - `SOURCES.md`: Maps reference groups and cited source links.
+- `MIGRATION.md`: Records the maintainer working-copy migration, validation
+  evidence, and canonical local repository path.
 - `commitlint.config.cjs`: Provides a default commitlint configuration for
   Conventional Commits validation.
 - `.githooks/pre-commit`: Blocks commits with staged Markdown or YAML files
