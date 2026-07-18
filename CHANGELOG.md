@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.40.1
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| a62ed6d | docs(documentation): record local migration | asphyx |
+
 ## v1.40.0
 
 | References | Description | Author(s) |
