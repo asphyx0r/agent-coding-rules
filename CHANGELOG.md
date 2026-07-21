@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.40.2
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| f302e12 | fix(release): require annotated tags | asphyx |
+
 ## v1.40.1
 
 | References | Description | Author(s) |
