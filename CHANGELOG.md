@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.41.1
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 7366327 | fix(validation): satisfy current Ruff | asphyx |
+
 ## v1.41.0
 
 | References | Description | Author(s) |
