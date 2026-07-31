@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.41.0
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 9bfdd78 | feat(agents): own synchronization engine | asphyx |
+
 ## v1.40.2
 
 | References | Description | Author(s) |
