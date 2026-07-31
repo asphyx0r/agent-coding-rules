@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Check, plan, and apply canonical agent-rule updates."""
 
 from __future__ import annotations

@@ -10,7 +10,6 @@ from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest import mock
 
-
 SCRIPT_PATH = (
     Path(__file__).resolve().parents[1] / "tools" / "agent-rules-sync.py"
 )
@@ -268,9 +267,12 @@ class AgentRulesSyncTests(unittest.TestCase):
                 raise OSError("injected failure")
             original_atomic_write(path, content)
 
-        with mock.patch.object(SYNC, "atomic_write", fail_on_provenance):
-            with self.assertRaisesRegex(OSError, "injected failure"):
-                SYNC.apply_plan(self.target, self.backups, plan)
+        with mock.patch.object(
+            SYNC,
+            "atomic_write",
+            fail_on_provenance,
+        ), self.assertRaisesRegex(OSError, "injected failure"):
+            SYNC.apply_plan(self.target, self.backups, plan)
 
         for relative_path in SYNC.RULE_PATHS:
             self.assertFalse((self.target / relative_path).exists())
