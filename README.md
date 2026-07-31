@@ -6,6 +6,8 @@ Practical behavior and code-quality rules for AI coding agents.
 
 - Provides a reusable instruction stack for AI coding agents, with explicit
   scope and precedence rules.
+- Acts as the single source of truth for the six rule files and provides the
+  synchronization engine used by consumer repositories.
 - Encourages cautious agent behavior: stated assumptions, clarification before
   risky work, surgical changes, and goal-driven verification.
 - Defines language-agnostic code-quality guidance for naming, comments,
@@ -61,6 +63,10 @@ configuration:
 - `.gitleaks.toml`: Extends the built-in Gitleaks secret scanning rules
   for repository-local scanner configuration.
 - `.github/workflows/ci.yml`: Runs the documented validation checklist in CI.
+- `tools/agent-rules-sync.py`: Plans, checks, and applies safe rule updates in
+  consumer repositories without overwriting customized rule files.
+- `tests/test_agent_rules_sync.py`: Covers first adoption, safe updates,
+  customization preservation, provenance migration, and rollback behavior.
 - `.markdownlint-cli2.yaml`: Configures repository Markdown lint rules.
 - `.gitattributes`: Defines repository text-file line-ending normalization.
 - `.gitignore`: Excludes OS metadata, editor temporary files, local
@@ -131,6 +137,40 @@ cp .agent-coding-rules/commitlint.config.cjs .
 - Review generated changes against the applicable rule files.
 - Keep project-specific instructions in your local `AGENTS.md` when needed.
 
+## Synchronization
+
+This repository is the canonical source for these six files:
+
+- `AGENTS.md`
+- `CODING_RULES.md`
+- `COMMIT_RULES.md`
+- `DOCUMENTATION_RULES.md`
+- `LANGUAGE_RULES.md`
+- `RELEASE_RULES.md`
+
+Consumer repositories run `tools/agent-rules-sync.py` from an exact SemVer tag
+of this repository. The engine supports three operations:
+
+```text
+agent-rules-sync.py check --source SOURCE --target TARGET
+agent-rules-sync.py plan --source SOURCE --target TARGET
+agent-rules-sync.py apply --source SOURCE --target TARGET \
+  --backup-directory DIRECTORY
+```
+
+The engine updates a file only when its current canonical hash matches the
+previous source hash recorded in `_agent-rules-source.json`. A different file
+is treated as a repository customization: it is preserved, reported in the
+plan, and recorded under `preservedFiles` in provenance schema 3. Missing files
+are created, but symlinks and non-file paths are conflicts. Before writing, the
+engine creates a ZIP backup outside the target repository and rolls back
+completed writes if a later write fails.
+
+Untracked files outside the managed paths do not block synchronization.
+Tracked changes outside the six rules and provenance do block it. A consumer
+workflow should commit the resulting changes through a reviewed pull request;
+the engine does not push branches or merge changes itself.
+
 ## Tooling
 
 Provide these commands before running validation:
@@ -181,6 +221,8 @@ bash -n .githooks/commit-msg
 shellcheck .githooks/pre-commit .githooks/commit-msg
 shfmt -d -i 2 .githooks/pre-commit .githooks/commit-msg
 actionlint
+ruff check tools/agent-rules-sync.py tests/test_agent_rules_sync.py
+python -B -m unittest discover -s tests -p 'test_agent_rules_sync.py' -v
 betterleaks git --no-banner --redact
 ```
 

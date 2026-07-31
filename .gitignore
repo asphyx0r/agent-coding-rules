@@ -19,6 +19,7 @@ node_modules/
 .venv*/
 .cache/
 .pytest_cache/
+__pycache__/
 .ruff_cache/
 .mypy_cache/
 coverage/

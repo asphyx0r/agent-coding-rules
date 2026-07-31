@@ -29,6 +29,8 @@ bash -n .githooks/commit-msg
 shellcheck .githooks/pre-commit .githooks/commit-msg
 shfmt -d -i 2 .githooks/pre-commit .githooks/commit-msg
 actionlint
+ruff check tools/agent-rules-sync.py tests/test_agent_rules_sync.py
+python -B -m unittest discover -s tests -p 'test_agent_rules_sync.py' -v
 betterleaks git --no-banner --redact
 ```
 
