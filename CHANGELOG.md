@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.41.2
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| 5bef065 | fix(agents): require temporary cleanup | asphyx |
+
 ## v1.41.1
 
 | References | Description | Author(s) |
