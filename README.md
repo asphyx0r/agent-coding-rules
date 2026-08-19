@@ -6,7 +6,7 @@ Practical behavior and code-quality rules for AI coding agents.
 
 - Provides a reusable instruction stack for AI coding agents, with explicit
   scope and precedence rules.
-- Acts as the single source of truth for the six rule files and provides the
+- Acts as the single source of truth for the seven rule files and provides the
   synchronization engine used by consumer repositories.
 - Encourages cautious agent behavior: stated assumptions, clarification before
   risky work, surgical changes, and goal-driven verification.
@@ -18,8 +18,8 @@ Practical behavior and code-quality rules for AI coding agents.
 - Adds command-oriented validation expectations for GitHub Actions workflows,
   SQL, Python, and PowerShell through actionlint, SQLFluff, Ruff, and
   PSScriptAnalyzer when those tools are already available.
-- Covers documentation, README, changelog, commit, release, versioning, privacy,
-  repository-readiness, and Git tag workflows.
+- Covers documentation, README, changelog, branch, commit, release, versioning,
+  privacy, repository-readiness, and Git tag workflows.
 - Hardens commit rules with automated secret scanning that prefers Betterleaks
   and falls back to Gitleaks, plus manual privacy review, Conventional Commits
   defaults, commitlint-aware validation, breaking-change footer handling, and
@@ -34,6 +34,8 @@ configuration:
 
 - `AGENTS.md`: Governs the model's behavior and defines when each rule file
   applies.
+- `BRANCH_RULES.md`: Controls task-branch isolation, default branch naming,
+  creation safety, and branch lifecycle operations.
 - `CODING_RULES.md`: Applies universal, language-agnostic code-quality rules.
 - `LANGUAGE_RULES.md`: Applies language-, dialect-, and framework-specific
   coding rules.
@@ -139,9 +141,10 @@ cp .agent-coding-rules/commitlint.config.cjs .
 
 ## Synchronization
 
-This repository is the canonical source for these six files:
+This repository is the canonical source for these seven files:
 
 - `AGENTS.md`
+- `BRANCH_RULES.md`
 - `CODING_RULES.md`
 - `COMMIT_RULES.md`
 - `DOCUMENTATION_RULES.md`
@@ -167,7 +170,7 @@ engine creates a ZIP backup outside the target repository and rolls back
 completed writes if a later write fails.
 
 Untracked files outside the managed paths do not block synchronization.
-Tracked changes outside the six rules and provenance do block it. A consumer
+Tracked changes outside the seven rules and provenance do block it. A consumer
 workflow should commit the resulting changes through a reviewed pull request;
 the engine does not push branches or merge changes itself.
 

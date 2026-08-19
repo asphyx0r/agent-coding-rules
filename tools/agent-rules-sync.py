@@ -16,10 +16,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-VERSION = "2.0.0"
+VERSION = "2.1.0"
 PROVENANCE_PATH = "_agent-rules-source.json"
 RULE_PATHS = (
     "AGENTS.md",
+    "BRANCH_RULES.md",
     "CODING_RULES.md",
     "COMMIT_RULES.md",
     "DOCUMENTATION_RULES.md",
