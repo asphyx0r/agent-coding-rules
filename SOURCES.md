@@ -13,6 +13,8 @@ Use this source map to connect reference groups to rule areas:
 
 - Agent behavior and coding quality: agent-rule examples, Clean Code,
   and RFC 2119 terminology.
+- Git branch behavior: official Git reference syntax, topic-branch workflows,
+  branch lifecycle operations, and published-history safety.
 - Commit and release process: SemVer, Conventional Commits, and
   commitlint documentation.
 - Language and framework rules: official or primary ecosystem references
@@ -23,6 +25,11 @@ Use this source map to connect reference groups to rule areas:
   PyYAML, and Kubernetes references.
 
 - [Karpathy agent rules](https://github.com/multica-ai/andrej-karpathy-skills)
+- [OpenAI Codex custom instructions with AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+- [Git check-ref-format documentation](https://git-scm.com/docs/git-check-ref-format)
+- [Git workflows documentation](https://git-scm.com/docs/gitworkflows)
+- [Git branch documentation](https://git-scm.com/docs/git-branch)
+- [Pro Git - Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
 - Robert C. Martin, "Clean Code: A Handbook of Agile Software Craftsmanship" (978-0132350884)
 - Martin Paul Eve, "Warez: The Infrastructure and Aesthetics of Piracy" (978-1-68571-036-1)
 - The PPL Development Kit: The PCBoard Programming Language Reference Manual

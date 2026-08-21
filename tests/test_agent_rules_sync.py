@@ -3,6 +3,7 @@ import io
 import json
 import os
 import subprocess
+import sys
 import tempfile
 import unittest
 import zipfile
@@ -91,6 +92,32 @@ class AgentRulesSyncTests(unittest.TestCase):
         return json.loads(
             (self.target / SYNC.PROVENANCE_PATH).read_text(encoding="utf-8")
         )
+
+    def test_canonical_rule_paths(self):
+        self.assertEqual(
+            SYNC.RULE_PATHS,
+            (
+                "AGENTS.md",
+                "BRANCH_RULES.md",
+                "CODING_RULES.md",
+                "COMMIT_RULES.md",
+                "DOCUMENTATION_RULES.md",
+                "LANGUAGE_RULES.md",
+                "RELEASE_RULES.md",
+            ),
+        )
+
+    def test_version_output(self):
+        result = subprocess.run(
+            (sys.executable, str(SCRIPT_PATH), "--version"),
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout, "agent-rules-sync.py 2.1.0\n")
+        self.assertEqual(result.stderr, "")
 
     def test_first_adoption_preserves_existing_custom_rule(self):
         custom = self.target / SYNC.RULE_PATHS[0]
@@ -239,6 +266,58 @@ class AgentRulesSyncTests(unittest.TestCase):
         self.assertEqual(updated["schemaVersion"], 3)
         self.assertEqual(updated["repository"], provenance["repository"])
         self.assertEqual(updated["starterKit"], provenance["starterKit"])
+
+    def test_existing_schema_three_consumer_adds_branch_rules(self):
+        source_metadata, source_files = SYNC.inspect_source(self.source)
+        branch_path = "BRANCH_RULES.md"
+        legacy_paths = tuple(
+            path for path in SYNC.RULE_PATHS if path != branch_path
+        )
+        for relative_path in legacy_paths:
+            (self.target / relative_path).write_bytes(
+                source_files[relative_path]
+            )
+        legacy_metadata = dict(source_metadata)
+        legacy_metadata["files"] = list(legacy_paths)
+        legacy_metadata["fileHashes"] = {
+            path: source_metadata["fileHashes"][path]
+            for path in legacy_paths
+        }
+        provenance = {
+            "schemaVersion": 3,
+            "agentRules": legacy_metadata,
+        }
+        (self.target / SYNC.PROVENANCE_PATH).write_text(
+            json.dumps(provenance),
+            encoding="utf-8",
+        )
+        self.commit_all(self.target, "adopt legacy source rules")
+
+        plan = SYNC.build_plan(self.source, self.target)
+
+        actions = self.actions(plan)
+        self.assertEqual(actions[branch_path], "create")
+        self.assertEqual(actions[SYNC.PROVENANCE_PATH], "update")
+        for relative_path in legacy_paths:
+            self.assertEqual(actions[relative_path], "aligned")
+        self.assertEqual(plan["summary"]["changed"], 2)
+
+        self.apply()
+
+        self.assertEqual(
+            (self.target / branch_path).read_bytes(),
+            source_files[branch_path],
+        )
+        updated = self.read_provenance()
+        self.assertEqual(updated["schemaVersion"], 3)
+        self.assertEqual(
+            updated["agentRules"]["files"],
+            list(SYNC.RULE_PATHS),
+        )
+        self.assertIn(
+            branch_path,
+            updated["agentRules"]["fileHashes"],
+        )
 
     def test_symlink_is_reported_as_conflict(self):
         target_path = self.target / SYNC.RULE_PATHS[0]
