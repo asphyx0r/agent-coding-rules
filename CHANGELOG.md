@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.42.0
+
+| References | Description | Author(s) |
+| --- | --- | --- |
+| d12cacb | Merge pull request #1 from asphyx0r/feat/add-branch-rules | asphyx |
+| 70c798c | feat(agents): add branch lifecycle rules | asphyx |
+
 ## v1.41.2
 
 | References | Description | Author(s) |
